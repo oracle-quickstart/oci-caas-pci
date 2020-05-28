@@ -22,13 +22,18 @@ resource "oci_core_default_route_table" "default_route_table" {
   }
 }
 
-resource "oci_core_subnet" "app_subnet" {
+resource "oci_core_subnet" "web_subnet" {
   cidr_block          = "10.1.1.0/24"
-  display_name        = "AppSubnet"
-  dns_label           = "appsubnet"
-  security_list_ids   = [oci_core_security_list.app_security_list.id]
+  display_name        = "WebSubnet"
+  dns_label           = "websubnet"
+  security_list_ids   = [oci_core_security_list.web_security_list.id]
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_vcn.primary_vcn.id
   route_table_id      = oci_core_vcn.primary_vcn.default_route_table_id
   dhcp_options_id     = oci_core_vcn.primary_vcn.default_dhcp_options_id
+}
+
+output "web_subnet_id" {
+  value = oci_core_subnet.web_subnet.id
+  description = "Web subnet ID"
 }
