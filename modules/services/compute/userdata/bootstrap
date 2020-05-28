@@ -1,2 +1,7 @@
 #!/bin/bash
 yum update -y
+
+echo "Hello, World!" > /var/www/html/index.html
+
+yum install -y httpd
+service httpd start
