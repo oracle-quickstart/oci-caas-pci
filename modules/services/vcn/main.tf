@@ -37,3 +37,7 @@ output "web_subnet_id" {
   value = oci_core_subnet.web_subnet.id
   description = "Web subnet ID"
 }
+
+output "vcn_id" {
+  value = oci_core_vcn.primary_vcn.id
+}

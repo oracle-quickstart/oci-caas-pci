@@ -3,6 +3,14 @@ variable "compartment_ocid" {}
 variable "web_subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
+variable "dmz_load_balancer_id" {}
+variable "dmz_backendset_name" {}
+
+variable "web_server_port" {
+  type = number
+  description = "[Web Instance] HTTP Port"
+  default = 8080
+}
 
 variable "web_storage_gb" {
   type = number

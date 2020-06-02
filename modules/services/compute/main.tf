@@ -49,6 +49,18 @@ resource "oci_core_volume_backup_policy_assignment" "policy" {
   policy_id = data.oci_core_volume_backup_policies.web_predefined_volume_backup_policies.volume_backup_policies.0.id
 }
 
+resource "oci_load_balancer_backend" "lb-dmz-be" {
+  for_each = toset(oci_core_instance.web_instance.*.private_ip)
+  load_balancer_id = var.dmz_load_balancer_id
+  backendset_name  = var.dmz_backendset_name
+  ip_address       = each.value
+  port             = var.web_server_port
+  backup           = false
+  drain            = false
+  offline          = false
+  weight           = 1
+}
+
 # Gets the boot volume attachments for each instance
 data "oci_core_boot_volume_attachments" "web_boot_volume_attachments" {
   depends_on          = [oci_core_instance.web_instance]
