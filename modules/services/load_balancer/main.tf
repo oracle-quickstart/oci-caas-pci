@@ -81,14 +81,3 @@ output "dmz_load_balancer_id" {
 output "dmz_backendset_name" {
   value  = oci_load_balancer_backend_set.lb-dmz-bes.name
 }
-
-# resource "oci_load_balancer_backend" "lb-dmz-be" {
-#   load_balancer_id = oci_load_balancer.dmz_load_balancer.id
-#   backendset_name  = oci_load_balancer_backend_set.lb-dmz-bes.name
-#   ip_address       = oci_core_instance.compute_instance1.private_ip
-#   port             = 8080
-#   backup           = false
-#   drain            = false
-#   offline          = false
-#   weight           = 1
-# }
