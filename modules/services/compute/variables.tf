@@ -9,7 +9,7 @@ variable "dmz_backendset_name" {}
 variable "web_server_port" {
   type = number
   description = "[Web Instance] HTTP Port"
-  default = 8080
+  default = 80
 }
 
 variable "web_storage_gb" {
