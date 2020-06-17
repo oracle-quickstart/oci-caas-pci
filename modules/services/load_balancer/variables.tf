@@ -4,7 +4,7 @@ variable "vcn_id" {}
 variable "web_server_port" {
   type = number
   description = "[Web Instance] HTTP Port"
-  default = 8080
+  default = 80
 }
 
 variable "dmz_security_list_egress_security_rules_destination" {

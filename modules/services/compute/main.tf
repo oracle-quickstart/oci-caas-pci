@@ -41,24 +41,24 @@ resource "oci_core_volume" "web_block_volume_paravirtualized" {
 resource "oci_core_instance_pool" "web_instance_pool" {
   compartment_id            = var.compartment_ocid
   instance_configuration_id = oci_core_instance_configuration.web_instance_configuration.id
-  size                      = "0"
+  size                      = "1"
   state                     = "RUNNING"
   display_name              = "WebInstancePool"
 
-   placement_configurations {
-     availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
-     primary_subnet_id   = var.web_subnet_id
-   }
+  placement_configurations {
+   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
+   primary_subnet_id   = var.web_subnet_id
+  }
 
-   placement_configurations {
-     availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[1],"name")
-     primary_subnet_id   = var.web_subnet_id
-   }
+  placement_configurations {
+   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[1],"name")
+   primary_subnet_id   = var.web_subnet_id
+  }
 
-   placement_configurations {
-     availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[2],"name")
-     primary_subnet_id   = var.web_subnet_id
-   }
+  placement_configurations {
+   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[2],"name")
+   primary_subnet_id   = var.web_subnet_id
+  }
 
   load_balancers {
     backend_set_name = var.dmz_backendset_name
