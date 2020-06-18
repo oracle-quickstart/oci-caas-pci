@@ -1,10 +1,17 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "web_subnet_id" {}
+variable "bastion_subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 variable "dmz_load_balancer_id" {}
 variable "dmz_backendset_name" {}
+
+variable "bastion_enabled" {
+  type = bool
+  description = "[Bastion Instance] Enabled (true/false)?"
+  default = true
+}
 
 variable "web_server_port" {
   type = number
@@ -20,6 +27,12 @@ variable "web_storage_gb" {
 
 variable "num_paravirtualized_volumes_per_instance" {
   default = "1"
+}
+
+variable "bastion_instance_shape" {
+  type = string
+  description = "[Bastion Instance] Shape"
+  default = "VM.Standard2.2"
 }
 
 variable "web_instance_shape" {

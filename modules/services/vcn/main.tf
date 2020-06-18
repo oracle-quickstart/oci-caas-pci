@@ -49,6 +49,11 @@ output "web_subnet_id" {
   description = "Web subnet ID"
 }
 
+output "bastion_subnet_id" {
+  value = oci_core_subnet.bastion_subnet.id
+  description = "Bastion subnet ID"
+}
+
 output "vcn_id" {
   value = oci_core_vcn.primary_vcn.id
 }
