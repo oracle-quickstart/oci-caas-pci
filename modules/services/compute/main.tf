@@ -45,6 +45,11 @@ resource "oci_core_instance_pool" "web_instance_pool" {
   state                     = "RUNNING"
   display_name              = "WebInstancePool"
 
+  # To allow updates to instance_configuration without a conflict with the pool
+  lifecycle {
+    create_before_destroy = true
+  }
+
   placement_configurations {
    availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
    primary_subnet_id   = var.web_subnet_id
@@ -126,4 +131,36 @@ resource "oci_autoscaling_auto_scaling_configuration" "web_autoscaling_configura
     id   = oci_core_instance_pool.web_instance_pool.id
     type = "instancePool"
   }
+}
+
+resource "oci_core_instance" "bastion" {
+  compartment_id      = var.compartment_ocid
+  availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
+
+  create_vnic_details {
+    assign_public_ip = true
+    display_name     = "bastion-vnic"
+    hostname_label   = "bastion"
+    subnet_id        = var.bastion_subnet_id
+  }
+
+  display_name = "bastion"
+
+  metadata = {
+    ssh_authorized_keys = file (var.ssh_public_key)
+    user_data           = base64encode(file("${path.module}/userdata/bastion-bootstrap"))
+  }
+
+  shape = var.bastion_instance_shape
+
+  source_details {
+    source_type = "image"
+    source_id   = var.instance_image_ocid[var.region]
+  }
+
+  timeouts {
+    create = "10m"
+  }
+
+  count = var.bastion_enabled == true ? 1 : 0
 }
