@@ -45,6 +45,11 @@ resource "oci_core_instance_pool" "web_instance_pool" {
   state                     = "RUNNING"
   display_name              = "WebInstancePool"
 
+  # To allow updates to instance_configuration without a conflict with the pool
+  lifecycle {
+    create_before_destroy = true
+  }
+
   placement_configurations {
    availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
    primary_subnet_id   = var.web_subnet_id
