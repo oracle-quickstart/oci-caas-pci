@@ -11,6 +11,12 @@ resource "oci_core_internet_gateway" "primary_internet_gateway" {
   vcn_id         = oci_core_vcn.primary_vcn.id
 }
 
+resource "oci_core_nat_gateway" "patching_nat_gateway" {
+  compartment_id = var.compartment_ocid
+  display_name   = "PatchingNATGateway"
+  vcn_id         = oci_core_vcn.primary_vcn.id
+}
+
 resource "oci_core_default_route_table" "default_route_table" {
   manage_default_resource_id = oci_core_vcn.primary_vcn.default_route_table_id
   display_name               = "DefaultRouteTable"
@@ -22,14 +28,26 @@ resource "oci_core_default_route_table" "default_route_table" {
   }
 }
 
+resource "oci_core_route_table" "nat_route_table" {
+  compartment_id = var.compartment_ocid
+  display_name   = "PatchingNATRouteTable"
+  vcn_id         = oci_core_vcn.primary_vcn.id
+
+  route_rules {
+    destination       = "0.0.0.0/0"
+    network_entity_id = oci_core_nat_gateway.patching_nat_gateway.id
+  }
+}
+
 resource "oci_core_subnet" "web_subnet" {
   cidr_block          = "10.1.1.0/24"
   display_name        = "WebSubnet"
   dns_label           = "websubnet"
   security_list_ids   = [oci_core_security_list.web_security_list.id]
   compartment_id      = var.compartment_ocid
+  prohibit_public_ip_on_vnic = true
   vcn_id              = oci_core_vcn.primary_vcn.id
-  route_table_id      = oci_core_vcn.primary_vcn.default_route_table_id
+  route_table_id      = oci_core_route_table.nat_route_table.id
   dhcp_options_id     = oci_core_vcn.primary_vcn.default_dhcp_options_id
 }
 
