@@ -222,12 +222,6 @@ variable "bastion_security_list_ingress_security_rules_description" {
   type = string
 }
 
-variable "bastion_security_list_ingress_security_rules_destination" {
-  description = "[Bastion Security List] Ingress Destination"
-  default = "0.0.0.0/0"
-  type = string
-}
-
 variable "bastion_security_list_ingress_security_rules_protocol" {
   description = "[Bastion Security List] Ingress Protocol"
   default = "6"
