@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Debugging / Logging
+set -x
+exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
+echo BEGIN
+date '+%Y-%m-%d %H:%M:%S'
+
+yum update -y
+
+export OCI_CLI_AUTH=instance_principal
+export PATH="$PATH:/usr/bin"
+export HOME="/opt/oci-caas/chef"
+
+mkdir -p /opt/oci-caas/chef
+cd /opt/oci-caas/chef
+
+oci os object get -bn chef-cookbooks --file web_cookbooks.tar.gz --name web_cookbooks.tar.gz
+oci os object get -bn chef-cookbooks --file chef-16.1.16-1.el7.x86_64.rpm --name chef-16.1.16-1.el7.x86_64.rpm
+
+gzip -dc web_cookbooks.tar.gz | tar -xvf -
+rpm -i chef-16.1.16-1.el7.x86_64.rpm
+
+chef-client --chef-license accept -z --runlist oci_caas_pci_webserver
