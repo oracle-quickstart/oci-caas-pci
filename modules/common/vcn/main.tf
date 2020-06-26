@@ -1,3 +1,5 @@
+variable "compartment_ocid" {}
+
 resource "oci_core_vcn" "primary_vcn" {
   cidr_block     = "10.1.0.0/16"
   compartment_id = var.compartment_ocid
@@ -61,10 +63,10 @@ output "vcn_id" {
 
 output "dhcp_options_id" {
   value = oci_core_vcn.primary_vcn.default_dhcp_options_id
-  description = "DHCP Options ID"
+  description = "DHCP Options OCID"
 }
 
 output "nat_gateway_id" {
-  value = oci_core_nat_gateway.patching_nat_gateway
+  value = oci_core_nat_gateway.patching_nat_gateway.id
   description = "NAT gateway"
 }

@@ -1,7 +1,6 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "web_subnet_id" {}
-variable "bastion_subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 variable "dmz_load_balancer_id" {}
