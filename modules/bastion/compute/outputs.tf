@@ -1,19 +1,3 @@
-# outputs and data used for outputs - doesn't render to calling client
-data "oci_core_volume_backup_policies" "web_predefined_volume_backup_policies" {
-  filter {
-    name = "display_name"
-
-    values = [
-      "bronze",
-    ]
-  }
-}
-
-
-output "bronze_policy_id" {
-  value = data.oci_core_volume_backup_policies.web_predefined_volume_backup_policies.volume_backup_policies.0.id
-}
-
 # Get a list of availability domains
 data "oci_identity_availability_domains" "ad" {
   compartment_id = "${var.tenancy_ocid}"

@@ -1,18 +1,4 @@
-variable "compartment_ocid" {}
-variable "tenancy_ocid" {}
-
-variable "oci_dg_prefix" {
-  type = string
-  description = "[OCI CaaS] Dynamic group name, used for bucket access"
-  default = "oci_caas_bucket_access"
-}
-
-variable "oci_bucket_policy_prefix" {
-  type = string
-  description = "[OCI CaaS] Policy name, used for bucket access"
-  default = "oci_caas_bucket_access"
-}
-
+# Random IDs to prevent naming collision with tenancy level resources
 resource "random_id" "policy_name" {
   byte_length = 8
 }
@@ -33,7 +19,7 @@ resource "oci_identity_policy" "test_policy" {
     description = "OCI CaaS Object Store Access"
     name = "${var.oci_bucket_policy_prefix}-${random_id.policy_name.id}"
     statements = [
-      "Allow dynamic-group ${oci_identity_dynamic_group.test_dynamic_group.name} to read objects in compartment id ${var.compartment_ocid} where target.bucket.name='chef-cookbooks'",
+      "Allow dynamic-group ${oci_identity_dynamic_group.test_dynamic_group.name} to read objects in compartment id ${var.compartment_ocid} where target.bucket.name='${var.caas_bucket_name}'",
       "Allow dynamic-group ${oci_identity_dynamic_group.test_dynamic_group.name} to read buckets in compartment id ${var.compartment_ocid}"
     ]
 }

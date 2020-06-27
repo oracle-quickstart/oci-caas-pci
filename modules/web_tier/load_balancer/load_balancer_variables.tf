@@ -1,5 +1,6 @@
 variable "compartment_ocid" {}
 variable "vcn_id" {}
+variable "web_subnet_id" {}
 
 variable "web_server_port" {
   type = number

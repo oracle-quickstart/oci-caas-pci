@@ -1,11 +1,8 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
-variable "web_subnet_id" {}
-variable "bastion_subnet_id" {}
+variable "subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
-variable "dmz_load_balancer_id" {}
-variable "dmz_backendset_name" {}
 
 variable "bastion_enabled" {
   type = bool
@@ -13,36 +10,10 @@ variable "bastion_enabled" {
   default = true
 }
 
-variable "web_server_port" {
-  type = number
-  description = "[Web Instance] HTTP Port"
-  default = 80
-}
-
-variable "web_storage_gb" {
-  type = number
-  description = "[Web Instance] Size in GB"
-  default = 50
-}
-
-variable "num_paravirtualized_volumes_per_instance" {
-  default = "1"
-}
-
 variable "bastion_instance_shape" {
   type = string
   description = "[Bastion Instance] Shape"
   default = "VM.Standard2.2"
-}
-
-variable "web_instance_shape" {
-  type = string
-  description = "[Web Instance] Shape"
-  default = "VM.Standard2.2"
-}
-
-variable "num_instances" {
-  default = "3"
 }
 
 variable "instance_image_ocid" {

@@ -132,3 +132,7 @@ resource "oci_autoscaling_auto_scaling_configuration" "web_autoscaling_configura
     type = "instancePool"
   }
 }
+
+output "web_server_port" {
+  value = var.web_server_port
+}

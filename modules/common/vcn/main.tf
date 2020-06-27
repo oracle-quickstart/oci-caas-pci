@@ -41,22 +41,6 @@ resource "oci_core_nat_gateway" "patching_nat_gateway" {
   vcn_id         = oci_core_vcn.primary_vcn.id
 }
 
-# resource "oci_core_subnet" "bastion_subnet" {
-#   cidr_block          = "10.1.3.0/24"
-#   display_name        = "BastionSubnet"
-#   dns_label           = "bastionsubnet"
-#   security_list_ids   = [oci_core_security_list.bastion_security_list.id]
-#   compartment_id      = var.compartment_ocid
-#   vcn_id              = oci_core_vcn.primary_vcn.id
-#   route_table_id      = oci_core_vcn.primary_vcn.default_route_table_id
-#   dhcp_options_id     = oci_core_vcn.primary_vcn.default_dhcp_options_id
-# }
-
-# output "bastion_subnet_id" {
-#   value = oci_core_subnet.bastion_subnet.id
-#   description = "Bastion subnet ID"
-# }
-
 output "vcn_id" {
   value = oci_core_vcn.primary_vcn.id
 }
@@ -64,6 +48,16 @@ output "vcn_id" {
 output "dhcp_options_id" {
   value = oci_core_vcn.primary_vcn.default_dhcp_options_id
   description = "DHCP Options OCID"
+}
+
+output "default_route_table_id" {
+  value = oci_core_default_route_table.default_route_table.id
+  description = "Default route"
+}
+
+output "nat_route_table_id" {
+  value = oci_core_route_table.nat_route_table.id
+  description = "NAT route table"
 }
 
 output "nat_gateway_id" {
