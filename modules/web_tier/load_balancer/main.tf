@@ -1,3 +1,6 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# Network resources used for load balancing
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_security_list" "dmz_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id

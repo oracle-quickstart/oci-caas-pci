@@ -1,3 +1,6 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# Instance Configuration used for autoscaling
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_instance_configuration" "web_instance_configuration" {
   compartment_id = var.compartment_ocid
   display_name   = "web-instance-configuration"
@@ -12,7 +15,7 @@ resource "oci_core_instance_configuration" "web_instance_configuration" {
 
       create_vnic_details {
         subnet_id        = var.web_subnet_id
-        display_name     = "Primaryvnic"
+        display_name     = "webinstance"
         assign_public_ip = false
         hostname_label   = "webinstance"
       }
@@ -30,6 +33,9 @@ resource "oci_core_instance_configuration" "web_instance_configuration" {
   }
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Additional application storage
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_volume" "web_block_volume_paravirtualized" {
   count               = var.num_instances * var.num_paravirtualized_volumes_per_instance
   availability_domain = data.template_file.ad_names.*.rendered[count.index]
@@ -38,6 +44,9 @@ resource "oci_core_volume" "web_block_volume_paravirtualized" {
   size_in_gbs         = var.web_storage_gb
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Autoscaling instance pool
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_instance_pool" "web_instance_pool" {
   compartment_id            = var.compartment_ocid
   instance_configuration_id = oci_core_instance_configuration.web_instance_configuration.id
@@ -73,7 +82,9 @@ resource "oci_core_instance_pool" "web_instance_pool" {
   }
 }
 
-// Create autoscaling configuration
+# ---------------------------------------------------------------------------------------------------------------------
+# Autoscaling configuration
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_autoscaling_auto_scaling_configuration" "web_autoscaling_configuration" {
   compartment_id       = var.compartment_ocid
   cool_down_in_seconds = 300
@@ -133,6 +144,12 @@ resource "oci_autoscaling_auto_scaling_configuration" "web_autoscaling_configura
   }
 }
 
-output "web_server_port" {
-  value = var.web_server_port
+# Get a list of availability domains
+data "oci_identity_availability_domains" "ad" {
+  compartment_id = "${var.tenancy_ocid}"
+}
+
+data "template_file" "ad_names" {
+  count = "${length(data.oci_identity_availability_domains.ad.availability_domains)}"
+  template = "${lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")}"
 }

@@ -1,3 +1,6 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# Bastion subnet and security list
+# ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_subnet" "bastion_subnet" {
   cidr_block          = "10.1.3.0/24"
   display_name        = "BastionSubnet"
@@ -15,29 +18,29 @@ resource "oci_core_security_list" "bastion_security_list" {
   display_name        = "Bastion Security List"
 
   egress_security_rules {
-    destination = var.bastion_security_list_egress_security_rules_destination
-    protocol = var.bastion_security_list_egress_security_rules_protocol
-    stateless = var.bastion_security_list_egress_security_rules_stateless
+    destination = var.egress_security_rules_destination
+    protocol = var.egress_security_rules_protocol
+    stateless = var.egress_security_rules_stateless
     tcp_options {
-      max = var.bastion_security_list_egress_security_rules_tcp_options_destination_port_range_max
-      min = var.bastion_security_list_egress_security_rules_tcp_options_destination_port_range_min
+      max = var.egress_security_rules_tcp_options_destination_port_range_max
+      min = var.egress_security_rules_tcp_options_destination_port_range_min
       source_port_range {
-        max = var.bastion_security_list_egress_security_rules_tcp_options_source_port_range_max
-        min = var.bastion_security_list_egress_security_rules_tcp_options_source_port_range_min
+        max = var.egress_security_rules_tcp_options_source_port_range_max
+        min = var.egress_security_rules_tcp_options_source_port_range_min
       }
     }
   }
   ingress_security_rules {
-    protocol = var.bastion_security_list_ingress_security_rules_protocol
-    source = var.bastion_security_list_ingress_security_rules_source
-    description = var.bastion_security_list_ingress_security_rules_description
-    stateless = var.bastion_security_list_ingress_security_rules_stateless
+    protocol = var.ingress_security_rules_protocol
+    source = var.ingress_security_rules_source
+    description = var.ingress_security_rules_description
+    stateless = var.ingress_security_rules_stateless
     tcp_options {
-      max = var.bastion_security_list_ingress_security_rules_tcp_options_destination_port_range_max
-      min = var.bastion_security_list_ingress_security_rules_tcp_options_destination_port_range_min
+      max = var.ingress_security_rules_tcp_options_destination_port_range_max
+      min = var.ingress_security_rules_tcp_options_destination_port_range_min
       source_port_range {
-        max = var.bastion_security_list_ingress_security_rules_tcp_options_source_port_range_max
-        min = var.bastion_security_list_ingress_security_rules_tcp_options_source_port_range_min
+        max = var.ingress_security_rules_tcp_options_source_port_range_max
+        min = var.ingress_security_rules_tcp_options_source_port_range_min
       }
     }
   }
