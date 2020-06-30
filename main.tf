@@ -47,3 +47,18 @@ module "web_tier" {
   route_table_id      = module.vcn.nat_route_table_id
   dhcp_options_id     = module.vcn.dhcp_options_id
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Create application autoscaling servers and related resources (instance config, pools, subnet, security list)
+# ---------------------------------------------------------------------------------------------------------------------
+module "app_tier" {
+  source              = "./modules/app_tier"
+  tenancy_ocid        = var.tenancy_ocid
+  ssh_public_key      = var.ssh_public_key
+  region              = var.region
+  compartment_ocid    = var.compartment_ocid
+  app_tier_cidr_block = var.app_tier_subnet_cidr_block
+  vcn_id              = module.vcn.vcn_id
+  route_table_id      = module.vcn.nat_route_table_id
+  dhcp_options_id     = module.vcn.dhcp_options_id
+}
