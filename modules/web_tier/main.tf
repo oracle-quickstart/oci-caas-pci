@@ -6,12 +6,23 @@ variable "region" {}
 variable "ssh_public_key" {}
 variable "tenancy_ocid" {}
 
+variable "dmz_cidr_block" {
+  type        = string
+  description = "[DMZ Subnet] CIDR Block"
+}
+
+variable "web_tier_cidr_block" {
+  type        = string
+  description = "[Web tier Subnet] CIDR Block"
+}
+
 module "network" {
-  source           = "./network"
-  compartment_ocid = var.compartment_ocid
-  vcn_id           = var.vcn_id
-  route_table_id   = var.route_table_id
-  dhcp_options_id  = var.dhcp_options_id
+  source              = "./network"
+  compartment_ocid    = var.compartment_ocid
+  vcn_id              = var.vcn_id
+  route_table_id      = var.route_table_id
+  dhcp_options_id     = var.dhcp_options_id
+  web_tier_cidr_block = var.web_tier_cidr_block
 }
 
 module "compute" {
@@ -29,6 +40,7 @@ module "load_balancer" {
   source           = "./load_balancer"
   vcn_id           = var.vcn_id
   compartment_ocid = var.compartment_ocid
+  dmz_cidr_block   = var.dmz_cidr_block
   web_subnet_id    = module.network.web_subnet_id
   web_server_port  = module.compute.web_server_port
 }

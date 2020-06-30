@@ -1,17 +1,10 @@
-variable "compartment_ocid" {}
-variable "vcn_id" {}
-variable "route_table_id" {}
-variable "dhcp_options_id" {}
-variable "region" {}
-variable "ssh_public_key" {}
-variable "tenancy_ocid" {}
-
 module "network" {
-  source           = "./network"
-  compartment_ocid = var.compartment_ocid
-  vcn_id           = var.vcn_id
-  route_table_id   = var.route_table_id
-  dhcp_options_id  = var.dhcp_options_id
+  source             = "./network"
+  compartment_ocid   = var.compartment_ocid
+  vcn_id             = var.vcn_id
+  route_table_id     = var.route_table_id
+  dhcp_options_id    = var.dhcp_options_id
+  bastion_cidr_block = var.bastion_cidr_block
 }
 
 module "compute" {

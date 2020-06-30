@@ -2,7 +2,7 @@
 # Subnet and security list fo web server
 # ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_subnet" "web_subnet" {
-  cidr_block          = "10.1.1.0/24"
+  cidr_block          = var.web_tier_cidr_block
   display_name        = "WebSubnet"
   dns_label           = "websubnet"
   security_list_ids   = [oci_core_security_list.web_security_list.id]
@@ -19,29 +19,29 @@ resource "oci_core_security_list" "web_security_list" {
   display_name        = "Web Security List"
 
   egress_security_rules {
-    destination = var.web_security_list_egress_security_rules_destination
-    protocol = var.web_security_list_egress_security_rules_protocol
-    stateless = var.web_security_list_egress_security_rules_stateless
+    destination = var.egress_security_rules_destination
+    protocol = var.egress_security_rules_protocol
+    stateless = var.egress_security_rules_stateless
     tcp_options {
-      max = var.web_security_list_egress_security_rules_tcp_options_destination_port_range_max
-      min = var.web_security_list_egress_security_rules_tcp_options_destination_port_range_min
+      max = var.egress_security_rules_tcp_options_destination_port_range_max
+      min = var.egress_security_rules_tcp_options_destination_port_range_min
       source_port_range {
-        max = var.web_security_list_egress_security_rules_tcp_options_source_port_range_max
-        min = var.web_security_list_egress_security_rules_tcp_options_source_port_range_min
+        max = var.egress_security_rules_tcp_options_source_port_range_max
+        min = var.egress_security_rules_tcp_options_source_port_range_min
       }
     }
   }
   ingress_security_rules {
-    protocol = var.web_security_list_ingress_security_rules_protocol
-    source = var.web_security_list_ingress_security_rules_source
-    description = var.web_security_list_ingress_security_rules_description
-    stateless = var.web_security_list_ingress_security_rules_stateless
+    protocol = var.ingress_security_rules_protocol
+    source = var.ingress_security_rules_source
+    description = var.ingress_security_rules_description
+    stateless = var.ingress_security_rules_stateless
     tcp_options {
-      max = var.web_security_list_ingress_security_rules_tcp_options_destination_port_range_max
-      min = var.web_security_list_ingress_security_rules_tcp_options_destination_port_range_min
+      max = var.ingress_security_rules_tcp_options_destination_port_range_max
+      min = var.ingress_security_rules_tcp_options_destination_port_range_min
       source_port_range {
-        max = var.web_security_list_ingress_security_rules_tcp_options_source_port_range_max
-        min = var.web_security_list_ingress_security_rules_tcp_options_source_port_range_min
+        max = var.ingress_security_rules_tcp_options_source_port_range_max
+        min = var.ingress_security_rules_tcp_options_source_port_range_min
       }
     }
   }

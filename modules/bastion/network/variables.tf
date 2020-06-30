@@ -3,6 +3,11 @@ variable "vcn_id" {}
 variable "route_table_id" {}
 variable "dhcp_options_id" {}
 
+variable "bastion_cidr_block" {
+  type        = string
+  description = "[Bastion Subnet] CIDR Block"
+}
+
 variable "egress_security_rules_destination" {
   type = string
   description = "[Bastion Security List] Egress Destination"
