@@ -10,3 +10,9 @@ variable "app_tier_cidr_block" {
   type        = string
   description = "[App tier Subnet] CIDR Block"
 }
+
+variable "app_server_port" {
+  type = number
+  description = "[App Instance] Port"
+  default = 80
+}
