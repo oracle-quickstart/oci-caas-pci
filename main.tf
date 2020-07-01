@@ -4,6 +4,7 @@
 module "vcn" {
   source           = "./modules/common/vcn"
   compartment_ocid = var.compartment_ocid
+  vcn_cidr_block   = var.primary_vcn_cidr_block
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -20,26 +21,44 @@ module "iam" {
 # Create Bastion server and related resources (instance, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "bastion" {
-  source           = "./modules/bastion"
-  tenancy_ocid     = var.tenancy_ocid
-  ssh_public_key   = var.ssh_public_key
-  region           = var.region
-  compartment_ocid = var.compartment_ocid
-  vcn_id           = module.vcn.vcn_id
-  route_table_id   = module.vcn.default_route_table_id
-  dhcp_options_id  = module.vcn.dhcp_options_id
+  source             = "./modules/bastion"
+  tenancy_ocid       = var.tenancy_ocid
+  ssh_public_key     = var.ssh_public_key
+  region             = var.region
+  compartment_ocid   = var.compartment_ocid
+  bastion_cidr_block = var.bastion_subnet_cidr_block
+  vcn_id             = module.vcn.vcn_id
+  route_table_id     = module.vcn.default_route_table_id
+  dhcp_options_id    = module.vcn.dhcp_options_id
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create web autoscaling servers and related resources (instance config, pools, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "web_tier" {
-  source           = "./modules/web_tier"
-  tenancy_ocid     = var.tenancy_ocid
-  ssh_public_key   = var.ssh_public_key
-  region           = var.region
-  compartment_ocid = var.compartment_ocid
-  vcn_id           = module.vcn.vcn_id
-  route_table_id   = module.vcn.nat_route_table_id
-  dhcp_options_id  = module.vcn.dhcp_options_id
+  source              = "./modules/web_tier"
+  tenancy_ocid        = var.tenancy_ocid
+  ssh_public_key      = var.ssh_public_key
+  region              = var.region
+  compartment_ocid    = var.compartment_ocid
+  web_tier_cidr_block = var.web_tier_subnet_cidr_block
+  dmz_cidr_block      = var.dmz_subnet_cidr_block
+  vcn_id              = module.vcn.vcn_id
+  route_table_id      = module.vcn.nat_route_table_id
+  dhcp_options_id     = module.vcn.dhcp_options_id
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Create application autoscaling servers and related resources (instance config, pools, subnet, security list)
+# ---------------------------------------------------------------------------------------------------------------------
+module "app_tier" {
+  source              = "./modules/app_tier"
+  tenancy_ocid        = var.tenancy_ocid
+  ssh_public_key      = var.ssh_public_key
+  region              = var.region
+  compartment_ocid    = var.compartment_ocid
+  app_tier_cidr_block = var.app_tier_subnet_cidr_block
+  vcn_id              = module.vcn.vcn_id
+  route_table_id      = module.vcn.nat_route_table_id
+  dhcp_options_id     = module.vcn.dhcp_options_id
 }

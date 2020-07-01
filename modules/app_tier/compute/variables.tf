@@ -1,20 +1,20 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
-variable "web_subnet_id" {}
+variable "app_subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
-variable "dmz_load_balancer_id" {}
-variable "dmz_backendset_name" {}
+variable "app_load_balancer_id" {}
+variable "app_backendset_name" {}
 
-variable "web_server_port" {
+variable "app_server_port" {
   type = number
-  description = "[Web Instance] HTTP Port"
+  description = "[App Instance] HTTP Port"
   default = 80
 }
 
-variable "web_storage_gb" {
+variable "app_storage_gb" {
   type = number
-  description = "[Web Instance] Size in GB"
+  description = "[App Instance] Size in GB"
   default = 50
 }
 
@@ -22,9 +22,9 @@ variable "num_paravirtualized_volumes_per_instance" {
   default = "1"
 }
 
-variable "web_instance_shape" {
+variable "app_instance_shape" {
   type = string
-  description = "[Web Instance] Shape"
+  description = "[App Instance] Shape"
   default = "VM.Standard2.2"
 }
 

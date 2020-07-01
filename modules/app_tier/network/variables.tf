@@ -2,152 +2,153 @@ variable "compartment_ocid" {}
 variable "vcn_id" {}
 variable "route_table_id" {}
 variable "dhcp_options_id" {}
+variable "app_server_port" {}
 
-variable "web_tier_cidr_block" {
+variable "app_tier_cidr_block" {
   type        = string
-  description = "[Web Tier Subnet] CIDR Block"
+  description = "[App Tier Subnet] CIDR Block"
 }
 
 variable "egress_security_rules_destination" {
   type = string
-  description = "[Web Security List] Egress Destination"
+  description = "[App Security List] Egress Destination"
   default = "0.0.0.0/0"
 }
 
 variable "egress_security_rules_protocol" {
   type = string
-  description = "[Web Security List] Egress Protocol"
+  description = "[App Security List] Egress Protocol"
   default = "6"
 }
 
 variable "egress_security_rules_stateless" {
   type = bool
-  description = "[Web Security List] Egress Stateless"
+  description = "[App Security List] Egress Stateless"
   default = false
 }
 
 variable "egress_security_rules_tcp_options_destination_port_range_max" {
-  description = "[Web Security List] Egress TCP Destination Port Range Max"
+  description = "[App Security List] Egress TCP Destination Port Range Max"
   default = 65535
   type = number
 }
 
 variable "egress_security_rules_tcp_options_destination_port_range_min" {
-  description = "[Web Security List] Egress TCP Destination Port Range Min"
+  description = "[App Security List] Egress TCP Destination Port Range Min"
   default = 1
   type = number
 }
 
 variable "egress_security_rules_tcp_options_source_port_range_max" {
-  description = "[Web Security List] Egress TCP Source Port Range Max"
+  description = "[App Security List] Egress TCP Source Port Range Max"
   default = 65535
   type = number
 }
 
 variable "egress_security_rules_tcp_options_source_port_range_min" {
-  description = "[Web Security List] Egress TCP Source Port Range Min"
+  description = "[App Security List] Egress TCP Source Port Range Min"
   default = 1
   type = number
 }
 
 variable "egress_security_rules_udp_options_destination_port_range_max" {
-  description = "[Web Security List] Egress UDP Destination Port Range Max"
+  description = "[App Security List] Egress UDP Destination Port Range Max"
   default = 65535
   type = number
 }
 
 variable "egress_security_rules_udp_options_destination_port_range_min" {
-  description = "[Web Security List] Egress UDP Destination Port Range Min"
+  description = "[App Security List] Egress UDP Destination Port Range Min"
   default = 1
   type = number
 }
 
 variable "egress_security_rules_udp_options_source_port_range_max" {
-  description = "[Web Security List] Egress UDP Source Port Range Max"
+  description = "[App Security List] Egress UDP Source Port Range Max"
   default = 65535
   type = number
 }
 
 variable "egress_security_rules_udp_options_source_port_range_min" {
-  description = "[Web Security List] Egress UDP Source Port Range Min"
+  description = "[App Security List] Egress UDP Source Port Range Min"
   default = 1
   type = number
 }
 
 variable "ingress_security_rules_source" {
-  description = "[Web Security List] Ingress Source"
+  description = "[App Security List] Ingress Source"
   default = "0.0.0.0/0"
   type = string
 }
 
 variable "ingress_security_rules_description" {
-  description = "[Web Security List] Description"
-  default = "Web Security List - Ingress"
+  description = "[App Security List] Description"
+  default = "App Security List - Ingress"
   type = string
 }
 
 variable "ingress_security_rules_destination" {
-  description = "[Web Security List] Ingress Destination"
+  description = "[App Security List] Ingress Destination"
   default = "0.0.0.0/0"
   type = string
 }
 
 variable "ingress_security_rules_protocol" {
-  description = "[Web Security List] Ingress Protocol"
+  description = "[App Security List] Ingress Protocol"
   default = "6"
   type = string
 }
 
 variable "ingress_security_rules_stateless" {
-  description = "[Web Security List]"
+  description = "[App Security List]"
   type = bool
   default = false
 }
 
 variable "ingress_security_rules_tcp_options_destination_port_range_max" {
-  description = "[Web Security List] Ingress TCP Destination Port Range Max"
+  description = "[App Security List] Ingress TCP Destination Port Range Max"
   default = 65535
   type = number
 }
 
 variable "ingress_security_rules_tcp_options_destination_port_range_min" {
-  description = "[Web Security List] Ingress TCP Destination Port Range Min"
+  description = "[App Security List] Ingress TCP Destination Port Range Min"
   default = 1
   type = number
 }
 
 variable "ingress_security_rules_tcp_options_source_port_range_max" {
-  description = "[Web Security List] Ingress TCP Source Port Range Max"
+  description = "[App Security List] Ingress TCP Source Port Range Max"
   default = 65535
   type = number
 }
 
 variable "ingress_security_rules_tcp_options_source_port_range_min" {
-  description = "[Web Security List] Ingress TCP Source Port Range Min"
+  description = "[App Security List] Ingress TCP Source Port Range Min"
   default = 1
   type = number
 }
 
 variable "ingress_security_rules_udp_options_destination_port_range_max" {
-  description = "[Web Security List] Ingress UDP Destination Port Range Max"
+  description = "[App Security List] Ingress UDP Destination Port Range Max"
   default = 65535
   type = number
 }
 
 variable "ingress_security_rules_udp_options_destination_port_range_min" {
-  description = "[Web Security List] Ingress UDP Destination Port Range Min"
+  description = "[App Security List] Ingress UDP Destination Port Range Min"
   default = 1
   type = number
 }
 
 variable "ingress_security_rules_udp_options_source_port_range_max" {
-  description = "[Web Security List] Ingress UDP Source Port Range Max"
+  description = "[App Security List] Ingress UDP Source Port Range Max"
   default = 65535
   type = number
 }
 
 variable "ingress_security_rules_udp_options_source_port_range_min" {
-  description = "[Web Security List] Ingress UDP Source Port Range Min"
+  description = "[App Security List] Ingress UDP Source Port Range Min"
   default = 1
   type = number
 }

@@ -7,33 +7,33 @@ resource "oci_core_security_list" "dmz_security_list" {
   display_name        = "DMZ Security List"
 
   egress_security_rules {
-    destination = var.dmz_security_list_egress_security_rules_destination
-    protocol = var.dmz_security_list_egress_security_rules_protocol
-    stateless = var.dmz_security_list_egress_security_rules_stateless
+    destination = var.egress_security_rules_destination
+    protocol = var.egress_security_rules_protocol
+    stateless = var.egress_security_rules_stateless
     tcp_options {
-      max = var.dmz_security_list_egress_security_rules_tcp_options_destination_port_range_max
-      min = var.dmz_security_list_egress_security_rules_tcp_options_destination_port_range_min
+      max = var.egress_security_rules_tcp_options_destination_port_range_max
+      min = var.egress_security_rules_tcp_options_destination_port_range_min
       source_port_range {
-        max = var.dmz_security_list_egress_security_rules_tcp_options_source_port_range_max
-        min = var.dmz_security_list_egress_security_rules_tcp_options_source_port_range_min
+        max = var.egress_security_rules_tcp_options_source_port_range_max
+        min = var.egress_security_rules_tcp_options_source_port_range_min
       }
     }
   }
 
   ingress_security_rules {
-    protocol = var.dmz_security_list_ingress_security_rules_protocol
-    source = var.dmz_security_list_ingress_security_rules_source
-    description = var.dmz_security_list_ingress_security_rules_description
-    stateless = var.dmz_security_list_ingress_security_rules_stateless
+    protocol = var.ingress_security_rules_protocol
+    source = var.ingress_security_rules_source
+    description = var.ingress_security_rules_description
+    stateless = var.ingress_security_rules_stateless
     tcp_options {
-      max = var.dmz_security_list_ingress_security_rules_tcp_options_destination_port_range_max
-      min = var.dmz_security_list_ingress_security_rules_tcp_options_destination_port_range_min
+      max = var.ingress_security_rules_tcp_options_destination_port_range_max
+      min = var.ingress_security_rules_tcp_options_destination_port_range_min
     }
   }
 }
 
 resource "oci_core_subnet" "dmz_subnet" {
-  cidr_block          = "10.1.2.0/24"
+  cidr_block          = var.dmz_cidr_block
   display_name        = "DMZ Subnet"
   dns_label           = "dmzsubnet"
   security_list_ids   = [oci_core_security_list.dmz_security_list.id]
@@ -75,12 +75,4 @@ resource "oci_load_balancer_listener" "lb_dmz_listener" {
   default_backend_set_name = oci_load_balancer_backend_set.lb-dmz-bes.name
   port                     = 80
   protocol                 = "HTTP"
-}
-
-output "dmz_load_balancer_id" {
-  value = oci_load_balancer.dmz_load_balancer.id
-}
-
-output "dmz_backendset_name" {
-  value  = oci_load_balancer_backend_set.lb-dmz-bes.name
 }

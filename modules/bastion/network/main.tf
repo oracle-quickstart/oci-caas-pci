@@ -2,7 +2,7 @@
 # Bastion subnet and security list
 # ---------------------------------------------------------------------------------------------------------------------
 resource "oci_core_subnet" "bastion_subnet" {
-  cidr_block          = "10.1.3.0/24"
+  cidr_block          = var.bastion_cidr_block
   display_name        = "BastionSubnet"
   dns_label           = "bastionsubnet"
   security_list_ids   = [oci_core_security_list.bastion_security_list.id]
