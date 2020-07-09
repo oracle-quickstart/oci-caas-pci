@@ -40,3 +40,14 @@ variable "app_tier_subnet_cidr_block" {
   description = "[App Tier Subnet] CIDR Block"
   default     = "10.1.4.0/24"
 }
+
+variable "database_subnet_cidr_block" {
+  type        = string
+  description = "[Database Subnet] CIDR Block"
+  default     = "10.1.5.0/24"
+}
+
+variable "database_password" {
+  type         = string
+  description = "database password"
+}
