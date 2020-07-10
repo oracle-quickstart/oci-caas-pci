@@ -62,3 +62,21 @@ module "app_tier" {
   route_table_id      = module.vcn.nat_route_table_id
   dhcp_options_id     = module.vcn.dhcp_options_id
 }
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Create database and subnet with security lists
+# ---------------------------------------------------------------------------------------------------------------------
+module "database" {
+  source              = "./modules/database"
+  tenancy_ocid        = var.tenancy_ocid
+  ssh_public_key      = var.ssh_public_key
+  region              = var.region
+  compartment_ocid    = var.compartment_ocid
+  database_cidr_block = var.database_subnet_cidr_block
+  database_password   = var.database_password
+  vcn_cidr_block      = var.primary_vcn_cidr_block
+  vcn_id              = module.vcn.vcn_id
+  route_table_id      = module.vcn.default_route_table_id
+  dhcp_options_id     = module.vcn.dhcp_options_id
+}
