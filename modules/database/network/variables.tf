@@ -3,7 +3,6 @@ variable "vcn_id" {}
 variable "route_table_id" {}
 variable "dhcp_options_id" {}
 
-
 variable "vcn_cidr_block" {
   type        = string
   description = "[VCN] CIDR Block"

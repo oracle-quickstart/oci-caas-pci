@@ -18,6 +18,7 @@ resource "oci_core_network_security_group" "database_security_group" {
     display_name = "ATPSecurityGroup"
     vcn_id = var.vcn_id
 }
+
 resource "oci_core_network_security_group_security_rule" "database_security_egress_group_rule" {
     network_security_group_id = oci_core_network_security_group.database_security_group.id
     direction = "EGRESS"
@@ -58,6 +59,7 @@ resource "oci_core_security_list" "database_security_list" {
       }
     }
   }
+
   ingress_security_rules {
     protocol    = var.ingress_security_rules_protocol
     source      = var.ingress_security_rules_source

@@ -1,4 +1,3 @@
-
 output "database_subnet_id" {
   value = oci_core_subnet.database_subnet.id
   description = "database subnet ID"
