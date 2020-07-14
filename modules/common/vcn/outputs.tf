@@ -21,3 +21,13 @@ output "nat_gateway_id" {
   value = oci_core_nat_gateway.patching_nat_gateway.id
   description = "NAT gateway"
 }
+
+output "service_gateway_id" {
+  value = oci_core_service_gateway.service_gateway.id
+  description = "Service gateway"
+}
+
+output "service_gateway_route_table_id" {
+  value = oci_core_route_table.service_gateway_route_table.id
+  description = "service gateway route table"
+}

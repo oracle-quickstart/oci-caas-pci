@@ -38,3 +38,32 @@ resource "oci_core_nat_gateway" "patching_nat_gateway" {
   display_name   = "PatchingNATGateway"
   vcn_id         = oci_core_vcn.primary_vcn.id
 }
+
+resource "oci_core_service_gateway" "service_gateway" {
+  compartment_id = var.compartment_ocid
+  display_name   = "ServiceGateway"
+  vcn_id         = oci_core_vcn.primary_vcn.id
+  services        {
+    service_id   = lookup(data.oci_core_services.service_gateway_all_oci_services.services[0], "id")
+  }
+}
+
+resource "oci_core_route_table" "service_gateway_route_table" {
+  compartment_id = var.compartment_ocid
+  display_name   = "ServiceGatewayRouteTable"
+  vcn_id         = oci_core_vcn.primary_vcn.id
+
+  route_rules {
+    destination_type  = "SERVICE_CIDR_BLOCK"
+    destination       = lookup(data.oci_core_services.service_gateway_all_oci_services.services[0], "cidr_block")
+    network_entity_id = oci_core_service_gateway.service_gateway.id
+  }
+}
+
+data "oci_core_services" "service_gateway_all_oci_services" {
+  filter {
+    name   = "name"
+    values = ["All [A-Za-z0-9]+ Services In Oracle Services Network"]
+    regex  = true
+  }
+}

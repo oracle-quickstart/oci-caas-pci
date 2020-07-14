@@ -6,6 +6,11 @@ variable "region" {}
 variable "app_load_balancer_id" {}
 variable "app_backendset_name" {}
 
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
+}
+
 variable "app_server_port" {
   type = number
   description = "[App Instance] HTTP Port"

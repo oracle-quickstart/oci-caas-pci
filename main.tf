@@ -59,7 +59,8 @@ module "app_tier" {
   compartment_ocid    = var.compartment_ocid
   app_tier_cidr_block = var.app_tier_subnet_cidr_block
   vcn_id              = module.vcn.vcn_id
-  route_table_id      = module.vcn.nat_route_table_id
+  vcn_cidr_block      = var.primary_vcn_cidr_block
+  route_table_id      = module.vcn.service_gateway_route_table_id
   dhcp_options_id     = module.vcn.dhcp_options_id
 }
 
