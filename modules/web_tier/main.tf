@@ -13,6 +13,7 @@ module "compute" {
   ssh_public_key       = var.ssh_public_key
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = var.compartment_ocid
+  vcn_cidr_block       = var.vcn_cidr_block
   web_subnet_id        = module.network.web_subnet_id
   dmz_backendset_name  = module.load_balancer.dmz_backendset_name
   dmz_load_balancer_id = module.load_balancer.dmz_load_balancer_id

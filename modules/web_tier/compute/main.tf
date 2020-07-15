@@ -22,7 +22,7 @@ resource "oci_core_instance_configuration" "web_instance_configuration" {
 
       extended_metadata = {
         ssh_authorized_keys = file (var.ssh_public_key)
-        user_data           = base64encode(file("${path.module}/userdata/bootstrap"))
+        user_data           = base64encode(data.template_file.bootstrap.rendered)
       }
 
       source_details {
@@ -152,4 +152,17 @@ data "oci_identity_availability_domains" "ad" {
 data "template_file" "ad_names" {
   count = "${length(data.oci_identity_availability_domains.ad.availability_domains)}"
   template = "${lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")}"
+}
+
+data "template_file" bootstrap {
+  template = file("${path.module}/userdata/bootstrap")
+
+  vars = {
+    bootstrap_bucket = "chef-cookbooks"
+    bootstrap_bundle = "web_cookbooks.tar.gz"
+    chef_version     = "16.1.16-1"
+    vcn_cidr_block   = var.vcn_cidr_block
+    http_port        = 80
+    https_port       = 443
+  }
 }

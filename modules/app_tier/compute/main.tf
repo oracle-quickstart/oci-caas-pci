@@ -22,13 +22,12 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 
       extended_metadata = {
         ssh_authorized_keys = file (var.ssh_public_key)
-        # user_data           = base64encode(file("${path.module}/userdata/bootstrap"))
-        user_data = base64encode(data.template_file.bootstrap.rendered)
+        user_data           = base64encode(data.template_file.bootstrap.rendered)
       }
 
       source_details {
         source_type = "image"
-        image_id   = var.instance_image_ocid[var.region]
+        image_id    = var.instance_image_ocid[var.region]
       }
     }
   }
