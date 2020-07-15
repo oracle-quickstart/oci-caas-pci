@@ -6,19 +6,38 @@ exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 echo BEGIN
 date '+%Y-%m-%d %H:%M:%S'
 
+# Patch the system on first boot
 yum update -y
 
 export OCI_CLI_AUTH=instance_principal
 export PATH="$PATH:/usr/bin"
 export HOME="/opt/oci-caas/chef"
+export CHEF_HOME=$HOME
+export PACKAGE_CACHE="$HOME/package_cache"
 
-mkdir -p /opt/oci-caas/chef
-cd /opt/oci-caas/chef
+mkdir -p $PACKAGE_CACHE
+cd $CHEF_HOME
 
-oci os object get -bn chef-cookbooks --file web_cookbooks.tar.gz --name web_cookbooks.tar.gz
-oci os object get -bn chef-cookbooks --file chef-16.1.16-1.el7.x86_64.rpm --name chef-16.1.16-1.el7.x86_64.rpm
+oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/${bootstrap_bundle} --name ${bootstrap_bundle}
+oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm --name chef-${chef_version}.el7.x86_64.rpm
 
-gzip -dc web_cookbooks.tar.gz | tar -xvf -
-rpm -i chef-16.1.16-1.el7.x86_64.rpm
+gzip -dc $PACKAGE_CACHE/${bootstrap_bundle} | tar -xvf -
+rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
 
-chef-client --chef-license accept -z --runlist oci_caas_pci_webserver
+# Write JSON file used for Chef attributes
+cat << EOF > $CHEF_HOME/attributes.json
+{
+    "http_port": "${http_port}",
+    "https_port": "${https_port}",
+    "package_cache": "$PACKAGE_CACHE"
+}
+EOF
+
+# Temporarily disable SELinux - required for firewalld updates during user-data
+setenforce 0
+
+# Run the Chef client
+chef-client --chef-license accept -z --runlist oci_caas_pci_webserver -j $CHEF_HOME/attributes.json
+
+# Re-enable SELinux
+setenforce 1

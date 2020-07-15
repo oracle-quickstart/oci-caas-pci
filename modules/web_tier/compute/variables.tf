@@ -32,6 +32,11 @@ variable "num_instances" {
   default = "3"
 }
 
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
+}
+
 variable "instance_image_ocid" {
   type = map
 

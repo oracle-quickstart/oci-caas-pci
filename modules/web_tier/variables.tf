@@ -15,3 +15,8 @@ variable "web_tier_cidr_block" {
   type        = string
   description = "[Web tier Subnet] CIDR Block"
 }
+
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
+}
