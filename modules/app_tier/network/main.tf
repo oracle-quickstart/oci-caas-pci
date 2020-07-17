@@ -68,7 +68,7 @@ resource "oci_load_balancer_backend_set" "lb-app-bes" {
   policy           = "ROUND_ROBIN"
 
   health_checker {
-    port                = var.app_server_port
+    port                = var.tomcat_http_port
     protocol            = "HTTP"
     response_body_regex = ".*"
     url_path            = "/"

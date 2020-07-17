@@ -4,6 +4,12 @@ variable "route_table_id" {}
 variable "dhcp_options_id" {}
 variable "app_server_port" {}
 
+variable "tomcat_http_port" {
+  type        = number
+  description = "HTTP port for Tomcat server"
+  default     = 8080
+}
+
 variable "app_tier_cidr_block" {
   type        = string
   description = "[App Tier Subnet] CIDR Block"

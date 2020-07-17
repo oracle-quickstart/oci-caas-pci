@@ -77,7 +77,7 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   load_balancers {
     backend_set_name = var.app_backendset_name
     load_balancer_id = var.app_load_balancer_id
-    port             = var.app_server_port
+    port             = var.tomcat_http_port
     vnic_selection   = "PrimaryVnic"
   }
 }
@@ -164,7 +164,7 @@ data "template_file" bootstrap {
     tomcat_version   = "8.5.57"
     vcn_cidr_block   = var.vcn_cidr_block
     shutdown_port    = 8006
-    http_port        = 8080
+    http_port        = var.tomcat_http_port
     https_port       = 8444
   }
 }

@@ -48,6 +48,12 @@ variable "database_subnet_cidr_block" {
 }
 
 variable "database_password" {
-  type         = string
+  type        = string
   description = "database password"
+}
+
+variable "tomcat_http_port" {
+  type        = number
+  description = "HTTP port for Tomcat server"
+  default     = 8080
 }
