@@ -9,6 +9,7 @@ module "network" {
   dhcp_options_id     = var.dhcp_options_id
   app_tier_cidr_block = var.app_tier_cidr_block
   app_server_port     = var.app_server_port
+  tomcat_http_port    = var.tomcat_http_port
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ module "compute" {
   tenancy_ocid         = var.tenancy_ocid
   compartment_ocid     = var.compartment_ocid
   vcn_cidr_block       = var.vcn_cidr_block
+  tomcat_http_port     = var.tomcat_http_port
   app_subnet_id        = module.network.app_subnet_id
   app_backendset_name  = module.network.app_backendset_name
   app_load_balancer_id = module.network.app_load_balancer_id

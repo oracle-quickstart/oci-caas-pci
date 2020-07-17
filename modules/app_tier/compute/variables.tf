@@ -11,6 +11,12 @@ variable "vcn_cidr_block" {
   description = "[VCN] CIDR Block"
 }
 
+variable "tomcat_http_port" {
+  type        = number
+  description = "HTTP port for Tomcat server"
+  default     = 8080
+}
+
 variable "app_server_port" {
   type = number
   description = "[App Instance] HTTP Port"

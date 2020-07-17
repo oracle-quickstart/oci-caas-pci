@@ -21,3 +21,9 @@ variable "app_server_port" {
   description = "[App Instance] Port"
   default = 80
 }
+
+variable "tomcat_http_port" {
+  type        = number
+  description = "HTTP port for Tomcat server"
+  default     = 8080
+}
