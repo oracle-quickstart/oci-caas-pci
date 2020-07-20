@@ -11,6 +11,12 @@ variable "caas_bucket_name" {
   default     = "chef-cookbooks"
 }
 
+variable "dns_domain_name" {
+  type        = string
+  description = "[DNS] Domain name where new child domain will be created"
+  default     = "oci-caas.cloud"
+}
+
 variable "primary_vcn_cidr_block" {
   type        = string
   description = "[Primary VCN] CIDR Block"
