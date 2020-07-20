@@ -27,3 +27,7 @@ module "load_balancer" {
   web_subnet_id    = module.network.web_subnet_id
   web_server_port  = module.compute.web_server_port
 }
+
+output "frontend_load_balancer_ips" {
+  value = module.load_balancer.frontend_load_balancer_ips
+}
