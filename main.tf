@@ -7,6 +7,11 @@ module "vcn" {
   vcn_cidr_block   = var.primary_vcn_cidr_block
 }
 
+module "waf" {
+  source           = "./modules/common/waf"
+  compartment_ocid = var.compartment_ocid
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Create DNS child zone and related records
 # ---------------------------------------------------------------------------------------------------------------------
