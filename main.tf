@@ -8,6 +8,18 @@ module "vcn" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Create WAF and DNS CNAME for user access
+# ---------------------------------------------------------------------------------------------------------------------
+module "waf" {
+  source               = "./modules/common/waf"
+  compartment_ocid     = var.compartment_ocid
+  domain_name          = module.dns.dns_zone
+  frontend_name        = "www"
+  dmz_load_balancer_ip = module.web_tier.frontend_load_balancer_ips[0].ip_address
+  vcn_cidr_block       = var.primary_vcn_cidr_block
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # Create DNS child zone and related records
 # ---------------------------------------------------------------------------------------------------------------------
 module "dns" {
