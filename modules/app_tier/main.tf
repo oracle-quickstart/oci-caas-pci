@@ -8,22 +8,25 @@ module "network" {
   route_table_id      = var.route_table_id
   dhcp_options_id     = var.dhcp_options_id
   app_tier_cidr_block = var.app_tier_cidr_block
-  app_server_port     = var.app_server_port
-  tomcat_http_port    = var.tomcat_http_port
+  app_lb_port         = var.app_lb_port
+  tomcat_http_port    = var.tomcat_config["http_port"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create autoscaling pool and configuration for application tier
 # ---------------------------------------------------------------------------------------------------------------------
 module "compute" {
-  source               = "./compute"
-  region               = var.region
-  ssh_public_key       = var.ssh_public_key
-  tenancy_ocid         = var.tenancy_ocid
-  compartment_ocid     = var.compartment_ocid
-  vcn_cidr_block       = var.vcn_cidr_block
-  tomcat_http_port     = var.tomcat_http_port
-  app_subnet_id        = module.network.app_subnet_id
-  app_backendset_name  = module.network.app_backendset_name
-  app_load_balancer_id = module.network.app_load_balancer_id
+  source                        = "./compute"
+  region                        = var.region
+  ssh_public_key                = var.ssh_public_key
+  tenancy_ocid                  = var.tenancy_ocid
+  compartment_ocid              = var.compartment_ocid
+  vcn_cidr_block                = var.vcn_cidr_block
+  oci_caas_bootstrap_bucket     = var.oci_caas_bootstrap_bucket
+  oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
+  chef_version                  = var.chef_version
+  tomcat_config                 = var.tomcat_config
+  app_subnet_id                 = module.network.app_subnet_id
+  app_backendset_name           = module.network.app_backendset_name
+  app_load_balancer_id          = module.network.app_load_balancer_id
 }

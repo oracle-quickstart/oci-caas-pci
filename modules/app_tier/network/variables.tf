@@ -2,7 +2,7 @@ variable "compartment_ocid" {}
 variable "vcn_id" {}
 variable "route_table_id" {}
 variable "dhcp_options_id" {}
-variable "app_server_port" {}
+variable "app_lb_port" {}
 
 variable "tomcat_http_port" {
   type        = number

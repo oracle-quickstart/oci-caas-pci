@@ -83,6 +83,6 @@ resource "oci_load_balancer_listener" "lb_app_listener" {
   load_balancer_id         = oci_load_balancer.app_load_balancer.id
   name                     = "http"
   default_backend_set_name = oci_load_balancer_backend_set.lb-app-bes.name
-  port                     = var.app_server_port
+  port                     = var.app_lb_port
   protocol                 = "HTTP"
 }

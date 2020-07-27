@@ -46,7 +46,7 @@ resource "oci_waas_address_list" "admin_cidr_block" {
 
 resource "oci_waas_waas_policy" "waas_policy" {
   compartment_id = var.compartment_ocid
-  domain         = "${var.frontend_name}.${var.domain_name}"
+  domain         = "${var.frontend_dns_name}.${var.domain_name}"
   display_name   = var.waas_policy_display_name
 
   origin_groups {
@@ -377,7 +377,7 @@ resource "oci_waas_waas_policy" "waas_policy" {
 resource "oci_dns_record" "waf_cname" {
   compartment_id  = var.compartment_ocid
   zone_name_or_id = var.domain_name
-  domain = "${var.frontend_name}.${var.domain_name}"
+  domain = "${var.frontend_dns_name}.${var.domain_name}"
   rtype = "CNAME"
   rdata = oci_waas_waas_policy.waas_policy.cname
   ttl   = 30

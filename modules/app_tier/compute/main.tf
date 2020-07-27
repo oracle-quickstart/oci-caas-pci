@@ -60,24 +60,24 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   }
 
   placement_configurations {
-   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
-   primary_subnet_id   = var.app_subnet_id
+    availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
+    primary_subnet_id   = var.app_subnet_id
   }
 
   placement_configurations {
-   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[1],"name")
-   primary_subnet_id   = var.app_subnet_id
+    availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[1],"name")
+    primary_subnet_id   = var.app_subnet_id
   }
 
   placement_configurations {
-   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[2],"name")
-   primary_subnet_id   = var.app_subnet_id
+    availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[2],"name")
+    primary_subnet_id   = var.app_subnet_id
   }
 
   load_balancers {
     backend_set_name = var.app_backendset_name
     load_balancer_id = var.app_load_balancer_id
-    port             = var.tomcat_http_port
+    port             = var.tomcat_config["http_port"]
     vnic_selection   = "PrimaryVnic"
   }
 }
@@ -158,13 +158,13 @@ data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 
   vars = {
-    bootstrap_bucket = "chef-cookbooks"
-    bootstrap_bundle = "app_cookbooks.tar.gz"
-    chef_version     = "16.1.16-1"
-    tomcat_version   = "8.5.57"
+    bootstrap_bucket = var.oci_caas_bootstrap_bucket
+    bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
+    chef_version     = var.chef_version
     vcn_cidr_block   = var.vcn_cidr_block
-    shutdown_port    = 8006
-    http_port        = var.tomcat_http_port
-    https_port       = 8444
+    tomcat_version   = var.tomcat_config["version"]
+    shutdown_port    = var.tomcat_config["shutdown_port"]
+    http_port        = var.tomcat_config["http_port"]
+    https_port       = var.tomcat_config["https_port"]
   }
 }

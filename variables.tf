@@ -5,6 +5,11 @@ variable "region" {}
 variable "compartment_ocid" {}
 variable "ssh_public_key" {}
 
+variable "frontend_dns_name" {
+  type        = string
+  description = "DNS frontend name (i.e. www)"
+  default     = "www"
+}
 variable "caas_bucket_name" {
   type        = string
   description = "[OCI CaaS] Bucket name"
@@ -58,8 +63,32 @@ variable "database_password" {
   description = "database password"
 }
 
-variable "tomcat_http_port" {
-  type        = number
-  description = "HTTP port for Tomcat server"
-  default     = 8080
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
+  default     = "chef-cookbooks"
+}
+
+variable "oci_caas_app_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+  default     = "app_cookbooks.tar.gz"
+}
+
+variable "chef_version" {
+  type        = string
+  description = "Version of the Chef Infra client from bootstrapping"
+  default     = "16.1.16-1"
+}
+
+variable "tomcat_config" {
+  type = map
+  description = "Tomcat configuration variables"
+
+  default = {
+    http_port     = 8080
+    https_port    = 8444
+    shutdown_port = 8006
+    version       = "8.5.57"
+  }
 }
