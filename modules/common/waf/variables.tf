@@ -9,6 +9,6 @@ variable "waas_policy_display_name" {
 }
 
 variable "vcn_cidr_block" {}
-variable "frontend_name" {}
+variable "frontend_dns_name" {}
 variable "domain_name" {}
 variable "dmz_load_balancer_ip" {}

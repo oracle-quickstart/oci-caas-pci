@@ -7,20 +7,35 @@ variable "app_load_balancer_id" {}
 variable "app_backendset_name" {}
 
 variable "vcn_cidr_block" {
-  type = string
+  type        = string
   description = "[VCN] CIDR Block"
 }
 
-variable "tomcat_http_port" {
-  type        = number
-  description = "HTTP port for Tomcat server"
-  default     = 8080
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
 }
 
-variable "app_server_port" {
-  type = number
-  description = "[App Instance] HTTP Port"
-  default = 80
+variable "oci_caas_app_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+}
+
+variable "chef_version" {
+  type        = string
+  description = "Version of the Chef Infra client from bootstrapping"
+}
+
+variable "tomcat_config" {
+  type = map
+  description = "Tomcat configuration variables"
+
+  default = {
+    http_port     = 8080
+    https_port    = 8444
+    shutdown_port = 8006
+    version       = "8.5.57"
+  }
 }
 
 variable "app_storage_gb" {
