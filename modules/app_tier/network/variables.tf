@@ -4,10 +4,14 @@ variable "route_table_id" {}
 variable "dhcp_options_id" {}
 variable "app_lb_port" {}
 
-variable "tomcat_http_port" {
-  type        = number
-  description = "HTTP port for Tomcat server"
-  default     = 8080
+variable "tomcat_config" {
+  type        = map
+  description = "Tomcat configuration variables"
+}
+
+variable "vcn_cidr_block" {
+  type        = string
+  description = "[VCN] CIDR Block"
 }
 
 variable "app_tier_cidr_block" {
@@ -81,21 +85,9 @@ variable "egress_security_rules_udp_options_source_port_range_min" {
   type = number
 }
 
-variable "ingress_security_rules_source" {
-  description = "[App Security List] Ingress Source"
-  default = "0.0.0.0/0"
-  type = string
-}
-
 variable "ingress_security_rules_description" {
   description = "[App Security List] Description"
   default = "App Security List - Ingress"
-  type = string
-}
-
-variable "ingress_security_rules_destination" {
-  description = "[App Security List] Ingress Destination"
-  default = "0.0.0.0/0"
   type = string
 }
 

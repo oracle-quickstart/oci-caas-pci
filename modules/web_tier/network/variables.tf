@@ -8,6 +8,17 @@ variable "web_tier_cidr_block" {
   description = "[Web Tier Subnet] CIDR Block"
 }
 
+variable "web_server_vcn_ports" {
+  type    = list
+  description = "[Web Security List] Inbound TCP ports (internal to VCN)"
+  default = [22, 80, 443]
+}
+
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
+}
+
 variable "egress_security_rules_destination" {
   type = string
   description = "[Web Security List] Egress Destination"
@@ -74,21 +85,9 @@ variable "egress_security_rules_udp_options_source_port_range_min" {
   type = number
 }
 
-variable "ingress_security_rules_source" {
-  description = "[Web Security List] Ingress Source"
-  default = "0.0.0.0/0"
-  type = string
-}
-
 variable "ingress_security_rules_description" {
   description = "[Web Security List] Description"
   default = "Web Security List - Ingress"
-  type = string
-}
-
-variable "ingress_security_rules_destination" {
-  description = "[Web Security List] Ingress Destination"
-  default = "0.0.0.0/0"
   type = string
 }
 
@@ -124,30 +123,6 @@ variable "ingress_security_rules_tcp_options_source_port_range_max" {
 
 variable "ingress_security_rules_tcp_options_source_port_range_min" {
   description = "[Web Security List] Ingress TCP Source Port Range Min"
-  default = 1
-  type = number
-}
-
-variable "ingress_security_rules_udp_options_destination_port_range_max" {
-  description = "[Web Security List] Ingress UDP Destination Port Range Max"
-  default = 65535
-  type = number
-}
-
-variable "ingress_security_rules_udp_options_destination_port_range_min" {
-  description = "[Web Security List] Ingress UDP Destination Port Range Min"
-  default = 1
-  type = number
-}
-
-variable "ingress_security_rules_udp_options_source_port_range_max" {
-  description = "[Web Security List] Ingress UDP Source Port Range Max"
-  default = 65535
-  type = number
-}
-
-variable "ingress_security_rules_udp_options_source_port_range_min" {
-  description = "[Web Security List] Ingress UDP Source Port Range Min"
   default = 1
   type = number
 }

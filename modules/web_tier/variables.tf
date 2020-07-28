@@ -20,3 +20,9 @@ variable "vcn_cidr_block" {
   type = string
   description = "[VCN] CIDR Block"
 }
+
+variable "web_server_vcn_ports" {
+  type    = list
+  description = "[Web Security List] Inbound TCP ports (internal to VCN)"
+  default = [22, 80, 443]
+}

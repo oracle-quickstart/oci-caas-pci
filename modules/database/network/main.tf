@@ -14,31 +14,31 @@ resource "oci_core_subnet" "database_subnet" {
 }
 
 resource "oci_core_network_security_group" "database_security_group" {
-    compartment_id = var.compartment_ocid
-    display_name = "ATPSecurityGroup"
-    vcn_id = var.vcn_id
+  compartment_id = var.compartment_ocid
+  display_name   = "ATPSecurityGroup"
+  vcn_id         = var.vcn_id
 }
 
 resource "oci_core_network_security_group_security_rule" "database_security_egress_group_rule" {
-    network_security_group_id = oci_core_network_security_group.database_security_group.id
-    direction = "EGRESS"
-    protocol = "6"
-    destination = var.vcn_cidr_block
-    destination_type = "CIDR_BLOCK"
+  network_security_group_id = oci_core_network_security_group.database_security_group.id
+  direction                 = "EGRESS"
+  protocol                  = "6"
+  destination               = var.vcn_cidr_block
+  destination_type          = "CIDR_BLOCK"
 }
 
 resource "oci_core_network_security_group_security_rule" "database_security_ingress_group_rule" {
-    network_security_group_id = oci_core_network_security_group.database_security_group.id
-    direction = "INGRESS"
-    protocol = "6"
-    source = var.vcn_cidr_block
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-        destination_port_range {
-            max = 1522
-            min = 1522
-        }
+  network_security_group_id = oci_core_network_security_group.database_security_group.id
+  direction                 = "INGRESS"
+  protocol                  = "6"
+  source                    = var.vcn_cidr_block
+  source_type               = "CIDR_BLOCK"
+  tcp_options {
+    destination_port_range {
+      max = var.database_listener_port
+      min = var.database_listener_port
     }
+  }
 }
 
 resource "oci_core_security_list" "database_security_list" {
@@ -47,7 +47,7 @@ resource "oci_core_security_list" "database_security_list" {
   display_name   = "Database Security List"
 
   egress_security_rules {
-    destination = var.egress_security_rules_destination
+    destination = var.vcn_cidr_block
     protocol    = var.egress_security_rules_protocol
     stateless   = var.egress_security_rules_stateless
     tcp_options {
@@ -62,7 +62,7 @@ resource "oci_core_security_list" "database_security_list" {
 
   ingress_security_rules {
     protocol    = var.ingress_security_rules_protocol
-    source      = var.ingress_security_rules_source
+    source      = var.vcn_cidr_block
     description = var.ingress_security_rules_description
     stateless   = var.ingress_security_rules_stateless
     tcp_options {

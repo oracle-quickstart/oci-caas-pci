@@ -63,6 +63,12 @@ variable "database_password" {
   description = "database password"
 }
 
+variable "database_listener_port" {
+  description = "[Database] Listener port"
+  type        = number
+  default     = 1522
+}
+
 variable "oci_caas_bootstrap_bucket" {
   type        = string
   description = "Name of the bucket created during bootstrapping."
@@ -91,4 +97,10 @@ variable "tomcat_config" {
     shutdown_port = 8006
     version       = "8.5.57"
   }
+}
+
+variable "web_server_vcn_ports" {
+  type    = list
+  description = "[Web Security List] Inbound TCP ports (internal to VCN)"
+  default = [22, 80, 443, 8080]
 }

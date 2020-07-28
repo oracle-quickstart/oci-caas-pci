@@ -9,7 +9,8 @@ module "network" {
   dhcp_options_id     = var.dhcp_options_id
   app_tier_cidr_block = var.app_tier_cidr_block
   app_lb_port         = var.app_lb_port
-  tomcat_http_port    = var.tomcat_config["http_port"]
+  vcn_cidr_block      = var.vcn_cidr_block
+  tomcat_config       = var.tomcat_config
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

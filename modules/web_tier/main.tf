@@ -1,10 +1,12 @@
 module "network" {
-  source              = "./network"
-  compartment_ocid    = var.compartment_ocid
-  vcn_id              = var.vcn_id
-  route_table_id      = var.route_table_id
-  dhcp_options_id     = var.dhcp_options_id
-  web_tier_cidr_block = var.web_tier_cidr_block
+  source               = "./network"
+  compartment_ocid     = var.compartment_ocid
+  vcn_id               = var.vcn_id
+  route_table_id       = var.route_table_id
+  dhcp_options_id      = var.dhcp_options_id
+  vcn_cidr_block       = var.vcn_cidr_block
+  web_server_vcn_ports = var.web_server_vcn_ports
+  web_tier_cidr_block  = var.web_tier_cidr_block
 }
 
 module "compute" {
