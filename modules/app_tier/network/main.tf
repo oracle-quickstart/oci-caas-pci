@@ -33,7 +33,7 @@ resource "oci_core_security_list" "app_security_list" {
   }
   ingress_security_rules {
     protocol    = var.ingress_security_rules_protocol
-    source      = var.ingress_security_rules_source
+    source      = var.vcn_cidr_block
     description = var.ingress_security_rules_description
     stateless   = var.ingress_security_rules_stateless
     tcp_options {
@@ -68,7 +68,7 @@ resource "oci_load_balancer_backend_set" "lb-app-bes" {
   policy           = "ROUND_ROBIN"
 
   health_checker {
-    port                = var.tomcat_http_port
+    port                = var.tomcat_config["http_port"]
     protocol            = "HTTP"
     response_body_regex = ".*"
     url_path            = "/"

@@ -12,3 +12,9 @@ variable "database_cidr_block" {
   type        = string
   description = "[Database Subnet] CIDR Block"
 }
+
+variable "database_listener_port" {
+  description = "[Database] Listener port"
+  type        = number
+  default     = 1522
+}

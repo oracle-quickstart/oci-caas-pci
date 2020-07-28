@@ -20,28 +20,24 @@ resource "oci_core_security_list" "web_security_list" {
 
   egress_security_rules {
     destination = var.egress_security_rules_destination
-    protocol = var.egress_security_rules_protocol
-    stateless = var.egress_security_rules_stateless
+    protocol    = var.egress_security_rules_protocol
+    stateless   = var.egress_security_rules_stateless
     tcp_options {
       max = var.egress_security_rules_tcp_options_destination_port_range_max
       min = var.egress_security_rules_tcp_options_destination_port_range_min
-      source_port_range {
-        max = var.egress_security_rules_tcp_options_source_port_range_max
-        min = var.egress_security_rules_tcp_options_source_port_range_min
-      }
     }
   }
-  ingress_security_rules {
-    protocol = var.ingress_security_rules_protocol
-    source = var.ingress_security_rules_source
-    description = var.ingress_security_rules_description
-    stateless = var.ingress_security_rules_stateless
-    tcp_options {
-      max = var.ingress_security_rules_tcp_options_destination_port_range_max
-      min = var.ingress_security_rules_tcp_options_destination_port_range_min
-      source_port_range {
-        max = var.ingress_security_rules_tcp_options_source_port_range_max
-        min = var.ingress_security_rules_tcp_options_source_port_range_min
+
+  dynamic ingress_security_rules {
+    for_each = var.web_server_vcn_ports
+    content {
+      protocol    = var.ingress_security_rules_protocol
+      source      = var.vcn_cidr_block
+      description = "${var.ingress_security_rules_description} - Port ${ingress_security_rules.value}"
+      stateless   = var.ingress_security_rules_stateless
+      tcp_options {
+        max = ingress_security_rules.value
+        min = ingress_security_rules.value
       }
     }
   }
