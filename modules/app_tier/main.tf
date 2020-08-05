@@ -27,6 +27,7 @@ module "compute" {
   oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
   chef_version                  = var.chef_version
   tomcat_config                 = var.tomcat_config
+  app_war_file                  = var.app_war_file
   app_subnet_id                 = module.network.app_subnet_id
   app_backendset_name           = module.network.app_backendset_name
   app_load_balancer_id          = module.network.app_load_balancer_id

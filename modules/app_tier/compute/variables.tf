@@ -49,13 +49,19 @@ variable "num_paravirtualized_volumes_per_instance" {
 }
 
 variable "app_instance_shape" {
-  type = string
+  type        = string
   description = "[App Instance] Shape"
-  default = "VM.Standard2.2"
+  default     = "VM.Standard2.2"
 }
 
 variable "num_instances" {
   default = "3"
+}
+
+variable "app_war_file" {
+  type        = string
+  description = "[App Instance] War file name for deployment (must live in bootstrap bucket)."
+  default     = "SampleWebApp.war"
 }
 
 variable "instance_image_ocid" {

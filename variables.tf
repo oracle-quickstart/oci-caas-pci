@@ -99,8 +99,14 @@ variable "tomcat_config" {
   }
 }
 
+variable "app_war_file" {
+  type        = string
+  description = "[App Instance] War file name for deployment (must live in bootstrap bucket)."
+  default     = "SampleWebApp.war"
+}
+
 variable "web_server_vcn_ports" {
-  type    = list
+  type        = list
   description = "[Web Security List] Inbound TCP ports (internal to VCN)"
-  default = [22, 80, 443, 8080]
+  default     = [22, 80, 443, 8080]
 }

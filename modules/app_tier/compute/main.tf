@@ -162,6 +162,7 @@ data "template_file" bootstrap {
     bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
     chef_version     = var.chef_version
     vcn_cidr_block   = var.vcn_cidr_block
+    app_war_file     = var.app_war_file
     tomcat_version   = var.tomcat_config["version"]
     shutdown_port    = var.tomcat_config["shutdown_port"]
     http_port        = var.tomcat_config["http_port"]
