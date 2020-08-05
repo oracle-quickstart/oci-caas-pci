@@ -37,6 +37,12 @@ variable "chef_version" {
   description = "Version of the Chef Infra client from bootstrapping"
 }
 
+variable "app_war_file" {
+  type        = string
+  description = "[App Instance] War file name for deployment (must live in bootstrap bucket)."
+  default     = "SampleWebApp.war"
+}
+
 variable "tomcat_config" {
   type = map
   description = "Tomcat configuration variables"
