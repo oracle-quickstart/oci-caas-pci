@@ -6,6 +6,11 @@ variable "region" {}
 variable "dmz_load_balancer_id" {}
 variable "dmz_backendset_name" {}
 
+variable "wazuh_server" {
+  type = string
+  description = "[Wazuh] Server frontend port"
+}
+
 variable "web_server_port" {
   type = number
   description = "[Web Instance] HTTP Port"

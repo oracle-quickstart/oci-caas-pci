@@ -164,5 +164,6 @@ data "template_file" bootstrap {
     vcn_cidr_block   = var.vcn_cidr_block
     http_port        = 80
     https_port       = 443
+    wazuh_server     = var.wazuh_server
   }
 }

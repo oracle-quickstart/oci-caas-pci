@@ -11,9 +11,9 @@ variable "dmz_cidr_block" {
   description = "[DMZ Subnet] CIDR Block"
 }
 
-variable "web_tier_cidr_block" {
+variable "wazuh_tier_cidr_block" {
   type        = string
-  description = "[Web tier Subnet] CIDR Block"
+  description = "[Wazuh tier Subnet] CIDR Block"
 }
 
 variable "vcn_cidr_block" {
@@ -21,18 +21,14 @@ variable "vcn_cidr_block" {
   description = "[VCN] CIDR Block"
 }
 
-variable "web_server_vcn_ports" {
+variable "wazuh_server_vcn_tcp_ports" {
   type    = list
-  description = "[Web Security List] Inbound TCP ports (internal to VCN)"
-  default = [22, 80, 443]
+  description = "[Wazuh Security List] Inbound TCP ports (internal to VCN)"
+  default = [22, 443, 1515]
 }
 
-variable "wazuh_server" {
-  type = string
-  description = "[Wazuh] Server frontend port"
-}
-
-variable "wazuh_tier_cidr_block" {
-  type = string
-  description = "[Wazuh] CIDR block"
+variable "wazuh_server_vcn_udp_ports" {
+  type    = list
+  description = "[Wazuh Security List] Inbound UDP ports (internal to VCN)"
+  default = [1514]
 }

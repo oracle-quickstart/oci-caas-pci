@@ -4,21 +4,35 @@ variable "subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 
-variable "bastion_enabled" {
-  type = bool
-  description = "[Bastion Instance] Enabled (true/false)?"
-  default = true
+variable "wazuh_server_port" {
+  type = number
+  description = "[Wazuh Instance] HTTP Port"
+  default = 80
 }
 
-variable "wazuh_server" {
-  type = string
-  description = "[Wazuh] Server frontend port"
+variable "wazuh_storage_gb" {
+  type = number
+  description = "[Wazuh Instance] Size in GB"
+  default = 500
 }
 
-variable "bastion_instance_shape" {
+variable "num_paravirtualized_volumes_per_instance" {
+  default = "1"
+}
+
+variable "wazuh_instance_shape" {
   type = string
-  description = "[Bastion Instance] Shape"
+  description = "[Wazuh Instance] Shape"
   default = "VM.Standard2.2"
+}
+
+variable "num_instances" {
+  default = "1"
+}
+
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
 }
 
 variable "instance_image_ocid" {

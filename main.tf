@@ -42,33 +42,37 @@ module "iam" {
 # Create Bastion server and related resources (instance, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "bastion" {
-  source             = "./modules/bastion"
-  tenancy_ocid       = var.tenancy_ocid
-  ssh_public_key     = var.ssh_public_key
-  region             = var.region
-  compartment_ocid   = var.compartment_ocid
-  bastion_cidr_block = var.bastion_subnet_cidr_block
-  vcn_id             = module.vcn.vcn_id
-  route_table_id     = module.vcn.default_route_table_id
-  dhcp_options_id    = module.vcn.dhcp_options_id
+  source                = "./modules/bastion"
+  tenancy_ocid          = var.tenancy_ocid
+  ssh_public_key        = var.ssh_public_key
+  region                = var.region
+  compartment_ocid      = var.compartment_ocid
+  bastion_cidr_block    = var.bastion_subnet_cidr_block
+  wazuh_tier_cidr_block = var.wazuh_tier_subnet_cidr_block
+  wazuh_server          = module.wazuh.wazuh_server_ip
+  vcn_id                = module.vcn.vcn_id
+  route_table_id        = module.vcn.default_route_table_id
+  dhcp_options_id       = module.vcn.dhcp_options_id
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create web autoscaling servers and related resources (instance config, pools, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "web_tier" {
-  source               = "./modules/web_tier"
-  tenancy_ocid         = var.tenancy_ocid
-  ssh_public_key       = var.ssh_public_key
-  region               = var.region
-  compartment_ocid     = var.compartment_ocid
-  web_tier_cidr_block  = var.web_tier_subnet_cidr_block
-  dmz_cidr_block       = var.dmz_subnet_cidr_block
-  vcn_cidr_block       = var.primary_vcn_cidr_block
-  web_server_vcn_ports = var.web_server_vcn_ports
-  vcn_id               = module.vcn.vcn_id
-  route_table_id       = module.vcn.nat_route_table_id
-  dhcp_options_id      = module.vcn.dhcp_options_id
+  source                = "./modules/web_tier"
+  tenancy_ocid          = var.tenancy_ocid
+  ssh_public_key        = var.ssh_public_key
+  region                = var.region
+  compartment_ocid      = var.compartment_ocid
+  web_tier_cidr_block   = var.web_tier_subnet_cidr_block
+  dmz_cidr_block        = var.dmz_subnet_cidr_block
+  vcn_cidr_block        = var.primary_vcn_cidr_block
+  web_server_vcn_ports  = var.web_server_vcn_ports
+  wazuh_tier_cidr_block = var.wazuh_tier_subnet_cidr_block
+  wazuh_server          = module.wazuh.wazuh_server_ip
+  vcn_id                = module.vcn.vcn_id
+  route_table_id        = module.vcn.nat_route_table_id
+  dhcp_options_id       = module.vcn.dhcp_options_id
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -86,6 +90,8 @@ module "app_tier" {
   oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
   chef_version                  = var.chef_version
   tomcat_config                 = var.tomcat_config
+  wazuh_tier_cidr_block         = var.wazuh_tier_subnet_cidr_block
+  wazuh_server                  = module.wazuh.wazuh_server_ip
   vcn_id                        = module.vcn.vcn_id
   route_table_id                = module.vcn.service_gateway_route_table_id
   dhcp_options_id               = module.vcn.dhcp_options_id
@@ -107,4 +113,23 @@ module "database" {
   vcn_id                 = module.vcn.vcn_id
   route_table_id         = module.vcn.default_route_table_id
   dhcp_options_id        = module.vcn.dhcp_options_id
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Create Wazuh server and related resources (subnet, security list)
+# ---------------------------------------------------------------------------------------------------------------------
+module "wazuh" {
+  source                     = "./modules/wazuh"
+  tenancy_ocid               = var.tenancy_ocid
+  ssh_public_key             = var.ssh_public_key
+  region                     = var.region
+  compartment_ocid           = var.compartment_ocid
+  wazuh_tier_cidr_block      = var.wazuh_tier_subnet_cidr_block
+  dmz_cidr_block             = var.dmz_subnet_cidr_block
+  vcn_cidr_block             = var.primary_vcn_cidr_block
+  wazuh_server_vcn_tcp_ports = var.wazuh_server_vcn_tcp_ports
+  wazuh_server_vcn_udp_ports = var.wazuh_server_vcn_udp_ports
+  vcn_id                     = module.vcn.vcn_id
+  route_table_id             = module.vcn.nat_route_table_id
+  dhcp_options_id            = module.vcn.dhcp_options_id
 }

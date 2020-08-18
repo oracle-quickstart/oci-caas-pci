@@ -1,11 +1,11 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# Subnet and security list fo web server
+# Subnet and security list fo wazuh server
 # ---------------------------------------------------------------------------------------------------------------------
-resource "oci_core_subnet" "web_subnet" {
-  cidr_block          = var.web_tier_cidr_block
-  display_name        = "WebSubnet"
-  dns_label           = "websubnet"
-  security_list_ids   = [oci_core_security_list.web_security_list.id]
+resource "oci_core_subnet" "wazuh_subnet" {
+  cidr_block          = var.wazuh_tier_cidr_block
+  display_name        = "WazuhSubnet"
+  dns_label           = "wazuhsubnet"
+  security_list_ids   = [oci_core_security_list.wazuh_security_list.id]
   compartment_id      = var.compartment_ocid
   prohibit_public_ip_on_vnic = true
   vcn_id              = var.vcn_id
@@ -13,10 +13,20 @@ resource "oci_core_subnet" "web_subnet" {
   dhcp_options_id     = var.dhcp_options_id
 }
 
-resource "oci_core_security_list" "web_security_list" {
+resource "oci_core_security_list" "wazuh_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
-  display_name        = "Web Security List"
+  display_name        = "Wazuh Security List"
+
+  ingress_security_rules {
+    protocol    = 17
+    source      = var.vcn_cidr_block
+    description = "Wazuh agent communication"
+    udp_options {
+      max = 1514
+      min = 1514
+    }
+  }
 
   egress_security_rules {
     destination = var.egress_security_rules_destination
@@ -28,18 +38,8 @@ resource "oci_core_security_list" "web_security_list" {
     }
   }
 
-  egress_security_rules {
-    destination = var.vcn_cidr_block
-    description = "Wazuh agent communication"
-    protocol    = 17
-    udp_options {
-      max = 1514
-      min = 1514
-    }
-  }
-
   dynamic ingress_security_rules {
-    for_each = var.web_server_vcn_ports
+    for_each = var.wazuh_server_vcn_tcp_ports
     content {
       protocol    = var.ingress_security_rules_protocol
       source      = var.vcn_cidr_block
@@ -53,7 +53,7 @@ resource "oci_core_security_list" "web_security_list" {
   }
 }
 
-output "web_subnet_id" {
-  value = oci_core_subnet.web_subnet.id
-  description = "Web subnet ID"
+output "wazuh_subnet_id" {
+  value = oci_core_subnet.wazuh_subnet.id
+  description = "Wazuh subnet ID"
 }

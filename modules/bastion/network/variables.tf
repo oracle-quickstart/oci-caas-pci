@@ -8,6 +8,11 @@ variable "bastion_cidr_block" {
   description = "[Bastion Subnet] CIDR Block"
 }
 
+variable "wazuh_tier_cidr_block" {
+  type = string
+  description = "[Wazuh] CIDR block"
+}
+
 variable "egress_security_rules_destination" {
   type = string
   description = "[Bastion Security List] Egress Destination"

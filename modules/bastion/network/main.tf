@@ -18,6 +18,16 @@ resource "oci_core_security_list" "bastion_security_list" {
   display_name        = "Bastion Security List"
 
   egress_security_rules {
+    destination = var.wazuh_tier_cidr_block
+    description = "Wazuh agent communication"
+    protocol    = 17
+    udp_options {
+      max = 1514
+      min = 1514
+    }
+  }
+
+  egress_security_rules {
     destination = var.egress_security_rules_destination
     protocol = var.egress_security_rules_protocol
     stateless = var.egress_security_rules_stateless

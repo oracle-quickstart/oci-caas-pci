@@ -19,6 +19,16 @@ resource "oci_core_security_list" "app_security_list" {
   display_name   = "App Security List"
 
   egress_security_rules {
+    destination = var.vcn_cidr_block
+    description = "Wazuh agent communication"
+    protocol    = 17
+    udp_options {
+      max = 1514
+      min = 1514
+    }
+  }
+
+  egress_security_rules {
     destination = var.egress_security_rules_destination
     protocol    = var.egress_security_rules_protocol
     stateless   = var.egress_security_rules_stateless
