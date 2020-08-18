@@ -77,3 +77,8 @@ variable "instance_image_ocid" {
     uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa4r6gjlmo33yscossp7h6w6j3ry3eh2mwppsjnh26w3xakumvnrpa"
   }
 }
+
+variable "wazuh_server" {
+  type = string
+  description = "[Wazuh] Server frontend port"
+}

@@ -34,7 +34,9 @@ cat << EOF > $CHEF_HOME/attributes.json
     "http_port": "${http_port}",
     "https_port": "${https_port}",
     "app_war_file": "${app_war_file}",
-    "package_cache": "$PACKAGE_CACHE"
+    "package_cache": "$PACKAGE_CACHE",
+    "ossec": {"address": "${wazuh_server}"},
+    "ossec": {"registration_address": "${wazuh_server}"}
 }
 EOF
 

@@ -54,3 +54,13 @@ variable "tomcat_config" {
     version       = "8.5.57"
   }
 }
+
+variable "wazuh_tier_cidr_block" {
+  type = string
+  description = "[Wazuh] CIDR block"
+}
+
+variable "wazuh_server" {
+  type = string
+  description = "[Wazuh] Server frontend port"
+}

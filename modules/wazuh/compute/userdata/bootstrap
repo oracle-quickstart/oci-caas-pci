@@ -27,11 +27,7 @@ rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
 # Write JSON file used for Chef attributes
 cat << EOF > $CHEF_HOME/attributes.json
 {
-    "http_port": "${http_port}",
-    "https_port": "${https_port}",
-    "package_cache": "$PACKAGE_CACHE",
-    "ossec": {"address": "${wazuh_server}"},
-    "ossec": {"registration_address": "${wazuh_server}"}
+    "package_cache": "$PACKAGE_CACHE"
 }
 EOF
 
@@ -39,7 +35,7 @@ EOF
 setenforce 0
 
 # Run the Chef client
-chef-client --chef-license accept -z --runlist oci_caas_pci_webserver -j $CHEF_HOME/attributes.json
+chef-client --chef-license accept -z --runlist wazuh_server -j $CHEF_HOME/attributes.json
 
 # Re-enable SELinux
 setenforce 1

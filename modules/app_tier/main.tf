@@ -28,6 +28,7 @@ module "compute" {
   chef_version                  = var.chef_version
   tomcat_config                 = var.tomcat_config
   app_war_file                  = var.app_war_file
+  wazuh_server                  = var.wazuh_server
   app_subnet_id                 = module.network.app_subnet_id
   app_backendset_name           = module.network.app_backendset_name
   app_load_balancer_id          = module.network.app_load_balancer_id

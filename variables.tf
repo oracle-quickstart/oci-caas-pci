@@ -58,6 +58,12 @@ variable "database_subnet_cidr_block" {
   default     = "10.1.5.0/24"
 }
 
+variable "wazuh_tier_subnet_cidr_block" {
+  type        = string
+  description = "[Wazuh Tier Subnet] CIDR Block"
+  default     = "10.1.6.0/24"
+}
+
 variable "database_password" {
   type        = string
   description = "database password"
@@ -109,4 +115,16 @@ variable "web_server_vcn_ports" {
   type        = list
   description = "[Web Security List] Inbound TCP ports (internal to VCN)"
   default     = [22, 80, 443, 8080]
+}
+
+variable "wazuh_server_vcn_tcp_ports" {
+  type        = list
+  description = "[Wazuh Security List] Inbound TCP ports (internal to VCN)"
+  default     = [22, 443, 1515]
+}
+
+variable "wazuh_server_vcn_udp_ports" {
+  type        = list
+  description = "[Wazuh Security List] Inbound UDP ports (internal to VCN)"
+  default     = [1514]
 }

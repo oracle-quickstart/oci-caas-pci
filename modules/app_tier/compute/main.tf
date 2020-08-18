@@ -167,5 +167,6 @@ data "template_file" bootstrap {
     shutdown_port    = var.tomcat_config["shutdown_port"]
     http_port        = var.tomcat_config["http_port"]
     https_port       = var.tomcat_config["https_port"]
+    wazuh_server     = var.wazuh_server
   }
 }

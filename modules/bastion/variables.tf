@@ -10,3 +10,13 @@ variable "bastion_cidr_block" {
   type        = string
   description = "[Bastion Subnet] CIDR Block"
 }
+
+variable "wazuh_tier_cidr_block" {
+  type = string
+  description = "[Wazuh] CIDR block"
+}
+
+variable "wazuh_server" {
+  type = string
+  description = "[Wazuh] Server frontend port"
+}
