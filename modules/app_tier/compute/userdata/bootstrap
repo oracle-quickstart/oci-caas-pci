@@ -14,6 +14,7 @@ export PATH="$PATH:/usr/bin"
 export HOME="/opt/oci-caas/chef"
 export CHEF_HOME=$HOME
 export PACKAGE_CACHE="$HOME/package_cache"
+export OCI_CAAS_ETC="/opt/oci-caas/etc"
 
 mkdir -p $PACKAGE_CACHE
 cd $CHEF_HOME
@@ -36,9 +37,41 @@ cat << EOF > $CHEF_HOME/attributes.json
     "app_war_file": "${app_war_file}",
     "package_cache": "$PACKAGE_CACHE",
     "ossec": {"address": "${wazuh_server}"},
-    "ossec": {"registration_address": "${wazuh_server}"}
+    "ossec": {"registration_address": "${wazuh_server}"},
+    "oci_caas_etc": "$OCI_CAAS_ETC"
 }
 EOF
+
+vault_id=`oci search resource structured-search   --query-text "query all resources where (freeformTags.key   = 'pci-ecom-vault') " | grep identifier | awk -F\" '{print $4}'`
+
+stripe_pk_secret=`oci vault secret list --compartment-id ${compartment_id} --vault-id $vault_id --output table  | awk -F\| '{printf ("%s %s\n", $5, $6)}'|grep pci-ecom-stripe-pk | awk '{print $NF}'`
+stripe_pk=`oci secrets secret-bundle get --secret-id $stripe_pk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
+
+stripe_sk_secret=`oci vault secret list --compartment-id ${compartment_id} --vault-id $vault_id --output table  | awk -F\| '{printf ("%s %s\n", $5, $6)}'|grep pci-ecom-stripe-sk | awk '{print $NF}'`
+stripe_sk=`oci secrets secret-bundle get --secret-id $stripe_sk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
+
+ecom_db_pw_secret=`oci vault secret list --compartment-id ${compartment_id} --vault-id $vault_id --output table  | awk -F\| '{printf ("%s %s\n", $5, $6)}'|grep pci-ecom-db-pw | awk '{print $NF}'`
+ecom_db_pw=`oci secrets secret-bundle get --secret-id $ecom_db_pw_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
+
+mkdir -p $OCI_CAAS_ETC
+chmod 700 $OCI_CAAS_ETC
+
+cat << EOF > $OCI_CAAS_ETC/setenv.sh
+# stripe
+export STRIPE_PUBLISHABLE_KEY=$stripe_pk
+export STRIPE_SECRET_KEY=$stripe_sk
+
+# db
+export ORACLE_DB_NAME=${database_name}_medium
+export ORACLE_DB_WALLET=$OCI_CAAS_ETC/wallet
+export ORACLE_DB_USER=ECOM
+export ORACLE_DB_PASS='$ecom_db_pw'
+EOF
+
+chmod 600 $OCI_CAAS_ETC/setenv.sh
+
+oci db autonomous-database generate-wallet --autonomous-database-id ${database_id} --file $OCI_CAAS_ETC/wallet.zip --password '${wallet_password}'
+unzip $OCI_CAAS_ETC/wallet.zip -d $OCI_CAAS_ETC/wallet
 
 # Temporarily disable SELinux - required for firewalld updates during user-data
 setenforce 0

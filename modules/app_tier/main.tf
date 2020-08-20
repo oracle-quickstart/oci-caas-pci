@@ -19,6 +19,8 @@ module "network" {
 module "compute" {
   source                        = "./compute"
   region                        = var.region
+  database_id                   = var.database_id
+  database_name                 = var.database_name
   ssh_public_key                = var.ssh_public_key
   tenancy_ocid                  = var.tenancy_ocid
   compartment_ocid              = var.compartment_ocid

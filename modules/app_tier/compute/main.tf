@@ -154,6 +154,11 @@ data "template_file" "ad_names" {
   template = "${lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")}"
 }
 
+resource "random_string" "wallet_password" {
+  length  = 16
+  special = true
+}
+
 data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 
@@ -168,5 +173,9 @@ data "template_file" bootstrap {
     http_port        = var.tomcat_config["http_port"]
     https_port       = var.tomcat_config["https_port"]
     wazuh_server     = var.wazuh_server
+    compartment_id   = var.compartment_ocid
+    database_id      = var.database_id
+    database_name    = var.database_name
+    wallet_password  = random_string.wallet_password.result
   }
 }

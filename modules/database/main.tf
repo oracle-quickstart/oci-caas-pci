@@ -24,3 +24,11 @@ module "atp" {
   database_subnet_id   = module.network.database_subnet_id
   database_security_group_id = module.network.database_security_group_id
 }
+
+output "database_id" {
+  value = module.atp.database_id
+}
+
+output "database_name" {
+  value = module.atp.database_name
+}
