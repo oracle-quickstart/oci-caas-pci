@@ -5,6 +5,8 @@ variable "ssh_public_key" {}
 variable "region" {}
 variable "app_load_balancer_id" {}
 variable "app_backendset_name" {}
+variable "database_id" {}
+variable "database_name" {}
 
 variable "vcn_cidr_block" {
   type        = string

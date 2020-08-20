@@ -25,6 +25,11 @@ resource "oci_identity_policy" "caas_access_policy" {
     name = "${var.oci_bucket_policy_prefix}-${random_id.policy_name.id}"
     statements = [
       "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read objects in compartment id ${var.compartment_ocid} where target.bucket.name='${var.caas_bucket_name}'",
-      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read buckets in compartment id ${var.compartment_ocid}"
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read buckets in compartment id ${var.compartment_ocid}",
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to inspect vaults in compartment id ${var.compartment_ocid}",
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to inspect secrets in compartment id ${var.compartment_ocid}",
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read secrets in compartment id ${var.compartment_ocid}",
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read secret-bundles in compartment id ${var.compartment_ocid}",
+      "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to read autonomous-databases in compartment id ${var.compartment_ocid}"
     ]
 }

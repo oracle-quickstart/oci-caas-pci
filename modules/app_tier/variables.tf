@@ -5,6 +5,8 @@ variable "dhcp_options_id" {}
 variable "region" {}
 variable "ssh_public_key" {}
 variable "tenancy_ocid" {}
+variable "database_id" {}
+variable "database_name" {}
 
 variable "app_tier_cidr_block" {
   type        = string

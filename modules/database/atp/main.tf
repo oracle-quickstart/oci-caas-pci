@@ -17,3 +17,11 @@ resource "oci_database_autonomous_database" "database" {
   nsg_ids                  = [var.database_security_group_id]
   subnet_id                = var.database_subnet_id  
 }
+
+output "database_id" {
+  value = oci_database_autonomous_database.database.id
+}
+
+output "database_name" {
+  value = oci_database_autonomous_database.database.db_name
+}
