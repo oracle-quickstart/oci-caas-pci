@@ -58,14 +58,14 @@ chmod 700 $OCI_CAAS_ETC
 
 cat << EOF > $OCI_CAAS_ETC/setenv.sh
 # stripe
-STRIPE_PUBLISHABLE_KEY=$stripe_pk
-STRIPE_SECRET_KEY=$stripe_sk
+export STRIPE_PUBLISHABLE_KEY=$stripe_pk
+export STRIPE_SECRET_KEY=$stripe_sk
 
 # db
-ORACLE_DB_NAME=${database_name}_medium
-ORACLE_DB_WALLET=$OCI_CAAS_ETC/wallet
-ORACLE_DB_USER=ECOM
-ORACLE_DB_PASS='$ecom_db_pw'
+export ORACLE_DB_NAME=${database_name}_medium
+export ORACLE_DB_WALLET=$OCI_CAAS_ETC/wallet
+export ORACLE_DB_USER=ECOM
+export ORACLE_DB_PASS='$ecom_db_pw'
 EOF
 
 chmod 600 $OCI_CAAS_ETC/setenv.sh
