@@ -48,10 +48,10 @@ stripe_pk_secret=`oci vault secret list --compartment-id ${compartment_id} --vau
 stripe_pk=`oci secrets secret-bundle get --secret-id $stripe_pk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
 
 stripe_sk_secret=`oci vault secret list --compartment-id ${compartment_id} --vault-id $vault_id --output table  | awk -F\| '{printf ("%s %s\n", $5, $6)}'|grep pci-ecom-stripe-sk | awk '{print $NF}'`
-stripe_sk=`oci secrets secret-bundle get --secret-id $stripe_pk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
+stripe_sk=`oci secrets secret-bundle get --secret-id $stripe_sk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
 
 ecom_db_pw_secret=`oci vault secret list --compartment-id ${compartment_id} --vault-id $vault_id --output table  | awk -F\| '{printf ("%s %s\n", $5, $6)}'|grep pci-ecom-db-pw | awk '{print $NF}'`
-ecom_db_pw=`oci secrets secret-bundle get --secret-id $stripe_pk_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
+ecom_db_pw=`oci secrets secret-bundle get --secret-id $ecom_db_pw_secret --stage CURRENT | grep '"content":' | awk -F\" '{print $4}' | base64 -d`
 
 mkdir -p $OCI_CAAS_ETC
 chmod 700 $OCI_CAAS_ETC
