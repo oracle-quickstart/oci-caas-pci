@@ -15,7 +15,7 @@ module "waf" {
   compartment_ocid     = var.compartment_ocid
   frontend_dns_name    = var.frontend_dns_name
   vcn_cidr_block       = var.primary_vcn_cidr_block
-  dmz_load_balancer_ip = module.web_tier.frontend_load_balancer_ips[0].ip_address
+  dmz_load_balancer_ip = module.app_tier.frontend_load_balancer_ips[0].ip_address
   domain_name          = module.dns.dns_zone
 }
 
@@ -58,47 +58,48 @@ module "bastion" {
 # ---------------------------------------------------------------------------------------------------------------------
 # Create web autoscaling servers and related resources (instance config, pools, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
-module "web_tier" {
-  source                = "./modules/web_tier"
-  tenancy_ocid          = var.tenancy_ocid
-  ssh_public_key        = var.ssh_public_key
-  region                = var.region
-  compartment_ocid      = var.compartment_ocid
-  web_tier_cidr_block   = var.web_tier_subnet_cidr_block
-  dmz_cidr_block        = var.dmz_subnet_cidr_block
-  vcn_cidr_block        = var.primary_vcn_cidr_block
-  web_server_vcn_ports  = var.web_server_vcn_ports
-  wazuh_tier_cidr_block = var.wazuh_tier_subnet_cidr_block
-  wazuh_server          = module.wazuh.wazuh_server_ip
-  vcn_id                = module.vcn.vcn_id
-  route_table_id        = module.vcn.nat_route_table_id
-  dhcp_options_id       = module.vcn.dhcp_options_id
-}
+# module "web_tier" {
+#   source                = "./modules/web_tier"
+#   tenancy_ocid          = var.tenancy_ocid
+#   ssh_public_key        = var.ssh_public_key
+#   region                = var.region
+#   compartment_ocid      = var.compartment_ocid
+#   web_tier_cidr_block   = var.web_tier_subnet_cidr_block
+#   dmz_cidr_block        = var.dmz_subnet_cidr_block
+#   vcn_cidr_block        = var.primary_vcn_cidr_block
+#   web_server_vcn_ports  = var.web_server_vcn_ports
+#   wazuh_tier_cidr_block = var.wazuh_tier_subnet_cidr_block
+#   wazuh_server          = module.wazuh.wazuh_server_ip
+#   vcn_id                = module.vcn.vcn_id
+#   route_table_id        = module.vcn.nat_route_table_id
+#   dhcp_options_id       = module.vcn.dhcp_options_id
+# }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create application autoscaling servers and related resources (instance config, pools, subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "app_tier" {
-      source                        = "./modules/app_tier"
-      tenancy_ocid                  = var.tenancy_ocid
-      ssh_public_key                = var.ssh_public_key
-      region                        = var.region
-      compartment_ocid              = var.compartment_ocid
-      app_tier_cidr_block           = var.app_tier_subnet_cidr_block
-      vcn_cidr_block                = var.primary_vcn_cidr_block
-      oci_caas_bootstrap_bucket     = var.oci_caas_bootstrap_bucket
-      oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
-      chef_version                  = var.chef_version
-      tomcat_config                 = var.tomcat_config
-      wazuh_tier_cidr_block         = var.wazuh_tier_subnet_cidr_block
-      app_war_file                  = var.app_war_file
-      database_id                   = module.database.database_id
-      database_name                 = module.database.database_name
-      wazuh_server                  = module.wazuh.wazuh_server_ip
-      vcn_id                        = module.vcn.vcn_id
-    # route_table_id                = module.vcn.service_gateway_route_table_id
-      route_table_id                = module.vcn.nat_route_table_id
-      dhcp_options_id               = module.vcn.dhcp_options_id
+  source                        = "./modules/app_tier"
+  tenancy_ocid                  = var.tenancy_ocid
+  ssh_public_key                = var.ssh_public_key
+  region                        = var.region
+  compartment_ocid              = var.compartment_ocid
+  app_tier_cidr_block           = var.app_tier_subnet_cidr_block
+  vcn_cidr_block                = var.primary_vcn_cidr_block
+  oci_caas_bootstrap_bucket     = var.oci_caas_bootstrap_bucket
+  oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
+  chef_version                  = var.chef_version
+  tomcat_config                 = var.tomcat_config
+  wazuh_tier_cidr_block         = var.wazuh_tier_subnet_cidr_block
+  app_war_file                  = var.app_war_file
+  dmz_cidr_block                = var.dmz_subnet_cidr_block
+  database_id                   = module.database.database_id
+  database_name                 = module.database.database_name
+  wazuh_server                  = module.wazuh.wazuh_server_ip
+  vcn_id                        = module.vcn.vcn_id
+# route_table_id                = module.vcn.service_gateway_route_table_id
+  route_table_id                = module.vcn.nat_route_table_id
+  dhcp_options_id               = module.vcn.dhcp_options_id
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

@@ -13,6 +13,11 @@ variable "app_tier_cidr_block" {
   description = "[App tier Subnet] CIDR Block"
 }
 
+variable "dmz_cidr_block" {
+  type        = string
+  description = "[DMZ Subnet] CIDR Block"
+}
+
 variable "vcn_cidr_block" {
   type = string
   description = "[VCN] CIDR Block"
