@@ -32,6 +32,21 @@ module "compute" {
   app_war_file                  = var.app_war_file
   wazuh_server                  = var.wazuh_server
   app_subnet_id                 = module.network.app_subnet_id
-  app_backendset_name           = module.network.app_backendset_name
-  app_load_balancer_id          = module.network.app_load_balancer_id
+  # app_backendset_name           = module.network.app_backendset_name
+  # app_load_balancer_id          = module.network.app_load_balancer_id
+  dmz_backendset_name  = module.load_balancer.dmz_backendset_name
+  dmz_load_balancer_id = module.load_balancer.dmz_load_balancer_id
+}
+
+module "load_balancer" {
+  source           = "./load_balancer"
+  vcn_id           = var.vcn_id
+  compartment_ocid = var.compartment_ocid
+  dmz_cidr_block   = var.dmz_cidr_block
+  web_server_port  = var.tomcat_config["http_port"]
+  app_subnet_id    = module.network.app_subnet_id
+}
+
+output "frontend_load_balancer_ips" {
+  value = module.load_balancer.frontend_load_balancer_ips
 }

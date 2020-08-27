@@ -31,7 +31,7 @@ variable "primary_vcn_cidr_block" {
 variable "dmz_subnet_cidr_block" {
   type        = string
   description = "[DMZ Subnet] CIDR Block"
-  default     = "10.1.2.0/24"
+  default     = "10.1.21.0/24"
 }
 
 variable "web_tier_subnet_cidr_block" {
