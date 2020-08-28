@@ -7,9 +7,9 @@ variable "dmz_cidr_block" {
   description = "[DMZ Subnet] CIDR Block"
 }
 
-variable "web_server_port" {
+variable "server_port" {
   type = number
-  description = "[Web Instance] HTTP Port"
+  description = "[App Instance] Server Port"
   default = 80
 }
 
@@ -111,25 +111,25 @@ variable "ingress_security_rules_stateless" {
 
 variable "ingress_security_rules_tcp_options_destination_port_range_max" {
   description = "[DMZ Security List] Ingress TCP Destination Port Range Max"
-  default = 80
+  default = 443
   type = number
 }
 
 variable "ingress_security_rules_tcp_options_destination_port_range_min" {
   description = "[DMZ Security List] Ingress TCP Destination Port Range Min"
-  default = 80
+  default = 443
   type = number
 }
 
 variable "ingress_security_rules_udp_options_destination_port_range_max" {
   description = "[DMZ Security List] Ingress UDP Destination Port Range Max"
-  default = 80
+  default = 443
   type = number
 }
 
 variable "ingress_security_rules_udp_options_destination_port_range_min" {
   description = "[DMZ Security List] Ingress UDP Destination Port Range Min"
-  default = 80
+  default = 443
   type = number
 }
 

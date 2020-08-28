@@ -34,11 +34,11 @@ variable "dmz_subnet_cidr_block" {
   default     = "10.1.21.0/24"
 }
 
-variable "web_tier_subnet_cidr_block" {
-  type        = string
-  description = "[Web Tier Subnet] CIDR Block"
-  default     = "10.1.1.0/24"
-}
+# variable "web_tier_subnet_cidr_block" {
+#   type        = string
+#   description = "[Web Tier Subnet] CIDR Block"
+#   default     = "10.1.1.0/24"
+# }
 
 variable "bastion_subnet_cidr_block" {
   type        = string
@@ -111,11 +111,11 @@ variable "app_war_file" {
   default     = "SampleWebApp.war"
 }
 
-variable "web_server_vcn_ports" {
-  type        = list
-  description = "[Web Security List] Inbound TCP ports (internal to VCN)"
-  default     = [22, 80, 443, 8080]
-}
+# variable "web_server_vcn_ports" {
+#   type        = list
+#   description = "[Web Security List] Inbound TCP ports (internal to VCN)"
+#   default     = [22, 80, 443, 8080]
+# }
 
 variable "wazuh_server_vcn_tcp_ports" {
   type        = list
@@ -127,4 +127,9 @@ variable "wazuh_server_vcn_udp_ports" {
   type        = list
   description = "[Wazuh Security List] Inbound UDP ports (internal to VCN)"
   default     = [1514]
+}
+
+variable "frontend_ssl_certificate_id" {
+  type = string
+  description = "SSL Certificate OCID for frontend WAF/WAAS"
 }
