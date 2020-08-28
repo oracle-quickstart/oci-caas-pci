@@ -34,12 +34,6 @@ variable "dmz_subnet_cidr_block" {
   default     = "10.1.21.0/24"
 }
 
-# variable "web_tier_subnet_cidr_block" {
-#   type        = string
-#   description = "[Web Tier Subnet] CIDR Block"
-#   default     = "10.1.1.0/24"
-# }
-
 variable "bastion_subnet_cidr_block" {
   type        = string
   description = "[Bastion Subnet] CIDR Block"
@@ -110,12 +104,6 @@ variable "app_war_file" {
   description = "[App Instance] War file name for deployment (must live in bootstrap bucket)."
   default     = "SampleWebApp.war"
 }
-
-# variable "web_server_vcn_ports" {
-#   type        = list
-#   description = "[Web Security List] Inbound TCP ports (internal to VCN)"
-#   default     = [22, 80, 443, 8080]
-# }
 
 variable "wazuh_server_vcn_tcp_ports" {
   type        = list
