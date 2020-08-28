@@ -4,27 +4,6 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Certificate for SSL termination at WAF
-# ---------------------------------------------------------------------------------------------------------------------
-# resource "oci_waas_certificate" "ssl_certificate" {
-#   #Required
-#   certificate_data = "-----NOT A CERTIFICATE-----"
-#   compartment_id   = var.compartment_ocid
-#   private_key_data = "-----NOT AN RSA PRIVATE KEY-----"
-#   #Optional
-#   display_name                   = var.certificate_display_name
-#   is_trust_verification_disabled = true
-# }
-# data "oci_waas_certificates" "ssl_certificates" {
-#   #Required
-#   compartment_id = var.compartment_ocid
-
-#   #Optional
-#   display_names = [var.certificate_display_name]
-#   ids           = [oci_waas_certificate.ssl_certificate.id]
-# }
-
-# ---------------------------------------------------------------------------------------------------------------------
 # Example of a custom protection rule
 # For more information: https://docs.cloud.oracle.com/en-us/iaas/Content/WAF/Tasks/customprotectionrules.htm
 # ---------------------------------------------------------------------------------------------------------------------
@@ -46,7 +25,7 @@ resource "oci_waas_address_list" "admin_cidr_block" {
 
 resource "oci_waas_waas_policy" "waas_policy" {
   compartment_id = var.compartment_ocid
-  domain         = "${var.frontend_dns_name}.${var.domain_name}"
+  domain         = var.domain_name
   display_name   = var.waas_policy_display_name
 
   origin_groups {
@@ -61,7 +40,6 @@ resource "oci_waas_waas_policy" "waas_policy" {
   origins {
     label      = "frontend-lb"
     uri        = var.dmz_load_balancer_ip
-    http_port  = "80"
     https_port = "443"
 
     #Optional
@@ -73,14 +51,13 @@ resource "oci_waas_waas_policy" "waas_policy" {
   }
 
   policy_config {
-    #Optional
-    # certificate_id                = oci_waas_certificate.ssl_certificate.id
+    certificate_id                = var.frontend_ssl_certificate_id
     cipher_group                  = "DEFAULT"
     client_address_header         = "X_FORWARDED_FOR"
     is_behind_cdn                 = false
     is_cache_control_respected    = true
-    is_https_enabled              = false
-    is_https_forced               = false
+    is_https_enabled              = true
+    is_https_forced               = true
     is_origin_compression_enabled = true
     is_response_buffering_enabled = true
     is_sni_enabled                = true
@@ -372,13 +349,13 @@ resource "oci_waas_waas_policy" "waas_policy" {
 # }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Register front-end CNAME record to point to the WAF
+# Register front-end ALIAS record to point to the WAF
 # ---------------------------------------------------------------------------------------------------------------------
-resource "oci_dns_record" "waf_cname" {
+resource "oci_dns_record" "waf_alias" {
   compartment_id  = var.compartment_ocid
   zone_name_or_id = var.domain_name
-  domain = "${var.frontend_dns_name}.${var.domain_name}"
-  rtype = "CNAME"
+  domain = var.domain_name
+  rtype = "ALIAS"
   rdata = oci_waas_waas_policy.waas_policy.cname
   ttl   = 30
 }

@@ -26,7 +26,7 @@ variable "vcn_cidr_block" {
 variable "app_lb_port" {
   type = number
   description = "[App Load Balancer] Port"
-  default = 80
+  default = 443
 }
 
 variable "oci_caas_bootstrap_bucket" {

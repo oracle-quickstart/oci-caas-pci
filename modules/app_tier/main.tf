@@ -2,15 +2,15 @@
 # Create subnet, security list, and load balancer for app tier
 # ---------------------------------------------------------------------------------------------------------------------
 module "network" {
-  source              = "./network"
-  compartment_ocid    = var.compartment_ocid
-  vcn_id              = var.vcn_id
-  route_table_id      = var.route_table_id
-  dhcp_options_id     = var.dhcp_options_id
-  app_tier_cidr_block = var.app_tier_cidr_block
-  app_lb_port         = var.app_lb_port
-  vcn_cidr_block      = var.vcn_cidr_block
-  tomcat_config       = var.tomcat_config
+  source                 = "./network"
+  compartment_ocid       = var.compartment_ocid
+  vcn_id                 = var.vcn_id
+  route_table_id         = var.route_table_id
+  dhcp_options_id        = var.dhcp_options_id
+  app_tier_cidr_block    = var.app_tier_cidr_block
+  app_lb_port            = var.app_lb_port
+  vcn_cidr_block         = var.vcn_cidr_block
+  tomcat_config          = var.tomcat_config
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -32,10 +32,8 @@ module "compute" {
   app_war_file                  = var.app_war_file
   wazuh_server                  = var.wazuh_server
   app_subnet_id                 = module.network.app_subnet_id
-  # app_backendset_name           = module.network.app_backendset_name
-  # app_load_balancer_id          = module.network.app_load_balancer_id
-  dmz_backendset_name  = module.load_balancer.dmz_backendset_name
-  dmz_load_balancer_id = module.load_balancer.dmz_load_balancer_id
+  dmz_backendset_name           = module.load_balancer.dmz_backendset_name
+  dmz_load_balancer_id          = module.load_balancer.dmz_load_balancer_id
 }
 
 module "load_balancer" {
@@ -43,8 +41,9 @@ module "load_balancer" {
   vcn_id           = var.vcn_id
   compartment_ocid = var.compartment_ocid
   dmz_cidr_block   = var.dmz_cidr_block
-  web_server_port  = var.tomcat_config["http_port"]
+  server_port      = var.tomcat_config["http_port"]
   app_subnet_id    = module.network.app_subnet_id
+  app_lb_port      = var.app_lb_port
 }
 
 output "frontend_load_balancer_ips" {
