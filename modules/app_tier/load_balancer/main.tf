@@ -48,8 +48,8 @@ resource "oci_core_security_list" "dmz_ingress_security_list" {
       description = var.ingress_security_rules_description
       stateless   = var.ingress_security_rules_stateless
       tcp_options {
-        max = var.ingress_security_rules_tcp_options_destination_port_range_max
-        min = var.ingress_security_rules_tcp_options_destination_port_range_min
+        min = var.app_lb_port
+        max = var.app_lb_port
       }
     }
   }
@@ -71,7 +71,7 @@ resource "oci_core_subnet" "dmz_subnet" {
 # DMZ load balancer, backend set, and listener
 # ---------------------------------------------------------------------------------------------------------------------
 resource "oci_load_balancer" "dmz_load_balancer" {
-  shape          = "100Mbps"
+  shape          = "400Mbps"
   compartment_id = var.compartment_ocid
 
   subnet_ids = [
