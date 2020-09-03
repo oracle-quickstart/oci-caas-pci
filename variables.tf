@@ -81,6 +81,12 @@ variable "oci_caas_app_bootstrap_bundle" {
   default     = "app_cookbooks.tar.gz"
 }
 
+variable "oci_caas_bastion_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+  default     = "bastion_cookbooks.tar.gz"
+}
+
 variable "chef_version" {
   type        = string
   description = "Version of the Chef Infra client from bootstrapping"

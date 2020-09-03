@@ -16,7 +16,7 @@ resource "oci_core_instance" "bastion" {
 
   metadata = {
     ssh_authorized_keys = file (var.ssh_public_key)
-    user_data           = base64encode(file("${path.module}/userdata/bastion-bootstrap"))
+    user_data           = base64encode(data.template_file.bootstrap.rendered)
   }
 
   source_details {
@@ -36,4 +36,17 @@ resource "oci_core_instance" "bastion" {
 # ---------------------------------------------------------------------------------------------------------------------
 data "oci_identity_availability_domains" "ad" {
   compartment_id = "${var.tenancy_ocid}"
+}
+
+# Bootstrap data
+data "template_file" bootstrap {
+  template = file("${path.module}/userdata/bootstrap")
+
+  vars = {
+    bootstrap_bucket = var.oci_caas_bootstrap_bucket
+    bootstrap_bundle = var.oci_caas_bastion_bootstrap_bundle
+    chef_version     = var.chef_version
+    vcn_cidr_block   = var.vcn_cidr_block
+    wazuh_server     = var.wazuh_server
+  }
 }
