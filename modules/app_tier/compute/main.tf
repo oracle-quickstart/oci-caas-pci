@@ -80,12 +80,6 @@ resource "oci_core_instance_pool" "app_instance_pool" {
     port             = var.tomcat_config["http_port"]
     vnic_selection   = "PrimaryVnic"
   }
-  # load_balancers {
-  #   backend_set_name = var.app_backendset_name
-  #   load_balancer_id = var.app_load_balancer_id
-  #   port             = var.tomcat_config["http_port"]
-  #   vnic_selection   = "PrimaryVnic"
-  # }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Debugging / Logging
+set -x
+exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
+echo BEGIN
+date '+%Y-%m-%d %H:%M:%S'
+
+# Patch the system on first boot
+yum update -y
+
+export OCI_CLI_AUTH=instance_principal
+export PATH="$PATH:/usr/bin"
+export HOME="/opt/oci-caas/chef"
+export CHEF_HOME=$HOME
+export PACKAGE_CACHE="$HOME/package_cache"
+export OCI_CAAS_ETC="/opt/oci-caas/etc"
+
+mkdir -p $PACKAGE_CACHE
+cd $CHEF_HOME
+
+oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/${bootstrap_bundle} --name ${bootstrap_bundle}
+oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm --name chef-${chef_version}.el7.x86_64.rpm
+
+gzip -dc $PACKAGE_CACHE/${bootstrap_bundle} | tar -xvf -
+rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
+
+# Write JSON file used for Chef attributes
+cat << EOF > $CHEF_HOME/attributes.json
+{
+    "package_cache": "$PACKAGE_CACHE",
+    "ossec": {"address": "${wazuh_server}"},
+    "ossec": {"registration_address": "${wazuh_server}"},
+    "oci_caas_etc": "$OCI_CAAS_ETC"
+}
+EOF
+
+mkdir -p $OCI_CAAS_ETC
+chmod 700 $OCI_CAAS_ETC
+
+# Temporarily disable SELinux - required for firewalld updates during user-data
+setenforce 0
+
+# Run the Chef client
+chef-client --chef-license accept -z --runlist oci_caas_bastion -j $CHEF_HOME/attributes.json
+
+# Re-enable SELinux
+setenforce 1

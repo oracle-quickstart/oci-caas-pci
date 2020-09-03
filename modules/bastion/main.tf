@@ -9,11 +9,15 @@ module "network" {
 }
 
 module "compute" {
-  source           = "./compute"
-  region           = var.region
-  ssh_public_key   = var.ssh_public_key
-  tenancy_ocid     = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  wazuh_server     = var.wazuh_server
-  subnet_id        = module.network.subnet_id
+  source                            = "./compute"
+  region                            = var.region
+  ssh_public_key                    = var.ssh_public_key
+  tenancy_ocid                      = var.tenancy_ocid
+  compartment_ocid                  = var.compartment_ocid
+  wazuh_server                      = var.wazuh_server
+  oci_caas_bootstrap_bucket         = var.oci_caas_bootstrap_bucket
+  oci_caas_bastion_bootstrap_bundle = var.oci_caas_bastion_bootstrap_bundle
+  vcn_cidr_block                    = var.vcn_cidr_block
+  chef_version                      = var.chef_version
+  subnet_id                         = module.network.subnet_id
 }

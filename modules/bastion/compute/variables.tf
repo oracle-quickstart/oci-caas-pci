@@ -4,6 +4,26 @@ variable "subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
+}
+
+variable "vcn_cidr_block" {
+  type = string
+  description = "[VCN] CIDR Block"
+}
+
+variable "oci_caas_bastion_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+}
+
+variable "chef_version" {
+  type        = string
+  description = "Version of the Chef Infra client from bootstrapping"
+}
+
 variable "bastion_enabled" {
   type = bool
   description = "[Bastion Instance] Enabled (true/false)?"
