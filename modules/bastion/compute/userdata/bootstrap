@@ -38,6 +38,24 @@ EOF
 mkdir -p $OCI_CAAS_ETC
 chmod 700 $OCI_CAAS_ETC
 
+# Placeholder .google-authenticator for the opc user with one time passwords
+authfile="/home/opc/.google_authenticator"
+cat << EOF > $authfile
+RUNGOOGLEAUTHENTICATOR
+" RATE_LIMIT 3 30 1599169661
+" WINDOW_SIZE 17
+" DISALLOW_REUSE
+" TOTP_AUTH
+${otp_one}
+${otp_two}
+${otp_three}
+EOF
+
+chmod 400 $authfile
+chown opc:opc $authfile
+
+echo "WARNING: Run \'google-authenticator\' immediately, or lose access to this host." >> ~opc/.bash_profile
+
 # Temporarily disable SELinux - required for firewalld updates during user-data
 setenforce 0
 

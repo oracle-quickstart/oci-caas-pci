@@ -28,7 +28,7 @@ resource "oci_core_instance" "bastion" {
     create = "10m"
   }
 
-  count = var.bastion_enabled == true ? 1 : 0
+  # count = var.bastion_enabled == true ? 1 : 0
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -36,6 +36,18 @@ resource "oci_core_instance" "bastion" {
 # ---------------------------------------------------------------------------------------------------------------------
 data "oci_identity_availability_domains" "ad" {
   compartment_id = "${var.tenancy_ocid}"
+}
+
+resource "random_id" "otp_one" {
+  byte_length = 3
+}
+
+resource "random_id" "otp_two" {
+  byte_length = 3
+}
+
+resource "random_id" "otp_three" {
+  byte_length = 3
 }
 
 # Bootstrap data
@@ -48,5 +60,29 @@ data "template_file" bootstrap {
     chef_version     = var.chef_version
     vcn_cidr_block   = var.vcn_cidr_block
     wazuh_server     = var.wazuh_server
+    otp_one          = "${random_id.otp_one.dec}0"
+    otp_two          = "${random_id.otp_two.dec}0"
+    otp_three        = "${random_id.otp_three.dec}0"
   }
+}
+
+# Adding the 0 is how we make the OTP 8 characters long
+output "otp_one" {
+  value = "${random_id.otp_one.dec}0"
+}
+
+output "otp_two" {
+  value = "${random_id.otp_two.dec}0"
+}
+
+output "otp_three" {
+  value = "${random_id.otp_three.dec}0"
+}
+
+data "oci_core_instance" "bastion_host" {
+  instance_id = oci_core_instance.bastion.id
+}
+
+output "bastion_ip" {
+  value = data.oci_core_instance.bastion_host.public_ip
 }
