@@ -8,13 +8,6 @@ resource "oci_core_instance" "wazuh_server" {
   display_name        = "wazuh_server"
   subnet_id = var.subnet_id
 
-  # create_vnic_details {
-  #   assign_public_ip = true
-  #   display_name     = "bastion-vnic"
-  #   hostname_label   = "bastion"
-  #   subnet_id        = var.subnet_id
-  # }
-
   metadata = {
     ssh_authorized_keys = file (var.ssh_public_key)
     user_data           = base64encode(data.template_file.bootstrap.rendered)

@@ -21,3 +21,19 @@ module "compute" {
   chef_version                      = var.chef_version
   subnet_id                         = module.network.subnet_id
 }
+
+output "otp_one" {
+  value = module.compute.otp_one
+}
+
+output "otp_two" {
+  value = module.compute.otp_two
+}
+
+output "otp_three" {
+  value = module.compute.otp_three
+}
+
+output "bastion_ip" {
+  value = module.compute.bastion_ip
+}
