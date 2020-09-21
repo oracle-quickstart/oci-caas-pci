@@ -18,3 +18,8 @@ variable "caas_bucket_name" {
   description = "[OCI CaaS] Bucket name"
   default = "chef-cookbooks"
 }
+
+variable "wazuh_backup_bucket_name" {
+  type = string
+  description = "Wazuh backup object store bucket name"
+}

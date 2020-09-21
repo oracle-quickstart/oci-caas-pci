@@ -50,10 +50,11 @@ data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 
   vars = {
-    bootstrap_bucket = "chef-cookbooks"
-    bootstrap_bundle = "wazuh_cookbooks.tar.gz"
-    chef_version     = "16.1.16-1"
-    vcn_cidr_block   = var.vcn_cidr_block
+    bootstrap_bucket   = "chef-cookbooks"
+    bootstrap_bundle   = "wazuh_cookbooks.tar.gz"
+    chef_version       = "16.1.16-1"
+    backup_bucket_name = var.wazuh_backup_bucket_name
+    vcn_cidr_block     = var.vcn_cidr_block
   }
 }
 

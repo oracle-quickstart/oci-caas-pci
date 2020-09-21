@@ -27,7 +27,8 @@ rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
 # Write JSON file used for Chef attributes
 cat << EOF > $CHEF_HOME/attributes.json
 {
-    "package_cache": "$PACKAGE_CACHE"
+    "package_cache": "$PACKAGE_CACHE",
+    "backup_bucket_name": "${backup_bucket_name}"
 }
 EOF
 

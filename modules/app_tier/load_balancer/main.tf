@@ -105,7 +105,7 @@ resource "tls_private_key" "ca" {
 
 resource "tls_self_signed_cert" "ca" {
   key_algorithm     = "RSA"
-  private_key_pem   = "${tls_private_key.ca.private_key_pem}"
+  private_key_pem   = tls_private_key.ca.private_key_pem
   is_ca_certificate = true
 
   subject {
@@ -130,7 +130,7 @@ resource "tls_private_key" "lb_private_key" {
 
 resource "tls_cert_request" "lb_cert_request" {
   key_algorithm   = "RSA"
-  private_key_pem = "${tls_private_key.lb_private_key.private_key_pem}"
+  private_key_pem = tls_private_key.lb_private_key.private_key_pem
 
   dns_names = ["localhost"]
 
@@ -143,10 +143,10 @@ resource "tls_cert_request" "lb_cert_request" {
 }
 
 resource "tls_locally_signed_cert" "lb_cert" {
-  cert_request_pem   = "${tls_cert_request.lb_cert_request.cert_request_pem}"
+  cert_request_pem   = tls_cert_request.lb_cert_request.cert_request_pem
   ca_key_algorithm   = "RSA"
-  ca_private_key_pem = "${tls_private_key.lb_private_key.private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  ca_private_key_pem = tls_private_key.lb_private_key.private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   validity_period_hours = 87659
 
