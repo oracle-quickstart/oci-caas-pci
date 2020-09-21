@@ -29,14 +29,23 @@ module "dns" {
   dns_domain_name  = var.dns_domain_name
 }
 
+module "objectstore" {
+  source           = "./modules/common/objectstore"
+  compartment_ocid = var.compartment_ocid
+  os_namespace     = var.os_namespace
+  unique_prefix    = var.unique_prefix
+  bucket_suffix    = "wazuh-backup-bucket"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Create IAM resources (policies, groups)
 # ---------------------------------------------------------------------------------------------------------------------
 module "iam" {
-  source           = "./modules/common/iam"
-  tenancy_ocid     = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  caas_bucket_name = var.caas_bucket_name
+  source                   = "./modules/common/iam"
+  tenancy_ocid             = var.tenancy_ocid
+  compartment_ocid         = var.compartment_ocid
+  caas_bucket_name         = var.caas_bucket_name
+  wazuh_backup_bucket_name = module.objectstore.wazuh_backup_bucket_name
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -118,6 +127,7 @@ module "wazuh" {
   vcn_cidr_block             = var.primary_vcn_cidr_block
   wazuh_server_vcn_tcp_ports = var.wazuh_server_vcn_tcp_ports
   wazuh_server_vcn_udp_ports = var.wazuh_server_vcn_udp_ports
+  wazuh_backup_bucket_name   = module.objectstore.wazuh_backup_bucket_name
   vcn_id                     = module.vcn.vcn_id
   route_table_id             = module.vcn.nat_route_table_id
   dhcp_options_id            = module.vcn.dhcp_options_id

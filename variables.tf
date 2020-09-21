@@ -5,6 +5,9 @@ variable "region" {}
 variable "compartment_ocid" {}
 variable "ssh_public_key" {}
 
+variable "unique_prefix" {}
+variable "os_namespace" {}
+
 variable "frontend_dns_name" {
   type        = string
   description = "DNS frontend name (i.e. www)"

@@ -4,6 +4,11 @@ variable "subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 
+variable "wazuh_backup_bucket_name" {
+  type = string
+  description = "Bucket name for Wazuh backups"
+}
+
 variable "wazuh_server_port" {
   type = number
   description = "[Wazuh Instance] HTTP Port"

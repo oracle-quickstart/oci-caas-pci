@@ -11,6 +11,11 @@ variable "dmz_cidr_block" {
   description = "[DMZ Subnet] CIDR Block"
 }
 
+variable "wazuh_backup_bucket_name" {
+  type = string
+  description = "Bucket name for Wazuh backups"
+}
+
 variable "wazuh_tier_cidr_block" {
   type        = string
   description = "[Wazuh tier Subnet] CIDR Block"

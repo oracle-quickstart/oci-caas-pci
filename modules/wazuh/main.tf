@@ -11,13 +11,14 @@ module "network" {
 }
 
 module "compute" {
-  source               = "./compute"
-  region               = var.region
-  ssh_public_key       = var.ssh_public_key
-  tenancy_ocid         = var.tenancy_ocid
-  compartment_ocid     = var.compartment_ocid
-  vcn_cidr_block       = var.vcn_cidr_block
-  subnet_id      = module.network.wazuh_subnet_id
+  source                   = "./compute"
+  region                   = var.region
+  ssh_public_key           = var.ssh_public_key
+  tenancy_ocid             = var.tenancy_ocid
+  compartment_ocid         = var.compartment_ocid
+  vcn_cidr_block           = var.vcn_cidr_block
+  wazuh_backup_bucket_name = var.wazuh_backup_bucket_name
+  subnet_id                = module.network.wazuh_subnet_id
 }
 
 output "wazuh_server_ip" {
