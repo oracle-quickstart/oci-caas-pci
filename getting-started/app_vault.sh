@@ -41,25 +41,29 @@ fi
 mgmt=`get_vault_mgmt $vault_id`
 if [[ $? -ne 0 ]]
 then
-  echo "Exiting due to errors."
+  echo "Unable to retrieve management endpoint. Exiting due to errors."
   exit 255
 fi
 
+echo "Creating KMS Management Key"
 create_kms_mgmt_key $compartment_id $mgmt
-echo "Sleeping again just to prevent another error"
+rc="$?"
+
 sleep 60
-if [[ $? -ne 0 ]]
+
+if [[ $rc -ne 0 ]]
 then
-  echo "Exiting due to errors."
+  echo "Errors while creating KMS Management Key. Exiting."
   exit 255
 fi
 
 mgmtkey=`get_vault_mgmt_key $compartment_id $mgmt`
 if [[ $? -ne 0 ]]
 then
-  echo "Exiting due to errors."
+  echo "Unable to retrieve KMS Management Key. Exiting."
   exit 255
 fi
 
 set +x
+echo "Uploading secrets to vault - $vault_id"
 populate_vault $compartment_id $sk $pk $dbpw $vault_id $mgmtkey $ident

@@ -96,6 +96,7 @@ echo "Time to set up application vault. Run app_vault.sh next."
 echo "Manually verify SSL certificate deployment."
 
 echo "TF values to be used in client caller:"
-bash get_tf_values.sh
+# This didn't work
+# bash get_tf_values.sh
 
 cleanup_logs
