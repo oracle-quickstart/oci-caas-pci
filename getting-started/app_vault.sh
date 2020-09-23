@@ -46,6 +46,8 @@ then
 fi
 
 create_kms_mgmt_key $compartment_id $mgmt
+echo "Sleeping again just to prevent another error"
+sleep 60
 if [[ $? -ne 0 ]]
 then
   echo "Exiting due to errors."
