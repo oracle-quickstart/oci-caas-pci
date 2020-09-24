@@ -31,6 +31,7 @@ module "compute" {
   tomcat_config                 = var.tomcat_config
   app_war_file                  = var.app_war_file
   wazuh_server                  = var.wazuh_server
+  unique_prefix                 = var.unique_prefix
   app_subnet_id                 = module.network.app_subnet_id
   dmz_backendset_name           = module.load_balancer.dmz_backendset_name
   dmz_load_balancer_id          = module.load_balancer.dmz_load_balancer_id

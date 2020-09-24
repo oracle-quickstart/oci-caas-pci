@@ -7,6 +7,7 @@ variable "ssh_public_key" {}
 variable "tenancy_ocid" {}
 variable "database_id" {}
 variable "database_name" {}
+variable "unique_prefix" {}
 
 variable "app_tier_cidr_block" {
   type        = string
