@@ -3,6 +3,7 @@ variable "compartment_ocid" {}
 variable "app_subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
+variable "unique_prefix" {}
 
 variable "dmz_load_balancer_id" {}
 variable "dmz_backendset_name" {}

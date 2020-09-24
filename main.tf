@@ -88,6 +88,7 @@ module "app_tier" {
   wazuh_tier_cidr_block         = var.wazuh_tier_subnet_cidr_block
   app_war_file                  = var.app_war_file
   dmz_cidr_block                = var.dmz_subnet_cidr_block
+  unique_prefix                 = var.unique_prefix
   database_id                   = module.database.database_id
   database_name                 = module.database.database_name
   wazuh_server                  = module.wazuh.wazuh_server_ip

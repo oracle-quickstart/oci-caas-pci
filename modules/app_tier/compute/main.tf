@@ -176,6 +176,7 @@ data "template_file" bootstrap {
     compartment_id   = var.compartment_ocid
     database_id      = var.database_id
     database_name    = var.database_name
+    unique_prefix    = var.unique_prefix
     wallet_password  = random_string.wallet_password.result
   }
 }
