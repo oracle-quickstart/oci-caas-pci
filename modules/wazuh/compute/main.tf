@@ -34,6 +34,12 @@ resource "oci_core_volume" "wazuh_block_volume_paravirtualized" {
   size_in_gbs         = var.wazuh_storage_gb
 }
 
+resource "random_password" "wazuh_password" {
+  length = 16
+  special = true
+  override_special = "_%@"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Get a list of availability domains
 # ---------------------------------------------------------------------------------------------------------------------
@@ -50,11 +56,13 @@ data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 
   vars = {
-    bootstrap_bucket   = "chef-cookbooks"
+    bootstrap_bucket   = var.oci_caas_bootstrap_bucket
     bootstrap_bundle   = "wazuh_cookbooks.tar.gz"
     chef_version       = "16.1.16-1"
     backup_bucket_name = var.wazuh_backup_bucket_name
     vcn_cidr_block     = var.vcn_cidr_block
+    wazuh_user         = "wazuh"
+    wazuh_password     = random_password.wazuh_password.result
   }
 }
 

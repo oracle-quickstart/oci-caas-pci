@@ -27,3 +27,7 @@ output "bastion_ip" {
 output "wazuh_ip" {
   value = module.wazuh.wazuh_server_ip
 }
+
+output "wazuh_password" {
+  value = module.wazuh.wazuh_password
+}

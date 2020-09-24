@@ -13,11 +13,6 @@ variable "frontend_dns_name" {
   description = "DNS frontend name (i.e. www)"
   default     = "www"
 }
-variable "caas_bucket_name" {
-  type        = string
-  description = "[OCI CaaS] Bucket name"
-  default     = "chef-cookbooks"
-}
 
 variable "dns_domain_name" {
   type        = string
@@ -75,7 +70,6 @@ variable "database_listener_port" {
 variable "oci_caas_bootstrap_bucket" {
   type        = string
   description = "Name of the bucket created during bootstrapping."
-  default     = "chef-cookbooks"
 }
 
 variable "oci_caas_app_bootstrap_bundle" {

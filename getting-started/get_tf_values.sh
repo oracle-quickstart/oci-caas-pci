@@ -17,6 +17,7 @@ echo "export TF_VAR_frontend_ssl_certificate_id=\""ocid1.waascertificate.oc1..aa
 echo "export TF_VAR_app_war_file=\""pci-ecommerce-0.2.0.war"\""
 echo "export TF_VAR_ssh_public_key=\"~/.ssh/id_rsa.pub\""
 echo "export TF_VAR_ssh_private_key=\"~/.ssh/id_rsa\""
+echo "export TF_VAR_bootstrap_bucket=\"$caas_bucket\""
 
 echo "# These values need to be set still:"
 echo "export TF_VAR_user_ocid=''"

@@ -54,7 +54,7 @@ EOF
 chmod 400 $authfile
 chown opc:opc $authfile
 
-cat <<BASHUP >> ~opc/.bash_profile
+cat <<'BASHUP' >> ~opc/.bash_profile
 grep "RUNGOOGLEAUTHENTICATOR" ~opc/.google_authenticator > /dev/null 2>&1
 if [[ $? -eq 0 ]]; then
 echo "WARNING: Run 'google-authenticator' immediately, or lose access to this host."

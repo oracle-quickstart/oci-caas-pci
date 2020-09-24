@@ -28,7 +28,9 @@ rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
 cat << EOF > $CHEF_HOME/attributes.json
 {
     "package_cache": "$PACKAGE_CACHE",
-    "backup_bucket_name": "${backup_bucket_name}"
+    "backup_bucket_name": "${backup_bucket_name}",
+    "wazuh_user": "${wazuh_user}",
+    "wazuh_password": "${wazuh_password}"
 }
 EOF
 

@@ -9,6 +9,11 @@ variable "wazuh_backup_bucket_name" {
   description = "Bucket name for Wazuh backups"
 }
 
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
+}
+
 variable "wazuh_server_port" {
   type = number
   description = "[Wazuh Instance] HTTP Port"

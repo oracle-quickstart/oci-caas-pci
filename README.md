@@ -36,4 +36,4 @@ module "oci-caas-pci" {
 
 ## Important Variables
 Variables to define
-* _caas_bucket_name_: Object store bucket name where bootstrap code was deployed to (see Getting Started)
+* _oci_caas_bootstrap_bucket_: Object store bucket name where bootstrap code was deployed to (see Getting Started)

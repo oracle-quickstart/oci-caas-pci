@@ -13,13 +13,12 @@ variable "oci_bucket_policy_prefix" {
   default = "oci_caas_bucket_access"
 }
 
-variable "caas_bucket_name" {
-  type = string
-  description = "[OCI CaaS] Bucket name"
-  default = "chef-cookbooks"
-}
-
 variable "wazuh_backup_bucket_name" {
   type = string
   description = "Wazuh backup object store bucket name"
+}
+
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
 }
