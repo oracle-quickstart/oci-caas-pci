@@ -1,15 +1,15 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # Random id used to prevent name collisions
 # ---------------------------------------------------------------------------------------------------------------------
-resource "random_id" "zone_name" {
-  byte_length = 2
-}
+# resource "random_id" "zone_name" {
+#   byte_length = 2
+# }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Create child zone
 # ---------------------------------------------------------------------------------------------------------------------
 resource "oci_dns_zone" "zone" {
   compartment_id = var.compartment_ocid
-  name = "${random_id.zone_name.hex}.${var.dns_domain_name}"
+  name = "${var.unique_prefix}.${var.dns_domain_name}"
   zone_type = "PRIMARY"
 }

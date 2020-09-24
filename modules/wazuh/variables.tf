@@ -11,6 +11,11 @@ variable "dmz_cidr_block" {
   description = "[DMZ Subnet] CIDR Block"
 }
 
+variable "oci_caas_bootstrap_bucket" {
+  type        = string
+  description = "Name of the bucket created during bootstrapping."
+}
+
 variable "wazuh_backup_bucket_name" {
   type = string
   description = "Bucket name for Wazuh backups"
