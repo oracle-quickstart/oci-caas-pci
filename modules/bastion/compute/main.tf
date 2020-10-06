@@ -38,18 +38,6 @@ data "oci_identity_availability_domains" "ad" {
   compartment_id = "${var.tenancy_ocid}"
 }
 
-resource "random_id" "otp_one" {
-  byte_length = 8
-}
-
-resource "random_id" "otp_two" {
-  byte_length = 8
-}
-
-resource "random_id" "otp_three" {
-  byte_length = 8
-}
-
 # Bootstrap data
 data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
@@ -60,23 +48,7 @@ data "template_file" bootstrap {
     chef_version     = var.chef_version
     vcn_cidr_block   = var.vcn_cidr_block
     wazuh_server     = var.wazuh_server
-    otp_one          = substr(random_id.otp_one.dec, 0, 8)
-    otp_two          = substr(random_id.otp_two.dec, 0, 8)
-    otp_three        = substr(random_id.otp_three.dec, 0, 8)
   }
-}
-
-# Adding the 0 is how we make the OTP 8 characters long
-output "otp_one" {
-  value = substr(random_id.otp_one.dec, 0, 8)
-}
-
-output "otp_two" {
-  value = substr(random_id.otp_two.dec, 0, 8)
-}
-
-output "otp_three" {
-  value = substr(random_id.otp_three.dec, 0, 8)
 }
 
 data "oci_core_instance" "bastion_host" {

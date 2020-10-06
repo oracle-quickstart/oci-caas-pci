@@ -38,28 +38,22 @@ EOF
 mkdir -p $OCI_CAAS_ETC
 chmod 700 $OCI_CAAS_ETC
 
-# Placeholder .google-authenticator for the opc user with one time passwords
-authfile="/home/opc/.google_authenticator"
+mkdir /home/opc/.oath
+chmod 700 /home/opc/.oath
+chown opc:opc /home/opc/.oath
+
+# Placeholder oath config for the opc user with one time password
+authfile="/home/opc/.oath/opc.oath"
 cat << EOF > $authfile
-RUNGOOGLEAUTHENTICATOR
-" RATE_LIMIT 3 30 1599169661
-" WINDOW_SIZE 17
-" DISALLOW_REUSE
-" TOTP_AUTH
-${otp_one}
-${otp_two}
-${otp_three}
+# INITIAL SETUP
+HOTP opc - 2020
 EOF
 
-chmod 400 $authfile
-chown opc:opc $authfile
+chmod 600 $authfile
+chown root:root $authfile
 
-cat <<'BASHUP' >> ~opc/.bash_profile
-grep "RUNGOOGLEAUTHENTICATOR" ~opc/.google_authenticator > /dev/null 2>&1
-if [[ $? -eq 0 ]]; then
-echo "WARNING: Run 'google-authenticator' immediately, or lose access to this host."
-fi
-BASHUP
+# Run setup script for totp - deployed via Chef
+echo "bash ~/.oath/setup-totp.sh" >> /home/opc/.bash_profile
 
 # Temporarily disable SELinux - required for firewalld updates during user-data
 setenforce 0
