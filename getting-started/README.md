@@ -13,3 +13,10 @@ Download SQL Developer:
 https://www.oracle.com/tools/downloads/sqldev-downloads.html
 
 You'll need SSH keys on your workstation (ssh-keygen to create them, if they don't exist or if you want to use new ones).
+
+# Setting up WAF / WAAS rules
+By default, no rules are enabled on the WAF, and you'll need to run a script to update them in bulk.
+
+```
+getting-started/activate-waf_rules.sh <WAF OCID>
+```

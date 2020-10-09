@@ -1,0 +1,1570 @@
+[
+  {
+    "action": "BLOCK",
+    "description": "detects if GET/HEAD requests contain request body since it is not a common practice",
+    "exclusions": [],
+    "key": "960011",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960011"
+    ],
+    "name": "GET/HEAD Requests Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Remote Command Execution (RCE) Attempt: RCE Detect exploitation of \"Shellshock\" GNU Bash RCE vulnerability. Based on ModSecurity rules created by Red Hat. Permission for use was granted by Martin Prpic <secalert@redhat.com>",
+    "exclusions": [],
+    "key": "932170",
+    "labels": [
+      "Recommended",
+      "CVE-2014",
+      "CVE-2014-6271",
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "A1",
+      "A1-2017"
+    ],
+    "mod-security-rule-ids": [
+      "932170"
+    ],
+    "name": "Remote Command Execution (RCE) Attempt: Shellshock vulnerability (CVE-2014-6271 and CVE-2014-7169)"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Local File Inclusion (LFI) Attempt: Directory Traversal Attacks - OS File Access.",
+    "exclusions": [],
+    "key": "9300000",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "A4",
+      "A4-2017",
+      "LFI",
+      "Local File Inclusion",
+      "WASCTC",
+      "PCI",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9300000",
+      "9301000",
+      "9301100",
+      "9301200",
+      "9301300"
+    ],
+    "name": "Local File Inclusion (LFI) Collaborative Group - LFI Filter Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if GET/HEAD requests contain request body by checking for Transfer-Encoding header since it is not a common practice",
+    "exclusions": [],
+    "key": "920171",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "920171"
+    ],
+    "name": "GET/HEAD Requests Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects common local file inclusion attacks like my $dir = \"../../../../../../../../../../../../../\"; or \"http://\".$site.$bug.$dir.\"/proc/self/environ%0000\";",
+    "exclusions": [],
+    "key": "2250120",
+    "labels": [
+      "RFI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "2250120"
+    ],
+    "name": "Local File Inclusion Attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects script tag based XSS vectors, e.g., <script> alert(1)</script>",
+    "exclusions": [],
+    "key": "973336",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973336"
+    ],
+    "name": "Embedding Scripts Within Scripts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects common CSS fragments attacks like <div style=\"background-image: url(javascript:...)\"> or <img style=\"x:expression(document.write(1))\">",
+    "exclusions": [],
+    "key": "973309",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973309",
+      "973308"
+    ],
+    "name": "CSS Fragments attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects Carriage Return + Linefeed characters in the response header that could cause attacked entities to interpret it as two separate responses instead of one",
+    "exclusions": [],
+    "key": "950910",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950910",
+      "950911"
+    ],
+    "name": "HTTP Response Splitting"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of href schell in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958019",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958019"
+    ],
+    "name": "href schell XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of document.cookie in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958001",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958001"
+    ],
+    "name": "document cookie XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of addimport in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958000",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958000"
+    ],
+    "name": "addimport XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects common LDAP data constructions injections",
+    "exclusions": [],
+    "key": "950010",
+    "labels": [
+      "OWASP",
+      "A1",
+      "PCI",
+      "WASCTC",
+      "Injections",
+      "System Access",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950010"
+    ],
+    "name": "LDAP Injection"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects injections for common system commands such as telnet, map, blocalgroup, ftp, rcmd, echo, cmd, chmod, passwd, mail.",
+    "exclusions": [],
+    "key": "950006",
+    "labels": [
+      "OWASP",
+      "A1",
+      "PCI",
+      "System Access",
+      "Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950006"
+    ],
+    "name": "Injection for common system commands"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects MasterCard credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90007",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90007"
+    ],
+    "name": "Credit card leakage in request: MasterCard"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects enRoute credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90011",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90011"
+    ],
+    "name": "Credit card leakage in request: enRoute"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects Discover credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90012",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90012"
+    ],
+    "name": "Credit card leakage in request: Discover"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of <url shell in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958046",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958046"
+    ],
+    "name": "url shell XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of < ?script in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958051",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958051"
+    ],
+    "name": "?script XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of cdata in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958005",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958005"
+    ],
+    "name": "cdata XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of execscript in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958002",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958002"
+    ],
+    "name": "execscript XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects tags that are the most common direct HTML injection points",
+    "exclusions": [],
+    "key": "973300",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973300",
+      "973301",
+      "973302"
+    ],
+    "name": "Common direct HTML injection"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects specially crafted requests that under certain circumstances could be seen by the attacked entities as two different sets of requests. This allows certain requests to be smuggled through to a second entity without the first one realizing it",
+    "exclusions": [],
+    "key": "950012",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950012"
+    ],
+    "name": "HTTP Request Smuggling"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if GET/HEAD requests contain request body by checking for content-length header since it is not a common practice",
+    "exclusions": [],
+    "key": "920170",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "920170"
+    ],
+    "name": "GET/HEAD Requests Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Cross-Site Scripting (XSS) Attempt: XSS Filters - Category 1.",
+    "exclusions": [],
+    "key": "9410000",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "A3",
+      "A3-2017",
+      "XSS",
+      "Cross-Site Scripting",
+      "WASCTC",
+      "PCI",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9410000",
+      "9411000",
+      "9411100",
+      "9411200",
+      "9411300",
+      "9411400",
+      "9411600",
+      "9411700",
+      "9411800",
+      "9411900",
+      "9412000",
+      "9412100",
+      "9412200",
+      "9412300",
+      "9412400",
+      "9412500"
+    ],
+    "name": "Cross-Site Scripting (XSS) Collaborative Group - XSS Filters Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "SQL Injection (SQLi) Attempt: SQLi Filters via libinjection - Detect Database names - PHPIDS - Converted SQLI Filters.",
+    "exclusions": [],
+    "key": "9420000",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "A1",
+      "A1-2017",
+      "SQLi",
+      "SQL Injection",
+      "WASCTC",
+      "PCI",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9420000",
+      "9421000",
+      "9421400",
+      "9421600",
+      "9421700",
+      "9421900",
+      "9422200",
+      "9422300",
+      "9422400",
+      "9422500",
+      "9422700",
+      "9422800",
+      "9422900",
+      "9423200",
+      "9423500",
+      "9423600",
+      "9421100"
+    ],
+    "name": "SQL Injection (SQLi) Collaborative Group - SQLi Filters Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if host header is a numeric IP address as it could be an indicative of automated client access",
+    "exclusions": [],
+    "key": "960017",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "A7",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960017"
+    ],
+    "name": "Host Header Is IP Address"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects SQL hex encoding evasion attacks",
+    "exclusions": [],
+    "key": "981260",
+    "labels": [
+      "SQL Injections",
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981260"
+    ],
+    "name": "SQL Hex Evasion Methods"
+  },
+  {
+    "action": "BLOCK",
+    "description": "identifies common initial SQLi probing requests where attackers insert/append quote characters to the existing normal payload to see how the app/db responds",
+    "exclusions": [],
+    "key": "981318",
+    "labels": [
+      "SQL Injections",
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981318"
+    ],
+    "name": "String Termination/Statement Ending"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects common SQL injection attacks",
+    "exclusions": [],
+    "key": "950001",
+    "labels": [
+      "SQL Injections",
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950001",
+      "959070",
+      "959071",
+      "959072",
+      "950908",
+      "959073"
+    ],
+    "name": "Common SQL Injections"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects basic SQL authentication bypass attempts.",
+    "exclusions": [],
+    "key": "981244",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981244",
+      "981245",
+      "981246"
+    ],
+    "name": "SQL authentication bypass attempts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects chained SQL injection attempts.",
+    "exclusions": [],
+    "key": "981248",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981248",
+      "981249"
+    ],
+    "name": "Chained SQL injection attempts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects SQL benchmark and sleep injection attempts including conditional queries.",
+    "exclusions": [],
+    "key": "981250",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981250"
+    ],
+    "name": "SQL benchmark and sleep injection attempts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects conditional SQL injection attempts.",
+    "exclusions": [],
+    "key": "981241",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981241"
+    ],
+    "name": "Conditional SQL injection attempts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects MATCH AGAINST, MERGE, EXECUTE IMMEDIATE and HAVING injections.",
+    "exclusions": [],
+    "key": "981256",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981256"
+    ],
+    "name": "MATCH AGAINST, MERGE, EXECUTE IMMEDIATE and HAVING"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects concatenated basic SQL injection and SQLLFI attempts",
+    "exclusions": [],
+    "key": "981247",
+    "labels": [
+      "SQL Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981247"
+    ],
+    "name": "Concatenated basic SQL injection and SQLLFI attempts"
+  },
+  {
+    "action": "BLOCK",
+    "description": "allows only HTTP protocol versions HTTP/1.0 and HTTP/1.1",
+    "exclusions": [],
+    "key": "960034",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960034"
+    ],
+    "name": "Restrict HTTP Protocol Versions"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects missing request host header",
+    "exclusions": [],
+    "key": "960007",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "A7",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960007",
+      "960008"
+    ],
+    "name": "Missing Host Header"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects missing request accept header",
+    "exclusions": [],
+    "key": "960015",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "A7",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960015",
+      "960021"
+    ],
+    "name": "Missing Accept Header"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects missing request user-agent header",
+    "exclusions": [],
+    "key": "960009",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "A7",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960009",
+      "960006"
+    ],
+    "name": "Missing User-Agent Header"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if content-length header is provided with every POST request",
+    "exclusions": [],
+    "key": "960012",
+    "labels": [
+      "HTTP",
+      "CAPEC",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960012"
+    ],
+    "name": "Content-Length Header Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Remote Command Execution (RCE) Attempt: RCE Detect exploitation of \"Shellshock\" GNU Bash RCE vulnerability. Based on ModSecurity rules created by Red Hat. Permission for use was granted by Martin Prpic <secalert@redhat.com>",
+    "exclusions": [],
+    "key": "932171",
+    "labels": [
+      "Recommended",
+      "CVE-2014",
+      "CVE-2014-6271",
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "A1",
+      "A1-2017"
+    ],
+    "mod-security-rule-ids": [
+      "932171"
+    ],
+    "name": "Remote Command Execution (RCE) Attempt: Shellshock vulnerability (CVE-2014-6271 and CVE-2014-7169)"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Remote Code Execution (RCE) Attempt: RCE Filters for Windows.",
+    "exclusions": [],
+    "key": "9320001",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "A1",
+      "A1-2017",
+      "RCE",
+      "Remote Code Execution",
+      "Windows",
+      "WASCTC",
+      "PCI",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9320001",
+      "9321100",
+      "9321150",
+      "9321200",
+      "9321400"
+    ],
+    "name": "Remote Code Execution (RCE) Collaborative Group - Windows RCE Filter Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Remote Code Execution (RCE) Attempt: RCE Filters for Unix.",
+    "exclusions": [],
+    "key": "9320000",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "A1",
+      "A1-2017",
+      "RCE",
+      "Remote Code Execution",
+      "Unix",
+      "WASCTC",
+      "PCI",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9320000",
+      "9321000",
+      "9321050",
+      "9321300",
+      "9321500",
+      "9321600"
+    ],
+    "name": "Remote Code Execution (RCE) Collaborative Group - Unix RCE Filter Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "PHP Injection Attempt: PHP Filters - Detects PHP open tags \"<?\", \"<?php\", \"[php]\", \"[/php]\" and \"[\\php]\" - PHP Script Uploads, PHP Config Directives, PHP Functions, PHP Object Injection.",
+    "exclusions": [],
+    "key": "9330000",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "A1",
+      "A1-2017",
+      "PHP Injection",
+      "PHP",
+      "Collaborative",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "9330000",
+      "9331000",
+      "9331100",
+      "9331200",
+      "9331300",
+      "9331400",
+      "9331500",
+      "9331600",
+      "9331700",
+      "9331800",
+      "9331510",
+      "9331310",
+      "9331610",
+      "9331110"
+    ],
+    "name": "PHP Injection Attacks Collaborative Group - PHP Filters Categories"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if content-length and Transfer-Encoding headers are provided with every POST request",
+    "exclusions": [],
+    "key": "920180",
+    "labels": [
+      "HTTP",
+      "CAPEC",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "920180"
+    ],
+    "name": "Content-Length Header Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects if host header is a numeric IP address as it could be an indicative of automated client access",
+    "exclusions": [],
+    "key": "92035032",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "A7-2017",
+      "OWASP-2017",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "92035032"
+    ],
+    "name": "Host Header Is IP Address"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects a common RFI attack, when URL contains an IP address.",
+    "exclusions": [],
+    "key": "950117",
+    "labels": [
+      "RFI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950117"
+    ],
+    "name": "URL Contains an IP Address"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects a common types of Remote File Inclusion (RFI) attack",
+    "exclusions": [],
+    "key": "2250117",
+    "labels": [
+      "RFI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "2250117",
+      "2250118",
+      "2250119"
+    ],
+    "name": "Common RFI attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects Local File Inclusion ENV Attack in User-Agent",
+    "exclusions": [],
+    "key": "2250121",
+    "labels": [
+      "RFI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "2250121"
+    ],
+    "name": "Local File Inclusion ENV Attack in User-Agent"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects event handler based XSS vectors, e.g., <body onload=\"alert(1)\">",
+    "exclusions": [],
+    "key": "973337",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973337",
+      "973303"
+    ],
+    "name": "Embedded Scripts Within Event Handlers"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects \"data\", \"javascript\", \"src\" or other URI schemes/attributes based XSS vectors, e.g., <p style=\"background:url(javascript:alert(1))\">",
+    "exclusions": [],
+    "key": "973338",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973338",
+      "973304",
+      "973305"
+    ],
+    "name": "Embedded Scripts Within URI Schemes"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects Embedding javascript in style attribute",
+    "exclusions": [],
+    "key": "973306",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973306"
+    ],
+    "name": "Embedding javascript in style attribute"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects attacks like alert('xss'), alert(\"xss\"), alert(/xss/).",
+    "exclusions": [],
+    "key": "973310",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973310"
+    ],
+    "name": "Embedded Scripts Within Alert Fragments"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects &{alert('xss')} attacks",
+    "exclusions": [],
+    "key": "973313",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973313"
+    ],
+    "name": "&{alert('xss')} attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of href javascript: in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958018",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958018"
+    ],
+    "name": "href javascript: XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of bonmouseout in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958416",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958416"
+    ],
+    "name": "bonmouseout XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of url javascript: in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958045",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958045"
+    ],
+    "name": "url javascript: XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of import in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958009",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958009"
+    ],
+    "name": "import XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of background-image: in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958011",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958011"
+    ],
+    "name": "background-image: XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects common Server-Side-Include format data injections",
+    "exclusions": [],
+    "key": "950011",
+    "labels": [
+      "OWASP",
+      "A1",
+      "PCI",
+      "WASCTC",
+      "Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950011"
+    ],
+    "name": "SSI Injection"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects the the ability to unintentionally execute commands in Bash. CVE-2014-6271",
+    "exclusions": [],
+    "key": "1000000",
+    "labels": [
+      "OWASP",
+      "A1",
+      "PCI",
+      "Injections",
+      "System Access",
+      "Recommended",
+      "CVE-2014"
+    ],
+    "mod-security-rule-ids": [
+      "1000000",
+      "1000001",
+      "1000002",
+      "1000003",
+      "1000004"
+    ],
+    "name": "Shellshock exploit attempt"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects attempts to upload executable files though input forms",
+    "exclusions": [],
+    "key": "90004",
+    "labels": [
+      "RFI",
+      "System Access",
+      "Injections",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "90004"
+    ],
+    "name": "Executable file upload attempt"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects Diners Club credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90010",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90010"
+    ],
+    "name": "Credit card leakage in request: Diners Club"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects American Express credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90009",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90009"
+    ],
+    "name": "Credit card leakage in request: American Express"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects Visa credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90008",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90008"
+    ],
+    "name": "Credit card leakage in request: Visa"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects GSA SmartPay credit card numbers in user input.",
+    "exclusions": [],
+    "key": "90006",
+    "labels": [
+      "PCI",
+      "CC Leakage"
+    ],
+    "mod-security-rule-ids": [
+      "90006"
+    ],
+    "name": "Credit card leakage in request: GSA SmartPay"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects path traversal attempts, a.k.a directory traversal or \"../\" attacks.",
+    "exclusions": [],
+    "key": "950103",
+    "labels": [
+      "System Access",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950103"
+    ],
+    "name": "Path/directory traversal"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects OS command injection in an application to elevate privileges, execute arbitrary commands, compromise the underlying operating system and install malicious toolkits such as those to participate in botnet attacks",
+    "exclusions": [],
+    "key": "950907",
+    "labels": [
+      "OWASP",
+      "A1",
+      "PCI",
+      "Injections",
+      "System Access",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950907"
+    ],
+    "name": "OS Command Injection"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects a common RFI attack, when Host Doesn't Match Local Host.",
+    "exclusions": [],
+    "key": "950120",
+    "labels": [
+      "RFI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950120"
+    ],
+    "name": "Host doesn't match localhost"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of <body background in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958006",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958006"
+    ],
+    "name": "body background XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of javascript: in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958031",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958031"
+    ],
+    "name": "javascript: XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of ?iframe in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958057",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958057"
+    ],
+    "name": "?iframe XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects usage of src and shell in request, cookies or arguments",
+    "exclusions": [],
+    "key": "958032",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958032"
+    ],
+    "name": "src and shell XSS attack"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects common XSS attacks embedded within non-script elements, e.g., like jscript onsubmit copyparentfolder document javascript meta onchange onmove onkeydown onkeyup activexobject onerror onmouseup ecmascript bexpression onmouseover vbscript",
+    "exclusions": [],
+    "key": "981136",
+    "labels": [
+      "XSS",
+      "OWASP",
+      "A3",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "981136"
+    ],
+    "name": "Generic XSS attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects common blind SQL injection attacks",
+    "exclusions": [],
+    "key": "950007",
+    "labels": [
+      "SQL Injections",
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950007"
+    ],
+    "name": "Blind SQL injection"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detect access attempts to common system commands, such as map, telnet, ftp, rcms, cmd.",
+    "exclusions": [],
+    "key": "950002",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A1",
+      "PCI",
+      "System Access",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950002"
+    ],
+    "name": "Common system command access attempt"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects access attempts to common system files, such as access, passwd, groupm global.asa, httpd.conf, boot.ini, /etc.",
+    "exclusions": [],
+    "key": "950005",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A4",
+      "PCI",
+      "System Access",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "950005"
+    ],
+    "name": "Common system files access attempt"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects '';!--\"<XSS>=&{()} Attacks",
+    "exclusions": [],
+    "key": "973312",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973312"
+    ],
+    "name": "'';!--\"<XSS>=&{()} Attacks"
+  },
+  {
+    "action": "BLOCK",
+    "description": "Detects common JavaScript fragments like fromcharcode, alert, eval that can be used for attacks",
+    "exclusions": [],
+    "key": "973307",
+    "labels": [
+      "WASCTC",
+      "OWASP",
+      "A3",
+      "PCI",
+      "XSS",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "973307"
+    ],
+    "name": "Embedded Scripts Within JavaScript Fragments"
+  },
+  {
+    "action": "BLOCK",
+    "description": "ensures that URI and canonical server name are matching",
+    "exclusions": [],
+    "key": "960014",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960014"
+    ],
+    "name": "URI Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects connection header inconsistencies and invalid formatting",
+    "exclusions": [],
+    "key": "958295",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "958295"
+    ],
+    "name": "Connection Header Validation"
+  },
+  {
+    "action": "BLOCK",
+    "description": "detects missing content-type header or if combination of content-length and content-type headers is invalid",
+    "exclusions": [],
+    "key": "960904",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960904"
+    ],
+    "name": "Missing Content-Type Header"
+  },
+  {
+    "action": "DETECT",
+    "description": "detects HTTP requests with number of arguments exceeding the configurable \"Max amount of arguments\" value",
+    "exclusions": [],
+    "key": "960335",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960335"
+    ],
+    "name": "Number of Arguments Limits"
+  },
+  {
+    "action": "DETECT",
+    "description": "detects HTTP requests with total length of all arguments exceeding the configurable \"Max total argument length\" parameter",
+    "exclusions": [],
+    "key": "960341",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960341"
+    ],
+    "name": "Total Arguments Limits"
+  },
+  {
+    "action": "DETECT",
+    "description": "allows only request methods specified by the configurable \"Allowed http methods\" parameter",
+    "exclusions": [],
+    "key": "960032",
+    "labels": [
+      "OWASP",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960032"
+    ],
+    "name": "Restrict HTTP Request Methods"
+  },
+  {
+    "action": "DETECT",
+    "description": "allows only request methods specified by the configurable \"Allowed http methods\" parameter",
+    "exclusions": [],
+    "key": "911100",
+    "labels": [
+      "OWASP",
+      "OWASP-2017",
+      "CRS3",
+      "WASCTC",
+      "PCI",
+      "HTTP",
+      "A6",
+      "A6-2017",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "911100"
+    ],
+    "name": "Restrict HTTP Request Methods"
+  },
+  {
+    "action": "DETECT",
+    "description": "detects HTTP requests with value length exceeding the configurable \"Max length of argument\" parameter",
+    "exclusions": [],
+    "key": "960208",
+    "labels": [
+      "HTTP",
+      "Recommended"
+    ],
+    "mod-security-rule-ids": [
+      "960208"
+    ],
+    "name": "Values Limits"
+  }
+]
