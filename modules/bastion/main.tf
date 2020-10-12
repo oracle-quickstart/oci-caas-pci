@@ -19,6 +19,7 @@ module "compute" {
   oci_caas_bastion_bootstrap_bundle = var.oci_caas_bastion_bootstrap_bundle
   vcn_cidr_block                    = var.vcn_cidr_block
   chef_version                      = var.chef_version
+  external_fqdn                     = var.external_fqdn
   subnet_id                         = module.network.subnet_id
 }
 

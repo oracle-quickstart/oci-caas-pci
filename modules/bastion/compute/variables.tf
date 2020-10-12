@@ -3,6 +3,7 @@ variable "compartment_ocid" {}
 variable "subnet_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
+variable "external_fqdn" {}
 
 variable "oci_caas_bootstrap_bucket" {
   type        = string

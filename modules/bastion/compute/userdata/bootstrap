@@ -31,6 +31,7 @@ cat << EOF > $CHEF_HOME/attributes.json
     "package_cache": "$PACKAGE_CACHE",
     "ossec": {"address": "${wazuh_server}"},
     "ossec": {"registration_address": "${wazuh_server}"},
+    "external_fqdn": "${external_fqdn}",
     "oci_caas_etc": "$OCI_CAAS_ETC"
 }
 EOF

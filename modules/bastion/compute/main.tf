@@ -24,6 +24,11 @@ resource "oci_core_instance" "bastion" {
     source_id   = var.instance_image_ocid[var.region]
   }
 
+  launch_options {
+    is_pv_encryption_in_transit_enabled = true
+    network_type                        = "PARAVIRTUALIZED"
+  }
+
   timeouts {
     create = "10m"
   }
@@ -48,6 +53,7 @@ data "template_file" bootstrap {
     chef_version     = var.chef_version
     vcn_cidr_block   = var.vcn_cidr_block
     wazuh_server     = var.wazuh_server
+    external_fqdn    = var.external_fqdn
   }
 }
 
