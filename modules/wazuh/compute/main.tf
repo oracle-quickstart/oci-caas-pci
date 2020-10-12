@@ -18,6 +18,11 @@ resource "oci_core_instance" "wazuh_server" {
     source_id   = var.instance_image_ocid[var.region]
   }
 
+  launch_options {
+    is_pv_encryption_in_transit_enabled = true
+    network_type                        = "PARAVIRTUALIZED"
+  }
+
   timeouts {
     create = "10m"
   }

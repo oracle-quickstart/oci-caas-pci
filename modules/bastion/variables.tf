@@ -5,6 +5,7 @@ variable "dhcp_options_id" {}
 variable "region" {}
 variable "ssh_public_key" {}
 variable "tenancy_ocid" {}
+variable "external_fqdn" {}
 
 variable "bastion_cidr_block" {
   type        = string

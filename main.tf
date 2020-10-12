@@ -65,6 +65,7 @@ module "bastion" {
   vcn_cidr_block                    = var.primary_vcn_cidr_block
   chef_version                      = var.chef_version
   wazuh_server                      = module.wazuh.wazuh_server_ip
+  external_fqdn                     = module.waf.fqdn
   vcn_id                            = module.vcn.vcn_id
   route_table_id                    = module.vcn.default_route_table_id
   dhcp_options_id                   = module.vcn.dhcp_options_id
