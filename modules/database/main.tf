@@ -15,13 +15,14 @@ module "network" {
 # Create atp database and configuration
 # ---------------------------------------------------------------------------------------------------------------------
 module "atp" {
-  source               = "./atp"
-  region               = var.region
-  ssh_public_key       = var.ssh_public_key
-  tenancy_ocid         = var.tenancy_ocid
-  compartment_ocid     = var.compartment_ocid
-  database_password    = var.database_password
-  database_subnet_id   = module.network.database_subnet_id
+  source                     = "./atp"
+  region                     = var.region
+  ssh_public_key             = var.ssh_public_key
+  tenancy_ocid               = var.tenancy_ocid
+  compartment_ocid           = var.compartment_ocid
+  database_password          = var.database_password
+  vcn_id                     = var.vcn_id
+  database_subnet_id         = module.network.database_subnet_id
   database_security_group_id = module.network.database_security_group_id
 }
 
