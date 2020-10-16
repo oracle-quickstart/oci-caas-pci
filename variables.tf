@@ -17,7 +17,6 @@ variable "frontend_dns_name" {
 variable "dns_domain_name" {
   type        = string
   description = "[DNS] Domain name where new child domain will be created"
-  default     = "oci-caas.cloud"
 }
 
 variable "primary_vcn_cidr_block" {

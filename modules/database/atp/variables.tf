@@ -1,6 +1,7 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "database_subnet_id" {}
+variable "vcn_id" {}
 variable "ssh_public_key" {}
 variable "region" {}
 variable "database_security_group_id" {}

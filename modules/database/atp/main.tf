@@ -5,6 +5,18 @@ resource "random_id" "database_name" {
   byte_length = 2
 }
 
+resource "oci_data_safe_data_safe_configuration" "data_safe_configuration" {
+  is_enabled = true
+} 
+
+resource "oci_data_safe_data_safe_private_endpoint" "data_safe_private_endpoint" {
+  compartment_id = var.compartment_ocid
+  display_name   = "Data safe private endpoint - ${random_id.database_name.hex}"
+  subnet_id      = var.database_subnet_id
+  vcn_id         = var.vcn_id
+  depends_on     = [ oci_data_safe_data_safe_configuration.data_safe_configuration ]
+}
+
 resource "oci_database_autonomous_database" "database" {
   admin_password           = var.database_password
   compartment_id           = var.compartment_ocid
@@ -16,6 +28,8 @@ resource "oci_database_autonomous_database" "database" {
   license_model            = var.database_license_model
   nsg_ids                  = [var.database_security_group_id]
   subnet_id                = var.database_subnet_id  
+  data_safe_status         = "REGISTERED"
+  depends_on               = [ oci_data_safe_data_safe_private_endpoint.data_safe_private_endpoint ]
 }
 
 output "database_id" {

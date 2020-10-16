@@ -30,11 +30,6 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
         source_type = "image"
         image_id    = var.instance_image_ocid[var.region]
       }
-
-      launch_options {
-         is_pv_encryption_in_transit_enabled = true
-         network_type                        = "PARAVIRTUALIZED"
-      }
     }
   }
 }
