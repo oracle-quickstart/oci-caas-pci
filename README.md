@@ -34,6 +34,12 @@ module "oci-caas-pci" {
 }
 ```
 
+## Database Audit Logs
+OCI Data Safe should already be enabled via Terraform, but you'll need to turn on specific audit features you may require.
+
+https://docs.cloud.oracle.com/en-us/iaas/data-safe/doc/activity-auditing-overview.html
+
+
 ## Important Variables
 Variables to define
 * _oci_caas_bootstrap_bucket_: Object store bucket name where bootstrap code was deployed to (see Getting Started)
