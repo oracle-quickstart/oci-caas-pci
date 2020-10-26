@@ -11,12 +11,20 @@ resource "oci_core_subnet" "wazuh_subnet" {
   vcn_id              = var.vcn_id
   route_table_id      = var.route_table_id
   dhcp_options_id     = var.dhcp_options_id
+  freeform_tags = {
+    "Description" = "Wazuh subnet"
+    "Function"    = "Subnet for Wazuh resources"
+  }
 }
 
 resource "oci_core_security_list" "wazuh_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
   display_name        = "Wazuh Security List"
+  freeform_tags = {
+    "Description" = "Wazuh subnet security list"
+    "Function"    = "Ingress and egress rules for Wazuh"
+  }
 
   ingress_security_rules {
     protocol    = 17

@@ -21,12 +21,20 @@ resource "oci_waas_address_list" "admin_cidr_block" {
   addresses      = [var.vcn_cidr_block]
   compartment_id = var.compartment_ocid
   display_name   = "admin-cidr-block"
+  freeform_tags = {
+    "Description" = "Admin CIDR block"
+    "Function"    = "Used to bypass the WAF rules internally"
+  }
 }
 
 resource "oci_waas_waas_policy" "waas_policy" {
   compartment_id = var.compartment_ocid
   domain         = var.domain_name
   display_name   = var.waas_policy_display_name
+  freeform_tags = {
+    "Description" = "WAF/WAAS rules"
+    "Function"    = "Web filtering and rule engine"
+  }
 
   origin_groups {
     label = "originGroup1"

@@ -4,11 +4,21 @@
 resource "oci_core_instance_configuration" "app_instance_configuration" {
   compartment_id = var.compartment_ocid
   display_name   = "app-instance-configuration"
+  freeform_tags = {
+    "Description" = "App Tier Instance Configuration",
+    "Function"    = "Defines launch details for application tier"
+  }
 
   instance_details {
     instance_type = "compute"
 
+
     launch_details {
+      freeform_tags = {
+        "Description" = "App Tier Instance",
+        "Function"    = "Autoscaled application instance"
+      }
+
       compartment_id = var.compartment_ocid
       shape          = var.app_instance_shape
       display_name   = "AppInstanceConfiguration"
@@ -19,6 +29,10 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
         display_name     = "appinstance"
         assign_public_ip = false
         hostname_label   = "appinstance"
+        freeform_tags = {
+          "Description" = "App Tier VNIC",
+          "Function"    = "VNIC for application instance"
+        }
       }
 
       extended_metadata = {
@@ -54,6 +68,10 @@ resource "oci_core_instance_pool" "app_instance_pool" {
   size                      = "1"
   state                     = "RUNNING"
   display_name              = "AppInstance"
+  freeform_tags = {
+    "Description" = "App Tier Instance Pool",
+    "Function"    = "Autoscaling pool for Application Tier"
+  }
 
   # To allow updates to instance_configuration without a conflict with the pool
   lifecycle {
@@ -91,6 +109,10 @@ resource "oci_autoscaling_auto_scaling_configuration" "app_autoscaling_configura
   cool_down_in_seconds = 300
   display_name         = "app_server_autoscaling_config"
   is_enabled           = true
+  freeform_tags = {
+    "Description" = "App Tier Autoscaling Configuration",
+    "Function"    = "Defines autoscaling policy for application tier"
+  }
 
   policies {
     capacity {

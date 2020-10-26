@@ -11,12 +11,21 @@ resource "oci_core_subnet" "app_subnet" {
   vcn_id                     = var.vcn_id
   route_table_id             = var.route_table_id
   dhcp_options_id            = var.dhcp_options_id
+  freeform_tags = {
+    "Description" = "Application subnet"
+    "Function"    = "Network space for application tier"
+  }
 }
 
 resource "oci_core_security_list" "app_security_list" {
   compartment_id = var.compartment_ocid
   vcn_id         = var.vcn_id
   display_name   = "App Security List"
+
+  freeform_tags = {
+    "Description" = "Application subnet security list"
+    "Function"    = "Egress and ingress rules for application tier"
+  }
 
   egress_security_rules {
     destination = var.vcn_cidr_block

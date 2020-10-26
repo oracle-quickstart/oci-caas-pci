@@ -11,6 +11,10 @@ resource "oci_core_security_list" "dmz_egress_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
   display_name        = "DMZ Security List - Egress"
+  freeform_tags = {
+    "Description" = "DMZ Security List - Egress"
+    "Function"    = "Egress rules for DMS Subnet"
+  }
 
   egress_security_rules {
     destination = var.egress_security_rules_destination
@@ -34,6 +38,10 @@ resource "oci_core_security_list" "dmz_ingress_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
   display_name        = "DMZ Security List - Ingress"
+  freeform_tags = {
+    "Description" = "DMZ Security List - Ingress"
+    "Function"    = "Ingress rules for DMS Subnet"
+  }
 
   # Dynamic list of ingress CIDR blocks
   dynamic ingress_security_rules {
@@ -65,6 +73,10 @@ resource "oci_core_subnet" "dmz_subnet" {
   security_list_ids   = [oci_core_security_list.dmz_egress_security_list.id, oci_core_security_list.dmz_ingress_security_list.id]
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
+  freeform_tags = {
+    "Description" = "DMZ Subnet"
+    "Function"    = "Subnet for application load balancer"
+  }
 }
  
 # ---------------------------------------------------------------------------------------------------------------------
@@ -73,6 +85,11 @@ resource "oci_core_subnet" "dmz_subnet" {
 resource "oci_load_balancer" "dmz_load_balancer" {
   shape          = "400Mbps"
   compartment_id = var.compartment_ocid
+
+  freeform_tags = {
+    "Description" = "Application load balancer"
+    "Function"    = "Routes traffics to designated hosts"
+  }
 
   subnet_ids = [
     oci_core_subnet.dmz_subnet.id,
@@ -177,6 +194,7 @@ resource "oci_load_balancer_listener" "lb_dmz_listener" {
   default_backend_set_name = oci_load_balancer_backend_set.lb-dmz-bes.name
   port                     = 443
   protocol                 = "HTTP"
+
   ssl_configuration {
     certificate_name        = oci_load_balancer_certificate.lb_cert.certificate_name
     verify_peer_certificate = false
