@@ -15,6 +15,10 @@ resource "oci_data_safe_data_safe_private_endpoint" "data_safe_private_endpoint"
   subnet_id      = var.database_subnet_id
   vcn_id         = var.vcn_id
   depends_on     = [ oci_data_safe_data_safe_configuration.data_safe_configuration ]
+  freeform_tags = {
+    "Description" = "Data safe endpoint"
+    "Function"    = "Data safe endpoint for registering databases"
+  }
 }
 
 resource "oci_database_autonomous_database" "database" {
@@ -30,6 +34,10 @@ resource "oci_database_autonomous_database" "database" {
   subnet_id                = var.database_subnet_id  
   data_safe_status         = "REGISTERED"
   depends_on               = [ oci_data_safe_data_safe_private_endpoint.data_safe_private_endpoint ]
+  freeform_tags = {
+    "Description" = "Autonomous database"
+    "Function"    = "Stores application catalogue and user info"
+  }
 }
 
 output "database_id" {

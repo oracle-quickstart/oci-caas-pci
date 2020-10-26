@@ -11,6 +11,10 @@ resource "oci_core_subnet" "database_subnet" {
   vcn_id                     = var.vcn_id
   route_table_id             = var.route_table_id
   dhcp_options_id            = var.dhcp_options_id
+  freeform_tags = {
+    "Description" = "Subnet for ATP"
+    "Function"    = "Subnet for ATP"
+  }
 }
 
 resource "oci_core_network_security_group" "database_security_group" {
@@ -45,6 +49,10 @@ resource "oci_core_security_list" "database_security_list" {
   compartment_id = var.compartment_ocid
   vcn_id         = var.vcn_id
   display_name   = "Database Security List"
+  freeform_tags = {
+    "Description" = "Security list for database subnet"
+    "Function"    = "Ingress and egress rules for database"
+  }
 
   egress_security_rules {
     destination = var.vcn_cidr_block

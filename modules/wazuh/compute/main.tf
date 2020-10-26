@@ -7,6 +7,10 @@ resource "oci_core_instance" "wazuh_server" {
   shape               = var.wazuh_instance_shape
   display_name        = "wazuh_server"
   subnet_id = var.subnet_id
+  freeform_tags = {
+    "Description" = "Wazuh host"
+    "Function"    = "Primary Wazuh instance"
+  }
 
   metadata = {
     ssh_authorized_keys = file (var.ssh_public_key)
@@ -37,6 +41,11 @@ resource "oci_core_volume" "wazuh_block_volume_paravirtualized" {
   compartment_id      = var.compartment_ocid
   display_name        = "WazuhBlockParavirtualized${count.index}"
   size_in_gbs         = var.wazuh_storage_gb
+
+  freeform_tags = {
+    "Description" = "Wazuh block storage"
+    "Function"    = "Additional storage for Wazuh service"
+  }
 }
 
 resource "random_password" "wazuh_password" {

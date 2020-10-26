@@ -10,12 +10,20 @@ resource "oci_core_subnet" "bastion_subnet" {
   vcn_id              = var.vcn_id
   route_table_id      = var.route_table_id
   dhcp_options_id     = var.dhcp_options_id
+  freeform_tags = {
+    "Description" = "Bastion subnet"
+    "Function"    = "Subnet for bastion resources"
+  }
 }
 
 resource "oci_core_security_list" "bastion_security_list" {
   compartment_id      = var.compartment_ocid
   vcn_id              = var.vcn_id
   display_name        = "Bastion Security List"
+  freeform_tags = {
+    "Description" = "Bastion security lists"
+    "Function"    = "Ingress and egress rules for bastion service"
+  }
 
   egress_security_rules {
     destination = var.wazuh_tier_cidr_block

@@ -6,6 +6,10 @@ resource "oci_core_instance" "bastion" {
   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
   shape               = var.bastion_instance_shape
   display_name        = "bastion"
+  freeform_tags = {
+    "Description" = "Bastion host"
+    "Function"    = "Allows secure connections for admin work"
+  }
 
   create_vnic_details {
     assign_public_ip = true
