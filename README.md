@@ -1,8 +1,57 @@
 # OCI CAAS PCI
 Welcome
 
+## Requirements
+To successfully build and manage this project, you will need to meet the requirements.
+
+#### OCI Console Access
+OCI Console access and access to the OCI Cloud Shell. https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm
+
+#### Externally registerred DNS zone
+To support user facing SSL certificates and the OCI WAF/WAAS, you will need an
+externally registerred DNS zone with SOA records pointing to OCI managed DNS zone.
+For more information see _DNS Setup_.
+
+#### External software requirements
+* Terraform >= 0.12.x
+* Chef >= 16.x
+* Authenticator app (I use FreeOTP, but any popular authenticator app should work)
+* SSH client
+* SQL client (I have used SQL Developer)
+* Git
+
 ## Getting started with OCI CAAS
 Getting started...
+
+## DNS Setup
+In the tenancy you plan on using, you will need to create a new compartment -
+this compartment is separate from the one we will create for the application. We do 
+this to be able to manage DNS across multiple compartments.
+
+Once your compartment is created, you need to create a *Primary* DNS Zone in
+the console under
+Networking -> DNS Management -> Zones - or via the CLI/API.
+
+https://docs.cloud.oracle.com/en-us/iaas/Content/DNS/Tasks/managingdnszones.htm
+
+Update your DNS Registrar nameservers to the ones provided by Oracle in the console.
+These will look similar to ns4.p68.dns.oraclecloud.net - and you'll want to use all
+four addresses that are provided.
+
+This is the end of the DNS setup.
+
+_Why we do this_
+
+We automate DNS record creation using the OCI DNS service, including the registration steps
+with Let's Encrypt (via ACME and a validation txt record). The records and
+certificates are used for connections to the OCI WAF/WAAS endpoint. Currently,
+these are not optional components.
+
+For example, we can have a my-admin compartment, and in there a DNS Zone called
+"pci-demo.cloud". When we build the SSL certificate and verify with ACME, we
+create _acme-challenge.pci-demo.cloud. Later in the build process, in a new compartment,
+we create a DNS zone for (example) foo.pci-demo.cloud - and then create records
+inside of that zone through Terraform.
 
 ## How to call this module
 Terraform code to call the module - including required variables. Following the instructions at
