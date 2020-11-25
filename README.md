@@ -4,15 +4,15 @@ Welcome
 ## Requirements
 To successfully build and manage this project, you will need to meet the requirements.
 
-#### OCI Console Access
+### OCI Console Access
 OCI Console access and access to the OCI Cloud Shell. https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm
 
-#### Externally registerred DNS zone
+### Externally registerred DNS zone
 To support user facing SSL certificates and the OCI WAF/WAAS, you will need an
 externally registerred DNS zone with SOA records pointing to OCI managed DNS zone.
 For more information see _DNS Setup_.
 
-#### External software requirements
+### External software requirements
 * Terraform >= 0.12.x
 * Chef >= 16.x
 * Authenticator app (I use FreeOTP, but any popular authenticator app should work)
@@ -20,8 +20,15 @@ For more information see _DNS Setup_.
 * SQL client (I have used SQL Developer)
 * Git
 
-## Getting started with OCI CAAS
-Getting started...
+### Install acme.sh on your OCI Cloud Shell
+We utilize acme.sh for SSL certificate creation. You should install this within your 
+OCI Cloud Shell environment. Our installer checks for the default installation path:
+$HOME/.acme.sh
+
+Follow the instructions here: https://github.com/acmesh-official/acme.sh
+
+You will need to pass the --force option to install, which will bypass the
+check for cron.
 
 ## DNS Setup
 In the tenancy you plan on using, you will need to create a new compartment -
@@ -43,7 +50,7 @@ This is the end of the DNS setup.
 _Why we do this_
 
 We automate DNS record creation using the OCI DNS service, including the registration steps
-with Let's Encrypt (via ACME and a validation txt record). The records and
+with Let's Encrypt (via ACME and a txt record for validation). The records and
 certificates are used for connections to the OCI WAF/WAAS endpoint. Currently,
 these are not optional components.
 
@@ -52,6 +59,41 @@ For example, we can have a my-admin compartment, and in there a DNS Zone called
 create _acme-challenge.pci-demo.cloud. Later in the build process, in a new compartment,
 we create a DNS zone for (example) foo.pci-demo.cloud - and then create records
 inside of that zone through Terraform.
+
+## Getting started with OCI CAAS
+Getting started...
+
+## Generate Public SSL Certificate
+This step should be run after the Getting Started section, before the Terraform steps.
+
+From the root of this repo, use the `admin-scripts/ssl_certificate.sh` to generate
+a new wildcard certificate for the zone that you will be managing. This script will
+utilize the DNS zone you created earlier to create a validation txt record and 
+then upload the new certificate and private key to the OCI WAF/WAAS certificate store.
+
+```
+admin-scripts/ssl_certificate.sh -d <your domain>
+```
+
+Optional: You can override the Compartment OCID,
+if you want to create multiple sites using the same
+certificate. Specify the admin compartment you created the DNS zone in earlier. This
+is ideal if you want to create multiple compartments (like dev, test, staging)
+in the same tenancy.
+
+```
+admin-scripts/ssl_certificate.sh -d <your domain> -o <compartment ocid>
+```
+
+This will echo the certificate OCID back to the terminal, and store it for later use in the
+configuration file. You'll need this value for the Terraform stack.
+
+### Certificate renewal
+The certificate you created is **only valid for 90 days**. To renew the certificate, you can
+run the same process again - ideally every 2 months. This creates a new certificate
+store entry, which can then be passed onto Terraform for a new update.
+
+Once the WAF has been updated via Terraform, the new certificate is active.
 
 ## How to call this module
 Terraform code to call the module - including required variables. Following the instructions at

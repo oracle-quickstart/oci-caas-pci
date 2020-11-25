@@ -18,5 +18,5 @@ You'll need SSH keys on your workstation (ssh-keygen to create them, if they don
 By default, no rules are enabled on the WAF, and you'll need to run a script to update them in bulk.
 
 ```
-getting-started/activate-waf_rules.sh <WAF OCID>
+admin-scripts/activate-waf_rules.sh <WAF OCID>
 ```
