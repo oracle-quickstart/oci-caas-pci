@@ -126,7 +126,7 @@ function get_vault_id() {
   [[ $# -ne 2 ]] && echo "Incorrect numer of arguments passed to function." && return 255
   compartment_id=$1
   display_name=$2
-  vault_id=`oci search resource structured-search --query-text "query all resources where (freeformTags.key = '${display_name}-vault' && compartmentId = '$compartment_id' && lifecycleState = 'CREATED') " | grep identifier | awk -F\" '{print $4}'`
+  vault_id=`oci search resource structured-search --query-text "query vault resources where (freeformTags.key = '${display_name}-vault' && compartmentId = '$compartment_id' && lifecycleState = 'CREATED') " | grep identifier | awk -F\" '{print $4}'`
   echo $vault_id
 }
 

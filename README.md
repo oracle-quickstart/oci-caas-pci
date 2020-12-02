@@ -4,13 +4,16 @@ Welcome
 ## Requirements
 To successfully build and manage this project, you will need to meet the requirements.
 
-### OCI Console Access
-OCI Console access and access to the OCI Cloud Shell. https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm
+### OCI Console & Cloud Shell
+The initialization process utilizes the OCI Cloud Shell, so you'll need
+access to the OCI Console and [Cloud Shell](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm).
 
-### Externally registerred DNS zone
-To support user facing SSL certificates and the OCI WAF/WAAS, you will need an
+### Externally registerred DNS domain
+To support public facing SSL certificates and the
+[OCI WAF](https://docs.cloud.oracle.com/en-us/iaas/Content/WAF/Concepts/overview.htm),
+you will need an
 externally registerred DNS zone with SOA records pointing to OCI managed DNS zone.
-For more information see _DNS Setup_.
+For more information see [DNS Setup](#dns-setup).
 
 ### External software requirements
 * Terraform >= 0.12.x
@@ -20,18 +23,24 @@ For more information see _DNS Setup_.
 * SQL client (I have used SQL Developer)
 * Git
 
+### Stripe API keys
+To utilize Stripe, you will need to have access to a pair of
+[Stripe Publishable & Secret keys](https://stripe.com/docs/keys).
+These are stored in an OCI Vault and then used by the application server upon bootstrapping.
+
 ### Install acme.sh on your OCI Cloud Shell
-We utilize acme.sh for SSL certificate creation. You should install this within your 
-OCI Cloud Shell environment. Our installer checks for the default installation path:
-$HOME/.acme.sh
+We utilize [acme.sh](https://github.com/acmesh-official/acme.sh)
+for SSL certificate creation. You should install this within your 
+OCI Cloud Shell environment. Our installer checks for the default installation path in
+**$HOME/.acme.sh**
 
-Follow the instructions here: https://github.com/acmesh-official/acme.sh
-
+Follow the (instructions here)(https://github.com/acmesh-official/acme.sh).
 You will need to pass the --force option to install, which will bypass the
 check for cron.
 
 ## DNS Setup
-In the tenancy you plan on using, you will need to create a new compartment -
+In the tenancy you plan on using, you will need to
+(create a new compartment)[https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm] -
 this compartment is separate from the one we will create for the application. We do 
 this to be able to manage DNS across multiple compartments.
 
@@ -39,13 +48,12 @@ Once your compartment is created, you need to create a *Primary* DNS Zone in
 the console under
 Networking -> DNS Management -> Zones - or via the CLI/API.
 
+Further reading:
 https://docs.cloud.oracle.com/en-us/iaas/Content/DNS/Tasks/managingdnszones.htm
 
 Update your DNS Registrar nameservers to the ones provided by Oracle in the console.
 These will look similar to ns4.p68.dns.oraclecloud.net - and you'll want to use all
 four addresses that are provided.
-
-This is the end of the DNS setup.
 
 _Why we do this_
 
@@ -61,7 +69,44 @@ we create a DNS zone for (example) foo.pci-demo.cloud - and then create records
 inside of that zone through Terraform.
 
 ## Getting started with OCI CAAS
-Getting started...
+To begin, you'll need to log into the OCI Console and launch the Cloud Shell.
+This is the icon in the top-right corner - it looks like this: *>_*
+
+See [Getting Started with Cloud Shell](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/devcloudshellgettingstarted.htm)
+for detailed instructions on using the Cloud Shell.
+
+Clone the repository from Github:
+```
+git clone <URL TO REPO GOES HERE>
+```
+
+The scripts we're going to run are contained within the admin-scripts directory,
+so you can change to that directory or run the upcoming commands with the path included.
+```
+cd oci-caas-pci/admin-scripts
+```
+
+### Initialize CAAS Environment
+The first script creates a new compartment, object storage bucket, and caches 
+dependencies into the bucket.
+```
+./caas-init.sh
+```
+
+### Populate the application vault
+The next script you need to run takes in secret values, creates a new vault,
+and stores new vault objects. For this to run successfully, you'll need three values:
+1. The Stripe API publishable key
+1. The Stripe API secret key
+1. Generate a password which will be used for the ECOM DB user
+
+```
+./app_vault.sh
+```
+
+### Configuration file
+For troubleshooting, overriding values, and resetting values - the configuration these
+scripts rely on is at **$HOME/.oci-caas/oci-caas-pci.conf**
 
 ## Generate Public SSL Certificate
 This step should be run after the Getting Started section, before the Terraform steps.
@@ -130,6 +175,15 @@ OCI Data Safe should already be enabled via Terraform, but you'll need to turn o
 
 https://docs.cloud.oracle.com/en-us/iaas/data-safe/doc/activity-auditing-overview.html
 
+
+## Important Variables
+The **admin-scripts/get_tf_values.sh** script will parse the configuration file
+created during initialization. Run this and you'll have a good starting point for 
+moving onto Terraform.
+
+```
+./get_tf_values.sh
+```
 
 ## Important Variables
 Variables to define

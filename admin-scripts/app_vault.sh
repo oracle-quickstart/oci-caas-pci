@@ -6,7 +6,7 @@ CONF="${CONF_DIR}/oci-caas-pci.conf"
 
 echo "We will capture three values for this application environment:"
 echo "1) The Stripe secret key"
-echo "2) The Stripe publishable (public) key"
+echo "2) The Stripe publishable key"
 echo "3) The database password to be set for the ECOM user"
 echo ""
 echo "If you are not ready to provide this information, you may cancel this script now, or hit <ENTER/RETURN> to continue."
