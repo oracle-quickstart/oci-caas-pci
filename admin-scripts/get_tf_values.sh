@@ -13,7 +13,6 @@ echo "export TF_VAR_unique_prefix=\"$ident\""
 echo "export TF_VAR_compartment_ocid=\"$compartment_id\""
 
 echo "# These should be changed per environment, but keep the values unless you have better ones"
-#echo "export TF_VAR_frontend_ssl_certificate_id=\""ocid1.waascertificate.oc1..aaaaaaaah243thryvtlhhmgpepu43ar2rwiyuvyfdh6n5ylfdyip244gp5xa"\""
 echo "export TF_VAR_frontend_ssl_certificate_id=\"$frontend_ssl_certificate_id\""
 
 echo "export TF_VAR_app_war_file=\""pci-ecommerce-0.2.0.war"\""

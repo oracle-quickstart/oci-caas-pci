@@ -59,7 +59,7 @@ variable "tomcat_config" {
     http_port     = 8080
     https_port    = 8444
     shutdown_port = 8006
-    version       = "8.5.57"
+    version       = "8.5.60"
   }
 }
 
