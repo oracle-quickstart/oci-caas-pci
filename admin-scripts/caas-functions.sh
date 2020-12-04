@@ -90,7 +90,7 @@ function cache_packages() {
   mkdir $cache_dir
   cd $cache_dir
 
-  wget https://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.57/bin/apache-tomcat-8.5.57.tar.gz >> $cache_packages_log 2>&1
+  wget https://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz >> $cache_packages_log 2>&1
   wget https://packages.chef.io/files/stable/chef/16.1.16/el/8/chef-16.1.16-1.el7.x86_64.rpm >> $cache_packages_log 2>&1
 
   echo "Uploading required objects to $bucket_name bucket"
