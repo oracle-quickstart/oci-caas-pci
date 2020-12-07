@@ -141,34 +141,8 @@ store entry, which can then be passed onto Terraform for a new update.
 Once the WAF has been updated via Terraform, the new certificate is active.
 
 ## How to call this module
-Terraform code to call the module - including required variables. Following the instructions at
-https://www.terraform.io/docs/providers/oci/index.html for where to get these values, and more information
-on the OCI provider.
-``` 
-# Values are examples and need to be changed.
-module "oci-caas-pci" {
-  # This can be a relative path or URL
-  source = "../oci-caas-pci"
-
-  # OCID of the target compartment
-  compartment_ocid = ocid1.compartment.oc1..aaaaaaaaba3pv6wkcr4jqae5f44n2b2m2yt2j6rx32uzr4h25vqstifsfdsq
-
-  # OCID of the target tenancy
-  tenancy_ocid     = ocid1.tenancy.oc1..aaaaaaaaba3pv6wkcr4jqae5f44n2b2m2yt2j6rx32uzr4h25vqstifsfdsq
-
-  # OCID of your user
-  user_ocid        = ocid1.user.oc1..aaaaaaaaba3pv6wkcr4jqae5f44n2b2m2yt2j6rx32uzr4h25vqstifsfdsq
-
-  # Fingerprint for your user key
-  fingerprint      = d1:b2:32:53:d3:5f:cf:68:2d:6f:8b:5f:77:8f:07:13
-
-  # Target region for deployment
-  region           = us-phoenix-1
-
-  # Path to your ssh public key
-  ssh_public_key   = /home/user/.ssh/id_rsa.pub
-}
-```
+See the **/examples** diretory for an example client, and descriptions for
+important variables.
 
 ## Database Audit Logs
 OCI Data Safe should already be enabled via Terraform, but you'll need to turn on specific audit features you may require.
@@ -176,7 +150,7 @@ OCI Data Safe should already be enabled via Terraform, but you'll need to turn o
 https://docs.cloud.oracle.com/en-us/iaas/data-safe/doc/activity-auditing-overview.html
 
 
-## Important Variables
+## Terraform Variables
 The **admin-scripts/get_tf_values.sh** script will parse the configuration file
 created during initialization. Run this and you'll have a good starting point for 
 moving onto Terraform.
@@ -184,7 +158,3 @@ moving onto Terraform.
 ```
 ./get_tf_values.sh
 ```
-
-## Important Variables
-Variables to define
-* _oci_caas_bootstrap_bucket_: Object store bucket name where bootstrap code was deployed to (see Getting Started)
