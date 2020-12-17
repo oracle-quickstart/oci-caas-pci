@@ -38,6 +38,11 @@ module "objectstore" {
   bucket_suffix    = "wazuh-backup-bucket"
 }
 
+module "audit_retention" {
+  source       = "./modules/common/audit"
+  tenancy_ocid = var.tenancy_ocid
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Create IAM resources (policies, groups)
 # ---------------------------------------------------------------------------------------------------------------------
