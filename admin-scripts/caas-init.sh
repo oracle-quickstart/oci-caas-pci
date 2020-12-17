@@ -60,7 +60,6 @@ else
   fi
 fi
 
-
 if [[ -n ${caas_bucket} ]]
 then
   echo "Using existing bootstrap bucket with name: $caas_bucket"
@@ -91,11 +90,27 @@ then
   exit 255
 fi
 
+CW_URL='https://packages.chef.io/files/stable/chef-workstation/20.12.205/el/8/chef-workstation-20.12.205-1.el7.x86_64.rpm'
+export CHEF_WORKSTATION="$HOME/opt/chef-workstation"
+cd $HOME
+
+if test ! -d $CHEF_WORKSTATION
+then
+  echo "Installing Chef Workstation in $CHEF_WORKSTATION"
+  curl $CW_URL | rpm2cpio | cpio -idmv > /dev/null 2>&1
+fi
+
+cache_cookbooks $os_namespace $caas_bucket
+if [[ $? -ne 0 ]]
+then
+  echo "Error while uploading cookbooks to object store bucket."
+  exit 255
+fi
+
 echo "Time to set up application vault. Run app_vault.sh next."
 
 # echo "Manually verify SSL certificate deployment."
 # echo "TF values to be used in client caller:"
-# This didn't work
 # bash get_tf_values.sh
 
 cleanup_logs
