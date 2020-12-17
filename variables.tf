@@ -123,3 +123,21 @@ variable "frontend_ssl_certificate_id" {
   type = string
   description = "SSL Certificate OCID for frontend WAF/WAAS"
 }
+
+variable "app_autoscaling_initial" {
+  type = number
+  description = "Application autoscaling instances - initial value"
+  default = 2
+}
+
+variable "app_autoscaling_max" {
+  type = number
+  description = "Application autoscaling instances - max value"
+  default = 3
+}
+
+variable "app_autoscaling_min" {
+  type = number
+  description = "Application autoscaling instances - minimum value"
+  default = 2
+}

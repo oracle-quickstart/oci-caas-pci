@@ -34,6 +34,13 @@ os_namespace | The Object Storage namespace
 dns_domain_name | The DNS domain used during Getting Started
 app_war_file | The war file name to be deployed (i.e., pci-app-1.0.0.war). This file should exist in the bootstrap_bucket.
 
+### Optional Inputs
+TF_VAR | Description
+------ | -----------
+app_autoscaling_min | Minimum number of instances in the autoscaling pool
+app_autoscaling_max | Maximum number of instances in the autoscaling pool
+app_autoscaling_initial | Initial number of instances in the autoscaling pool
+
 ### Generating TF_VAR Values
 In the **admin-scripts** directory, the **get_tf_values.sh** script will parse the
 configuration file generated during Getting Started. This provides a script that
