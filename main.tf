@@ -51,6 +51,7 @@ module "iam" {
   tenancy_ocid              = var.tenancy_ocid
   compartment_ocid          = var.compartment_ocid
   oci_caas_bootstrap_bucket = var.oci_caas_bootstrap_bucket
+  region                    = var.region
   wazuh_backup_bucket_name  = module.objectstore.wazuh_backup_bucket_name
 }
 

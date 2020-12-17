@@ -68,6 +68,7 @@ resource "oci_identity_policy" "wazuh_log_backups" {
     "Function"    = "Provides access for Wazuh host to back up to backup bucket"
   }
   statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to manage objects in compartment id ${var.compartment_ocid} where target.bucket.name='${var.wazuh_backup_bucket_name}'"
+    "Allow dynamic-group ${oci_identity_dynamic_group.caas_access_dynamic_group.name} to manage objects in compartment id ${var.compartment_ocid} where target.bucket.name='${var.wazuh_backup_bucket_name}'",
+    "Allow service objectstorage-${var.region} to manage object-family in compartment id ${var.compartment_ocid}"
   ]
 }
