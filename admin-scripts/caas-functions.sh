@@ -81,6 +81,49 @@ function create_compartment() {
   fi
 }
 
+function cache_cookbooks() {
+  cache_cookbooks_log="/tmp/oci-caas-$$-cache_cookbooks.log"
+  namespace="$1"
+  bucket_name="$2"
+  export CHEF_WORKSTATION="$HOME/opt/chef-workstation"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CHEF_WORKSTATION/embedded/lib:embedded/lib/ruby/2.7.0"
+  export SSL_CERT_FILE=${CHEF_WORKSTATION}/embedded/ssl/certs/cacert.pem
+  export CHEF_FIPS=""
+  berks="${CHEF_WORKSTATION}/embedded/bin/ruby -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0 -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0/x86_64-linux ${CHEF_WORKSTATION}/bin/berks"
+
+  cookbook_repos=(
+    "git@github.com:jondecamp/oci_caas_bastion.git"
+  )
+  
+  cache_dir="/tmp/caas-cache.$$"
+  mkdir ${cache_dir}
+  cd $cache_dir
+
+  for repo in ${cookbook_repos[@]}
+  do
+    git clone $repo
+  done
+
+  for cookbook in *
+  do
+    cd $cookbook
+    $berks package ../${cookbook}.tar.gz
+    cd ..
+  done
+
+  echo "Uploading required cookbooks to $bucket_name bucket"
+  for file in *.tar.gz
+  do
+    oci os object put -ns $namespace -bn $bucket_name --file $file --name $file --force >> $cache_cookbooks_log
+    if [[ $? -ne 0 ]]
+    then
+      echo "Error uploading cookbook to bucket. Please see $cache_cookbooks_log for more information." 1>&2
+      return 1
+    fi
+  done
+  rm -rf ${cache_dir}
+}
+
 function cache_packages() {
   cache_packages_log="/tmp/oci-caas-$$-cache_packages.log"
   namespace="$1"
