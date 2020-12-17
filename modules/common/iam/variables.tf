@@ -1,5 +1,6 @@
 variable "compartment_ocid" {}
 variable "tenancy_ocid" {}
+variable "region" {}
 
 variable "oci_dg_prefix" {
   type = string
