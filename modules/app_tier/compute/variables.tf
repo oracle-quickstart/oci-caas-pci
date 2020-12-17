@@ -11,6 +11,24 @@ variable "dmz_backendset_name" {}
 variable "database_id" {}
 variable "database_name" {}
 
+variable "app_autoscaling_initial" {
+  type = number
+  description = "Application autoscaling instances - initial value"
+  default = 2
+}
+
+variable "app_autoscaling_max" {
+  type = number
+  description = "Application autoscaling instances - max value"
+  default = 3
+}
+
+variable "app_autoscaling_min" {
+  type = number
+  description = "Application autoscaling instances - minimum value"
+  default = 2
+}
+
 variable "vcn_cidr_block" {
   type        = string
   description = "[VCN] CIDR Block"

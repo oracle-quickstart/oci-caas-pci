@@ -32,6 +32,9 @@ module "compute" {
   app_war_file                  = var.app_war_file
   wazuh_server                  = var.wazuh_server
   unique_prefix                 = var.unique_prefix
+  app_autoscaling_min           = var.app_autoscaling_min
+  app_autoscaling_initial       = var.app_autoscaling_initial
+  app_autoscaling_max           = var.app_autoscaling_max
   app_subnet_id                 = module.network.app_subnet_id
   dmz_backendset_name           = module.load_balancer.dmz_backendset_name
   dmz_load_balancer_id          = module.load_balancer.dmz_load_balancer_id

@@ -90,6 +90,9 @@ module "app_tier" {
   app_war_file                  = var.app_war_file
   dmz_cidr_block                = var.dmz_subnet_cidr_block
   unique_prefix                 = var.unique_prefix
+  app_autoscaling_min           = var.app_autoscaling_min
+  app_autoscaling_initial       = var.app_autoscaling_initial
+  app_autoscaling_max           = var.app_autoscaling_max
   database_id                   = module.database.database_id
   database_name                 = module.database.database_name
   wazuh_server                  = module.wazuh.wazuh_server_ip

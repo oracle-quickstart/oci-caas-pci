@@ -116,9 +116,9 @@ resource "oci_autoscaling_auto_scaling_configuration" "app_autoscaling_configura
 
   policies {
     capacity {
-      initial = 1
-      max     = 3
-      min     = 1
+      initial = var.app_autoscaling_initial
+      max     = var.app_autoscaling_max
+      min     = var.app_autoscaling_min
     }
 
     display_name = "AppServerScalingPolicy"
