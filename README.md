@@ -88,9 +88,22 @@ cd oci-caas-pci/admin-scripts
 
 ### Initialize CAAS Environment
 The first script creates a new compartment, object storage bucket, and caches 
-dependencies into the bucket.
+dependencies into the bucket. See the below note on setting a Unique Identifier,
+or move on with the script and accept the defaults.
+
 ```
 ./caas-init.sh
+```
+
+#### Unique Identifier (environment naming)
+By default, we will generate a 4 character string to use for uniquely naming resources,
+including the compartment, DNS zones, vault resources, and much more. This string
+can be overridden before initialization - This identifier can not be changed later.
+
+To set a custom identifier, set a value for **OVERRIDE_IDENT** before
+running caas-init.sh
+```
+export OVERRIDE_IDENT="dev1"
 ```
 
 ### Populate the application vault
@@ -140,15 +153,9 @@ store entry, which can then be passed onto Terraform for a new update.
 
 Once the WAF has been updated via Terraform, the new certificate is active.
 
-## How to call this module
+## How to call this Terraform module
 See the **/examples** diretory for an example client, and descriptions for
 important variables.
-
-## Database Audit Logs
-OCI Data Safe should already be enabled via Terraform, but you'll need to turn on specific audit features you may require.
-
-https://docs.cloud.oracle.com/en-us/iaas/data-safe/doc/activity-auditing-overview.html
-
 
 ## Terraform Variables
 The **admin-scripts/get_tf_values.sh** script will parse the configuration file
@@ -156,5 +163,22 @@ created during initialization. Run this and you'll have a good starting point fo
 moving onto Terraform.
 
 ```
-./get_tf_values.sh
+admin-scripts/get_tf_values.sh
+```
+
+## Things To Do After Terraform
+Once the Terraform initialization is complete, there are a couple more steps. At
+the time of this writing, these things can not be managed through Terraform.
+These are required for compliance reasons.
+
+### Database Audit Logs
+OCI Data Safe should already be enabled via Terraform, but you'll need to turn on specific audit features you may require.
+
+https://docs.cloud.oracle.com/en-us/iaas/data-safe/doc/activity-auditing-overview.html
+
+### Setting up WAF / WAAS rules
+By default, no rules are enabled on the WAF, and you'll need to run a script to update them in bulk.
+
+```
+admin-scripts/activate_waf_rules.sh <WAF OCID>
 ```
