@@ -77,7 +77,7 @@ for detailed instructions on using the Cloud Shell.
 
 Clone the repository from Github:
 ```
-git clone <URL TO REPO GOES HERE>
+git clone https://github.com/oracle-quickstart/oci-caas-pci.git
 ```
 
 The scripts we're going to run are contained within the admin-scripts directory,

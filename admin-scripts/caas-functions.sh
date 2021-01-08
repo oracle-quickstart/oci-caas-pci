@@ -92,7 +92,10 @@ function cache_cookbooks() {
   berks="${CHEF_WORKSTATION}/embedded/bin/ruby -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0 -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0/x86_64-linux ${CHEF_WORKSTATION}/bin/berks"
 
   cookbook_repos=(
-    "git@github.com:jondecamp/oci_caas_bastion.git"
+    "git@github.com:oracle-quickstart/oci-caas-bastion.git"
+    "git@github.com:oracle-quickstart/oci-caas-pci-tomcat.git"
+    "git@github.com:oracle-quickstart/oci-caas-base.git"
+    "git@github.com:oracle-quickstart/oci-caas-wazuh-server.git"
   )
   
   cache_dir="/tmp/caas-cache.$$"
