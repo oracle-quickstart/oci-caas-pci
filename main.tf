@@ -69,7 +69,7 @@ module "bastion" {
   oci_caas_bootstrap_bucket         = var.oci_caas_bootstrap_bucket
   oci_caas_bastion_bootstrap_bundle = var.oci_caas_bastion_bootstrap_bundle
   vcn_cidr_block                    = var.primary_vcn_cidr_block
-  chef_version                      = var.chef_version
+  cinc_version                      = var.cinc_version
   wazuh_server                      = module.wazuh.wazuh_server_ip
   external_fqdn                     = module.waf.fqdn
   vcn_id                            = module.vcn.vcn_id
@@ -90,7 +90,7 @@ module "app_tier" {
   vcn_cidr_block                = var.primary_vcn_cidr_block
   oci_caas_bootstrap_bucket     = var.oci_caas_bootstrap_bucket
   oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
-  chef_version                  = var.chef_version
+  cinc_version                  = var.cinc_version
   tomcat_config                 = var.tomcat_config
   wazuh_tier_cidr_block         = var.wazuh_tier_subnet_cidr_block
   app_war_file                  = var.app_war_file

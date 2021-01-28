@@ -17,7 +17,7 @@ For more information see [DNS Setup](#dns-setup).
 
 ### External software requirements
 * Terraform >= 0.12.x
-* Chef >= 16.x
+* Chef (or Cinc) >= 16.x
 * Authenticator app (I use FreeOTP, but any popular authenticator app should work)
 * SSH client
 * SQL client (I have used SQL Developer)

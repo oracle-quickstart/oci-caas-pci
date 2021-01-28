@@ -27,7 +27,7 @@ module "compute" {
   vcn_cidr_block                = var.vcn_cidr_block
   oci_caas_bootstrap_bucket     = var.oci_caas_bootstrap_bucket
   oci_caas_app_bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
-  chef_version                  = var.chef_version
+  cinc_version                  = var.cinc_version
   tomcat_config                 = var.tomcat_config
   app_war_file                  = var.app_war_file
   wazuh_server                  = var.wazuh_server

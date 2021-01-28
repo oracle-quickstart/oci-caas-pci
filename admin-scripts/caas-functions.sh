@@ -85,11 +85,11 @@ function cache_cookbooks() {
   cache_cookbooks_log="/tmp/oci-caas-$$-cache_cookbooks.log"
   namespace="$1"
   bucket_name="$2"
-  export CHEF_WORKSTATION="$HOME/opt/chef-workstation"
-  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CHEF_WORKSTATION/embedded/lib:embedded/lib/ruby/2.7.0"
-  export SSL_CERT_FILE=${CHEF_WORKSTATION}/embedded/ssl/certs/cacert.pem
+  export CINC_WORKSTATION="$HOME/opt/cinc-workstation"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CINC_WORKSTATION/embedded/lib:embedded/lib/ruby/2.7.0"
+  export SSL_CERT_FILE=${CINC_WORKSTATION}/embedded/ssl/certs/cacert.pem
   export CHEF_FIPS=""
-  berks="${CHEF_WORKSTATION}/embedded/bin/ruby -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0 -I${CHEF_WORKSTATION}/embedded/lib/ruby/2.7.0/x86_64-linux ${CHEF_WORKSTATION}/bin/berks"
+  berks="${CINC_WORKSTATION}/embedded/bin/ruby -I${CINC_WORKSTATION}/embedded/lib/ruby/2.7.0 -I${CINC_WORKSTATION}/embedded/lib/ruby/2.7.0/x86_64-linux ${CINC_WORKSTATION}/bin/berks"
 
   cookbook_repos=(
     "git@github.com:oracle-quickstart/oci-caas-bastion.git"
@@ -135,9 +135,8 @@ function cache_packages() {
   cache_dir="/tmp/caas-cache.$$"
   mkdir $cache_dir
   cd $cache_dir
-
+  wget http://downloads.cinc.sh/files/stable/cinc/16.9.29/el/7/cinc-16.9.29-1.el7.x86_64.rpm >> $cache_packages_log 2>&1
   wget https://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz >> $cache_packages_log 2>&1
-  wget https://packages.chef.io/files/stable/chef/16.1.16/el/8/chef-16.1.16-1.el7.x86_64.rpm >> $cache_packages_log 2>&1
 
   echo "Uploading required objects to $bucket_name bucket"
   for file in *

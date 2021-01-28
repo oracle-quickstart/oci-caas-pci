@@ -90,13 +90,13 @@ then
   exit 255
 fi
 
-CW_URL='https://packages.chef.io/files/stable/chef-workstation/20.12.205/el/8/chef-workstation-20.12.205-1.el7.x86_64.rpm'
-export CHEF_WORKSTATION="$HOME/opt/chef-workstation"
+CW_URL='http://downloads.cinc.sh/files/unstable/cinc-workstation/21.1.233/el/7/cinc-workstation-21.1.233-1.el7.x86_64.rpm'
+export CINC_WORKSTATION="$HOME/opt/cinc-workstation"
 cd $HOME
 
-if test ! -d $CHEF_WORKSTATION
+if test ! -d $CINC_WORKSTATION
 then
-  echo "Installing Chef Workstation in $CHEF_WORKSTATION"
+  echo "Installing Cinc Workstation in $CINC_WORKSTATION"
   curl $CW_URL | rpm2cpio | cpio -idmv > /dev/null 2>&1
 fi
 

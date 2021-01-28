@@ -37,7 +37,7 @@ variable "vcn_cidr_block" {
   description = "[VCN] CIDR Block"
 }
 
-variable "chef_version" {
+variable "cinc_version" {
   type        = string
-  description = "Version of the Chef Infra client from bootstrapping"
+  description = "Version of the Cinc Infra client from bootstrapping"
 }

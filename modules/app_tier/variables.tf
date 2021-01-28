@@ -40,9 +40,9 @@ variable "oci_caas_app_bootstrap_bundle" {
   description = "File name for the bootstrap bundle."
 }
 
-variable "chef_version" {
+variable "cinc_version" {
   type        = string
-  description = "Version of the Chef Infra client from bootstrapping"
+  description = "Version of the Cinc Infra client from bootstrapping"
 }
 
 variable "app_war_file" {

@@ -83,10 +83,10 @@ variable "oci_caas_bastion_bootstrap_bundle" {
   default     = "bastion_cookbooks.tar.gz"
 }
 
-variable "chef_version" {
+variable "cinc_version" {
   type        = string
-  description = "Version of the Chef Infra client from bootstrapping"
-  default     = "16.1.16-1"
+  description = "Version of the Cinc Infra client from bootstrapping"
+  default     = "16.9.29-1"
 }
 
 variable "tomcat_config" {

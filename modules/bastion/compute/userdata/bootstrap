@@ -11,7 +11,7 @@ yum update -y
 
 export OCI_CLI_AUTH=instance_principal
 export PATH="$PATH:/usr/bin"
-export HOME="/opt/oci-caas/chef"
+export HOME="/opt/oci-caas/cinc"
 export CHEF_HOME=$HOME
 export PACKAGE_CACHE="$HOME/package_cache"
 export OCI_CAAS_ETC="/opt/oci-caas/etc"
@@ -20,12 +20,12 @@ mkdir -p $PACKAGE_CACHE
 cd $CHEF_HOME
 
 oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/${bootstrap_bundle} --name ${bootstrap_bundle}
-oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm --name chef-${chef_version}.el7.x86_64.rpm
+oci os object get -bn ${bootstrap_bucket} --file $PACKAGE_CACHE/cinc-${cinc_version}.el7.x86_64.rpm --name cinc-${cinc_version}.el7.x86_64.rpm
 
 gzip -dc $PACKAGE_CACHE/${bootstrap_bundle} | tar -xvf -
-rpm -i $PACKAGE_CACHE/chef-${chef_version}.el7.x86_64.rpm
+rpm -i $PACKAGE_CACHE/cinc-${cinc_version}.el7.x86_64.rpm
 
-# Write JSON file used for Chef attributes
+# Write JSON file used for Cinc attributes
 cat << EOF > $CHEF_HOME/attributes.json
 {
     "package_cache": "$PACKAGE_CACHE",
@@ -53,14 +53,14 @@ EOF
 chmod 600 $authfile
 chown root:root $authfile
 
-# Run setup script for totp - deployed via Chef
+# Run setup script for totp - deployed via Cinc
 echo "bash ~/.oath/setup-totp.sh" >> /home/opc/.bash_profile
 
 # Temporarily disable SELinux - required for firewalld updates during user-data
 setenforce 0
 
-# Run the Chef client
-chef-client --chef-license accept -z --runlist oci_caas_bastion -j $CHEF_HOME/attributes.json
+# Run the Cinc client
+cinc-client -z --runlist oci_caas_bastion -j $CHEF_HOME/attributes.json
 
 # Re-enable SELinux
 setenforce 1
