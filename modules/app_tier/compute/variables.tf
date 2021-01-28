@@ -44,9 +44,9 @@ variable "oci_caas_app_bootstrap_bundle" {
   description = "File name for the bootstrap bundle."
 }
 
-variable "chef_version" {
+variable "cinc_version" {
   type        = string
-  description = "Version of the Chef Infra client from bootstrapping"
+  description = "Version of the Cinc Infra client from bootstrapping"
 }
 
 variable "tomcat_config" {
@@ -92,12 +92,12 @@ variable "instance_image_ocid" {
 
   default = {
     # See https://docs.us-phoenix-1.oraclecloud.com/images/
-    # Oracle-Autonomous-Linux-7.x
-    # Oracle-Autonomous-Linux-7.8-2020.04-0
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaax6mhsb3xey2gaz3ftkjwta5qkyr5se7va22sspbxghonldndph6a"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaajb2c3ew4peg7lrlzjwpam3vksrouvuysooh663nvqm5acb6tl4ya"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaat27bladiw33zqkw2amhg35tq4gqxdwerhsoabskqgcqpq7bhh52q"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa4r6gjlmo33yscossp7h6w6j3ry3eh2mwppsjnh26w3xakumvnrpa"
+    # Oracle-Autonomous-Linux-7.9
+    # Oracle-Autonomous-Linux-7.9-2021.01-0
+    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaadzbjqqwjzgl7yweoiqbltuh2y7kb4alzyuv4k3mambxpcpiicj3a"
+    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaauitscop5dhasbqkegaju56brylkckgi2wfecct2cuvn4xk33d2wq"
+    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaamv56sieig6vgu7jqg5pber3oe6xwrszjvfdbl2veka5dwrdgomea"
+    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaay6ffduwdwuip5phglsoqrbztdxs5kq2qjt3rgqowksoltnxcjdea"
   }
 }
 

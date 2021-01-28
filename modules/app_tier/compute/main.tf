@@ -188,7 +188,7 @@ data "template_file" bootstrap {
   vars = {
     bootstrap_bucket = var.oci_caas_bootstrap_bucket
     bootstrap_bundle = var.oci_caas_app_bootstrap_bundle
-    chef_version     = var.chef_version
+    cinc_version     = var.cinc_version
     vcn_cidr_block   = var.vcn_cidr_block
     app_war_file     = var.app_war_file
     tomcat_version   = var.tomcat_config["version"]

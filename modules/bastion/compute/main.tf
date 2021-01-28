@@ -54,7 +54,7 @@ data "template_file" bootstrap {
   vars = {
     bootstrap_bucket = var.oci_caas_bootstrap_bucket
     bootstrap_bundle = var.oci_caas_bastion_bootstrap_bundle
-    chef_version     = var.chef_version
+    cinc_version     = var.cinc_version
     vcn_cidr_block   = var.vcn_cidr_block
     wazuh_server     = var.wazuh_server
     external_fqdn    = var.external_fqdn
