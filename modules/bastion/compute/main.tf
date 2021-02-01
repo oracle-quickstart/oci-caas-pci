@@ -5,6 +5,7 @@ resource "oci_core_instance" "bastion" {
   compartment_id      = var.compartment_ocid
   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
   shape               = var.bastion_instance_shape
+  is_pv_encryption_in_transit_enabled = true
   display_name        = "bastion"
   freeform_tags = {
     "Description" = "Bastion host"

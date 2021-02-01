@@ -1,8 +1,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # List of all WAF edge subnets
-# Currently unused, due to an error in the data. See var.all_waf_cidr_blocks for workaround.
 # ---------------------------------------------------------------------------------------------------------------------
-# data "oci_waas_edge_subnets" "test_edge_subnets" {}
+data "oci_waas_edge_subnets" "all_edge_subnets" {}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Network resources used for load balancing
@@ -45,14 +44,10 @@ resource "oci_core_security_list" "dmz_ingress_security_list" {
 
   # Dynamic list of ingress CIDR blocks
   dynamic ingress_security_rules {
-    for_each = var.all_waf_cidr_blocks
-    # Commented out due to bug in WAF CIDR block list
-    # for_each = data.oci_waas_edge_subnets.test_edge_subnets.edge_subnets
+    for_each = data.oci_waas_edge_subnets.all_edge_subnets.edge_subnets
     content {
       protocol    = var.ingress_security_rules_protocol
-      # Commented out due to bug in WAF CIDR block list
-      # source      = ingress_security_rules.value.cidr
-      source      = ingress_security_rules.value
+      source      = ingress_security_rules.value.cidr
       description = var.ingress_security_rules_description
       stateless   = var.ingress_security_rules_stateless
       tcp_options {
