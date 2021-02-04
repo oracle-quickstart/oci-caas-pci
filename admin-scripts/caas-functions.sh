@@ -137,6 +137,7 @@ function cache_packages() {
   cd $cache_dir
   wget http://downloads.cinc.sh/files/stable/cinc/16.9.29/el/7/cinc-16.9.29-1.el7.x86_64.rpm >> $cache_packages_log 2>&1
   wget https://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz >> $cache_packages_log 2>&1
+  wget https://github.com/oracle-quickstart/oci-caas-pci-ecommerce/releases/download/0.3.0/pci-ecommerce-0.3.0.war >> $cache_packages_log 2>&1
 
   echo "Uploading required objects to $bucket_name bucket"
   for file in *
