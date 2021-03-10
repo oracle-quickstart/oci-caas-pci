@@ -58,3 +58,13 @@ variable "instance_image_ocid" {
     uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaay6ffduwdwuip5phglsoqrbztdxs5kq2qjt3rgqowksoltnxcjdea"
   }
 }
+
+variable "oci_caas_wazuh_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+}
+
+variable "cinc_version" {
+  type        = string
+  description = "Version of the Cinc Infra client from bootstrapping"
+}

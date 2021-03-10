@@ -71,8 +71,8 @@ data "template_file" bootstrap {
 
   vars = {
     bootstrap_bucket   = var.oci_caas_bootstrap_bucket
-    bootstrap_bundle   = "wazuh_cookbooks.tar.gz"
-    cinc_version       = "16.9.29-1"
+    bootstrap_bundle   = var.oci_caas_wazuh_bootstrap_bundle
+    cinc_version       = var.cinc_version
     backup_bucket_name = var.wazuh_backup_bucket_name
     vcn_cidr_block     = var.vcn_cidr_block
     wazuh_user         = "wazuh"

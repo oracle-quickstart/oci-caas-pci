@@ -42,3 +42,13 @@ variable "wazuh_server_vcn_udp_ports" {
   description = "[Wazuh Security List] Inbound UDP ports (internal to VCN)"
   default = [1514]
 }
+
+variable "oci_caas_wazuh_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+}
+
+variable "cinc_version" {
+  type        = string
+  description = "Version of the Cinc Infra client from bootstrapping"
+}

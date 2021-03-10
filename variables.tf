@@ -74,13 +74,19 @@ variable "oci_caas_bootstrap_bucket" {
 variable "oci_caas_app_bootstrap_bundle" {
   type        = string
   description = "File name for the bootstrap bundle."
-  default     = "app_cookbooks.tar.gz"
+  default     = "oci-caas-pci-tomcat.tar.gz"
 }
 
 variable "oci_caas_bastion_bootstrap_bundle" {
   type        = string
   description = "File name for the bootstrap bundle."
-  default     = "bastion_cookbooks.tar.gz"
+  default     = "oci-caas-bastion.tar.gz"
+}
+
+variable "oci_caas_wazuh_bootstrap_bundle" {
+  type        = string
+  description = "File name for the bootstrap bundle."
+  default     = "oci-caas-wazuh-server.tar.gz"
 }
 
 variable "cinc_version" {
