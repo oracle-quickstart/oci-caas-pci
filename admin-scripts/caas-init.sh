@@ -98,6 +98,7 @@ if test ! -d $CINC_WORKSTATION
 then
   echo "Installing Cinc Workstation in $CINC_WORKSTATION"
   curl $CW_URL | rpm2cpio | cpio -idmv > /dev/null 2>&1
+  ln -s $CINC_WORKSTATION/embedded/lib/ruby/gems/2.7.0 $CINC_WORKSTATION/embedded/share/gems
 fi
 
 cache_cookbooks $os_namespace $caas_bucket
