@@ -29,7 +29,8 @@ then
     echo "Error with vault creation. Exiting."
   else
     echo -n "Waiting for vault to be created - This could take a few minutes."
-    count=10
+    # Count of 20 - vault creation takes longer depending on the region
+    count=20
     int=1
     while [[ $int -le $count ]]
     do
