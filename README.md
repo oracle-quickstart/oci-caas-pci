@@ -34,13 +34,13 @@ for SSL certificate creation. You should install this within your
 OCI Cloud Shell environment. Our installer checks for the default installation path in
 **$HOME/.acme.sh**
 
-Follow the (instructions here)(https://github.com/acmesh-official/acme.sh).
+Follow the [instructions here](https://github.com/acmesh-official/acme.sh).
 You will need to pass the --force option to install, which will bypass the
 check for cron.
 
 ## DNS Setup
 In the tenancy you plan on using, you will need to
-(create a new compartment)[https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm] -
+[create a new compartment](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcompartments.htm) -
 this compartment is separate from the one we will create for the application. We do 
 this to be able to manage DNS across multiple compartments.
 
@@ -80,11 +80,7 @@ Clone the repository from Github:
 git clone https://github.com/oracle-quickstart/oci-caas-pci.git
 ```
 
-The scripts we're going to run are contained within the admin-scripts directory,
-so you can change to that directory or run the upcoming commands with the path included.
-```
-cd oci-caas-pci/admin-scripts
-```
+Note: All of the scripts we're going to run are contained within the *admin-scripts* directory.
 
 ### Initialize CAAS Environment
 The first script creates a new compartment, object storage bucket, and caches 
@@ -92,7 +88,7 @@ dependencies into the bucket. See the below note on setting a Unique Identifier,
 or move on with the script and accept the defaults.
 
 ```
-./caas-init.sh
+admin-scripts/caas-init.sh
 ```
 
 #### Unique Identifier (environment naming)
@@ -114,7 +110,7 @@ and stores new vault objects. For this to run successfully, you'll need three va
 1. Generate a password which will be used for the ECOM DB user
 
 ```
-./app_vault.sh
+admin-scripts/app_vault.sh
 ```
 
 ### Configuration file
