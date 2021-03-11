@@ -129,19 +129,21 @@ module "database" {
 # Create Wazuh server and related resources (subnet, security list)
 # ---------------------------------------------------------------------------------------------------------------------
 module "wazuh" {
-  source                     = "./modules/wazuh"
-  tenancy_ocid               = var.tenancy_ocid
-  ssh_public_key             = var.ssh_public_key
-  region                     = var.region
-  compartment_ocid           = var.compartment_ocid
-  wazuh_tier_cidr_block      = var.wazuh_tier_subnet_cidr_block
-  dmz_cidr_block             = var.dmz_subnet_cidr_block
-  vcn_cidr_block             = var.primary_vcn_cidr_block
-  wazuh_server_vcn_tcp_ports = var.wazuh_server_vcn_tcp_ports
-  wazuh_server_vcn_udp_ports = var.wazuh_server_vcn_udp_ports
-  wazuh_backup_bucket_name   = module.objectstore.wazuh_backup_bucket_name
-  oci_caas_bootstrap_bucket  = var.oci_caas_bootstrap_bucket
-  vcn_id                     = module.vcn.vcn_id
-  route_table_id             = module.vcn.nat_route_table_id
-  dhcp_options_id            = module.vcn.dhcp_options_id
+  source                          = "./modules/wazuh"
+  tenancy_ocid                    = var.tenancy_ocid
+  ssh_public_key                  = var.ssh_public_key
+  region                          = var.region
+  compartment_ocid                = var.compartment_ocid
+  wazuh_tier_cidr_block           = var.wazuh_tier_subnet_cidr_block
+  dmz_cidr_block                  = var.dmz_subnet_cidr_block
+  vcn_cidr_block                  = var.primary_vcn_cidr_block
+  wazuh_server_vcn_tcp_ports      = var.wazuh_server_vcn_tcp_ports
+  wazuh_server_vcn_udp_ports      = var.wazuh_server_vcn_udp_ports
+  oci_caas_bootstrap_bucket       = var.oci_caas_bootstrap_bucket
+  oci_caas_wazuh_bootstrap_bundle = var.oci_caas_wazuh_bootstrap_bundle
+  cinc_version                    = var.cinc_version
+  wazuh_backup_bucket_name        = module.objectstore.wazuh_backup_bucket_name
+  vcn_id                          = module.vcn.vcn_id
+  route_table_id                  = module.vcn.nat_route_table_id
+  dhcp_options_id                 = module.vcn.dhcp_options_id
 }
