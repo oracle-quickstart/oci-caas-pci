@@ -28,11 +28,27 @@ then
   then
     echo "Error with vault creation. Exiting."
   else
-    echo "Waiting for vault to be created"
-    sleep 60
-    vault_id=`get_vault_id $compartment_id "oci-caas-${ident}"`
-    if [[ $? -eq 0 ]]
+    echo -n "Waiting for vault to be created - This could take a few minutes."
+    count=10
+    int=1
+    while [[ $int -le $count ]]
+    do
+      echo -n "."
+      sleep 30
+      vault_id=`get_vault_id $compartment_id "oci-caas-${ident}"`
+      if [[ -n $vault_id ]]
+      then
+        break
+      fi
+      int=`expr $int + 1`
+    done
+    echo ""
+
+    if [[ -z $vault_id ]]
     then
+      echo "Unable to retrieve oci vault. Exiting due to errors."
+      exit 255
+    else
       update_configuration $CONF vault_id $vault_id
     fi
   fi
