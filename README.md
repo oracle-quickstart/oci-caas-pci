@@ -16,12 +16,14 @@ externally registerred DNS zone with SOA records pointing to OCI managed DNS zon
 For more information see [DNS Setup](#dns-setup).
 
 ### External software requirements
+On your management workstation, you will need the following:
 * Terraform >= 0.12.x
-* Chef (or Cinc) >= 16.x
-* Authenticator app (I use FreeOTP, but any popular authenticator app should work)
 * SSH client
 * SQL client (I have used SQL Developer)
 * Git
+
+For two-factor authentication:
+* Authenticator app (I use FreeOTP, but any popular authenticator app should work)
 
 ### Stripe API keys
 To utilize Stripe, you will need to have access to a pair of
@@ -178,3 +180,14 @@ By default, no rules are enabled on the WAF, and you'll need to run a script to 
 ```
 admin-scripts/activate_waf_rules.sh <WAF OCID>
 ```
+
+### First time Bastion pin
+In order to log into the Bastion the first time, you will need your private SSH key (public key should have been provided as an input
+for Terraform). With that, you'll be prompted for a "One-time password (OATH) for `opc'" - the default value is: **560000**
+
+Immediately scan the barcode using your authenticator of choice, or you will lose access to this host. If you can't log in, you will have to
+terminate the bastion and recreate it via Terraform.
+
+### Wazuh
+This stack deploys a [Wazuh](https://wazuh.com/) instance for security monitoring, threat detection, integrity monitoring, and more. You can log
+in by using an SSH tunnel through the Bastion. The wazuh IP address and password will be in the output of Terraform. The username is: _wazuh_
