@@ -1,5 +1,6 @@
 #!/bin/bash
-. caas-functions.sh
+admin=`dirname $0`
+. ${admin}/caas-functions.sh
 CONF_DIR="${HOME}/.oci-caas/"
 CONF="${CONF_DIR}/oci-caas-pci.conf"
 . $CONF
@@ -62,23 +63,40 @@ then
   exit 255
 fi
 
-echo "Creating KMS Management Key"
-create_kms_mgmt_key $compartment_id $mgmt
-rc="$?"
-
-sleep 60
-
-if [[ $rc -ne 0 ]]
+# If we don't have a vault management key, create one
+if [[ -z ${mgmtkey} ]]
 then
-  echo "Errors while creating KMS Management Key. Exiting."
-  exit 255
-fi
+  create_kms_mgmt_key $compartment_id $mgmt
 
-mgmtkey=`get_vault_mgmt_key $compartment_id $mgmt`
-if [[ $? -ne 0 ]]
-then
-  echo "Unable to retrieve KMS Management Key. Exiting."
-  exit 255
+  if [[ $? -ne "0" ]]
+  then
+    echo "Error with vault creation. Exiting."
+  else
+    echo -n "Waiting for vault management key to be created - This could take a few minutes."
+    # Count of 20 - creation takes longer depending on the region
+    count=20
+    int=1
+    while [[ $int -le $count ]]
+    do
+      echo -n "."
+      sleep 30
+      mgmtkey=`get_vault_mgmt_key $compartment_id $mgmt`
+      if [[ -n $mgmtkey ]]
+      then
+        break
+      fi
+      int=`expr $int + 1`
+    done
+    echo ""
+
+    if [[ -z $mgmtkey ]]
+    then
+      echo "Unable to retrieve vault management key. Exiting due to errors."
+      exit 255
+    else
+      update_configuration $CONF mgmtkey $mgmtkey
+    fi
+  fi
 fi
 
 set +x

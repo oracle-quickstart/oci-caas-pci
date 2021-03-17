@@ -19,7 +19,7 @@ function get_response() {
 # Initialize configuration file
 function initialize_configuration() {
   conf="$1"
-  values="compartment_id tenancy_ocid ident caas_bucket os_namespace vault_id"
+  values="compartment_id tenancy_ocid ident caas_bucket os_namespace vault_id mgmtkey"
 
   for value in $values
   do
@@ -188,6 +188,7 @@ function get_vault_mgmt_key() {
   compartment_id=$1
   mgmt=$2
 
+  # Ideally we filter by lifecycle-state: --query 'data[?"lifecycle-state" == ENABLED]."id"
   mgmtkey=`oci kms management key list --compartment-id $compartment_id --endpoint $mgmt 2> /dev/null | grep '"id":' | awk -F\" '{print $4}'`
   echo $mgmtkey
 }

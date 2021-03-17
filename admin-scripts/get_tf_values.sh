@@ -1,5 +1,6 @@
 #!/bin/bash
-. caas-functions.sh
+admin=`dirname $0`
+. ${admin}/caas-functions.sh
 CONF_DIR="${HOME}/.oci-caas/"
 CONF="${CONF_DIR}/oci-caas-pci.conf"
 . $CONF
