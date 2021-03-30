@@ -9,6 +9,8 @@ def getKeys():
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
     print("")
+    print("A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
+    print("")
     print("If you are not ready to provide this information, you may cancel this script now, "
           "or hit <ENTER/RETURN> to continue.")
     print("Note: These values are *not* logged.")
@@ -26,7 +28,7 @@ def getKeys():
 
 
 def validatePassword(password):
-    special = '@$#%&*!'
+    special = '@$#%&*!_'
 
     caps, lower, num, specialChar, length = False, False, False, False, False
     for i in password:
@@ -55,8 +57,6 @@ def validatePassword(password):
     if caps and lower and num and specialChar and length:
         return 'valid'
     else:
-        print(
-            "A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
         return 'not valid'
 
 
@@ -84,6 +84,7 @@ def createVault(compartment_id, ident, config):
         return response
     except:
         print("Error with vault creation. Exiting.")
+        sys.exit()
 
 
 # This function creates a new management key in the given vault using KMS Management client and waits until the key
@@ -107,6 +108,7 @@ def createKey(key_name, compartment_id, config, service_endpoint):
         return response
     except:
         print("Error with vault creation. Exiting.")
+        sys.exit()
 
 
 def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id, config):
@@ -116,7 +118,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         print("Creating a secret {}.".format(secret_name))
 
         # Create secret_content_details that needs to be passed when creating secret.
-        secret_description = "This is just a test"
+        secret_description = "Secret"
         secret_content_details = oci.vault.models.Base64SecretContentDetails(
             content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64,
             name=secret_content,
@@ -136,6 +138,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         return response
     except:
         print("Error with vault creation. Exiting.")
+        sys.exit()
 
 
 def get_vault(client, vault_id):
@@ -174,7 +177,7 @@ def write_VaultID_and_KeyID(vault_id, key_id):
     filename = "~/.oci-caas/oci-caas-pci.conf"
     # Open the file in read mode
     with open(filename, 'a') as file_object:
-        file_object.write(" \nvault_id={} \n".format(vault_id))
+        file_object.write(" vault_id={} \n".format(vault_id))
         file_object.write("mgmtkey={}".format(key_id))
 
 
@@ -182,7 +185,7 @@ if __name__ == "__main__":
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys()
 
     compartment_id, ident = get_comaprtmentID_and_Ident()
-
+    #
     configuration = from_file(file_location="~/.oci/config")
     COMPARTMENT_ID = compartment_id
     VAULT_NAME = ident
