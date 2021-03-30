@@ -187,10 +187,8 @@ if __name__ == "__main__":
     COMPARTMENT_ID = compartment_id
     VAULT_NAME = ident
     KEY_NAME = "mgmt-key"
-    if createVault(COMPARTMENT_ID, VAULT_NAME, configuration) is None:
-        sys.exit()
-    else:
-        vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
+
+    vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
 
     try:
         VAULT_ID = vault.id
@@ -203,10 +201,7 @@ if __name__ == "__main__":
     except:
         print("Unable to retrieve management endpoint. Exiting due to errors.")
 
-    if createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint) is None:
-        sys.exit()
-    else:
-        key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
+    key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
 
     try:
         KEY_ID = key.id
