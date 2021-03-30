@@ -149,7 +149,7 @@ def get_key(key_id, service_endpoint, config):
 
 # Reads the compartment ID and the identity from the configuration file
 def get_comaprtmentID_and_Ident():
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+    filename = "test.txt"
     # Open the file in read mode
     with open(filename, 'r') as file_object:
         i = 0
@@ -171,7 +171,7 @@ def get_comaprtmentID_and_Ident():
 
 # Writes the vault ID and the management key ID to the configuration file
 def write_VaultID_and_KeyID(vault_id, key_id):
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+    filename = "test.txt"
     # Open the file in read mode
     with open(filename, 'a') as file_object:
         file_object.write(" \nvault_id={} \n".format(vault_id))
@@ -187,8 +187,11 @@ if __name__ == "__main__":
     COMPARTMENT_ID = compartment_id
     VAULT_NAME = ident
     KEY_NAME = "mgmt-key"
+    if createVault(COMPARTMENT_ID, VAULT_NAME, configuration) is None:
+        sys.exit()
+    else:
+        vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
 
-    vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
     try:
         VAULT_ID = vault.id
     except:
@@ -199,7 +202,12 @@ if __name__ == "__main__":
         service_endpoint = vault.management_endpoint
     except:
         print("Unable to retrieve management endpoint. Exiting due to errors.")
-    key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
+
+    if createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint) is None:
+        sys.exit()
+    else:
+        key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
+
     try:
         KEY_ID = key.id
     except:
