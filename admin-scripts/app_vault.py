@@ -85,7 +85,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         secret_description = "Secret"
         secret_content_details = oci.vault.models.Base64SecretContentDetails(
             content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64,
-            name=secret_name,
+            name=secret_content,
             stage="CURRENT",
             content=secret_content)
         secrets_details = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id,
