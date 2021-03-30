@@ -9,9 +9,6 @@ def getKeys():
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
     print("")
-    print(
-        "A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
-    print("")
     print("If you are not ready to provide this information, you may cancel this script now, "
           "or hit <ENTER/RETURN> to continue.")
     print("Note: These values are *not* logged.")
@@ -22,43 +19,8 @@ def getKeys():
     sk = input("Please enter the Stripe secret key: ")
     pk = input("Please enter the Stripe public key: ")
     dbpw = input("Please enter the ECOM user password: ")
-    while validatePassword(dbpw) == 'not valid':
-        dbpw = input("Please re-enter the ECOM user password: ")
 
     return sk, pk, dbpw
-
-
-def validatePassword(password):
-    special = '@$#%&*!_'
-
-    caps, lower, num, specialChar, length = False, False, False, False, False
-    for i in password:
-        if i.isupper():
-            caps = True
-        elif i.islower():
-            lower = True
-        elif i.isdigit():
-            num = True
-        elif i in special:
-            specialChar = True
-    if len(password) > 12:
-        length = True
-
-    if not caps:
-        print("Required at least a uppercase letter!")
-    if not lower:
-        print("Required at least a lowercase letter!")
-    if not specialChar:
-        print("Required at least a special character!")
-    if not num:
-        print("Required at least a number!")
-    if not length:
-        print("Required at least 12 characters!")
-
-    if caps and lower and num and specialChar and length:
-        return 'valid'
-    else:
-        return 'not valid'
 
 
 # This function creates a new vault in the given compartment using KMS Vault client and waits until the vault
@@ -123,7 +85,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         secret_description = "Secret"
         secret_content_details = oci.vault.models.Base64SecretContentDetails(
             content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64,
-            name=secret_content,
+            name=secret_name,
             stage="CURRENT",
             content=secret_content)
         secrets_details = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id,
