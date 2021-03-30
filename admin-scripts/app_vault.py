@@ -149,7 +149,7 @@ def get_key(key_id, service_endpoint, config):
 
 # Reads the compartment ID and the identity from the configuration file
 def get_comaprtmentID_and_Ident():
-    filename = "test.txt"
+    filename = "~/.oci-caas/oci-caas-pci.conf"
     # Open the file in read mode
     with open(filename, 'r') as file_object:
         i = 0
@@ -171,7 +171,7 @@ def get_comaprtmentID_and_Ident():
 
 # Writes the vault ID and the management key ID to the configuration file
 def write_VaultID_and_KeyID(vault_id, key_id):
-    filename = "test.txt"
+    filename = "~/.oci-caas/oci-caas-pci.conf"
     # Open the file in read mode
     with open(filename, 'a') as file_object:
         file_object.write(" \nvault_id={} \n".format(vault_id))
