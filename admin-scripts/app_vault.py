@@ -9,7 +9,8 @@ def getKeys():
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
     print("")
-    print("A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
+    print(
+        "A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
     print("")
     print("If you are not ready to provide this information, you may cancel this script now, "
           "or hit <ENTER/RETURN> to continue.")
@@ -115,6 +116,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
     try:
         vaults_client = oci.vault.VaultsClient(config)
         vaults_client_composite = oci.vault.VaultsClientCompositeOperations(vaults_client)
+        name = secret_name
         print("Creating a secret {}.".format(secret_name))
 
         # Create secret_content_details that needs to be passed when creating secret.
@@ -136,7 +138,8 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
                                                                             wait_for_states=[
                                                                                 oci.vault.models.Secret.LIFECYCLE_STATE_ACTIVE])
         return response
-    except:
+    except Exception as e:
+        print(e)
         print("Error with vault creation. Exiting.")
         sys.exit()
 
@@ -152,7 +155,7 @@ def get_key(key_id, service_endpoint, config):
 
 # Reads the compartment ID and the identity from the configuration file
 def get_comaprtmentID_and_Ident():
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+    filename = ""
     # Open the file in read mode
     with open(filename, 'r') as file_object:
         i = 0
@@ -174,50 +177,62 @@ def get_comaprtmentID_and_Ident():
 
 # Writes the vault ID and the management key ID to the configuration file
 def write_VaultID_and_KeyID(vault_id, key_id):
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+    filename = ""
     # Open the file in read mode
     with open(filename, 'a') as file_object:
-        file_object.write(" vault_id={} \n".format(vault_id))
+        file_object.write("vault_id={} \n".format(vault_id))
         file_object.write("mgmtkey={}".format(key_id))
 
 
 if __name__ == "__main__":
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys()
 
-    compartment_id, ident = get_comaprtmentID_and_Ident()
+    # compartment_id, ident = get_comaprtmentID_and_Ident()
     #
     configuration = from_file(file_location="~/.oci/config")
-    COMPARTMENT_ID = compartment_id
-    VAULT_NAME = ident
-    KEY_NAME = "mgmt-key"
+    # COMPARTMENT_ID = compartment_id
+    # VAULT_NAME = ident
+    # KEY_NAME = "mgmt-key"
+    #
+    # vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
+    #
+    # try:
+    #     VAULT_ID = vault.id
+    # except:
+    #     print("Unable to retrieve oci vault. Exiting due to errors.")
+    #
+    # print(" Created vault {} with id : {}".format(VAULT_NAME, VAULT_ID))
+    # try:
+    #     service_endpoint = vault.management_endpoint
+    # except:
+    #     print("Unable to retrieve management endpoint. Exiting due to errors.")
+    #
+    # key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
+    #
+    # try:
+    #     KEY_ID = key.id
+    # except:
+    #     print("Unable to retrieve vault management key. Exiting due to errors.")
+    #
+    # print(" Created key {} with id : {}".format(KEY_NAME, KEY_ID))
 
-    vault = createVault(COMPARTMENT_ID, VAULT_NAME, configuration).data
+    # print("Uploading Secrets to Vault...")
+    # secret_name1 = "stripe_api_sk"
+    # create_secret(COMPARTMENT_ID, stripe_api_sk, secret_name1, VAULT_ID, KEY_ID, configuration)
+    # secret_name2 = "stripe_api_pk"
+    # create_secret(COMPARTMENT_ID, stripe_api_pk, secret_name2, VAULT_ID, KEY_ID, configuration)
+    # secret_name3 = "ecom_db_pw"
+    # create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration)
+    # print("Successfully Uploaded the secrets")
 
-    try:
-        VAULT_ID = vault.id
-    except:
-        print("Unable to retrieve oci vault. Exiting due to errors.")
-
-    print(" Created vault {} with id : {}".format(VAULT_NAME, VAULT_ID))
-    try:
-        service_endpoint = vault.management_endpoint
-    except:
-        print("Unable to retrieve management endpoint. Exiting due to errors.")
-
-    key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
-
-    try:
-        KEY_ID = key.id
-    except:
-        print("Unable to retrieve vault management key. Exiting due to errors.")
-
-    print(" Created key {} with id : {}".format(KEY_NAME, KEY_ID))
-
+    COMPARTMENT_ID = "ocid1.compartment.oc1..aaaaaaaau5rs4aqn4g765kliovm2kf5sdonepiwpcgiqp6oupwhg6dyhofla"
+    VAULT_ID = "ocid1.vault.oc1.phx.bbqgg44iaafqw.abyhqljtxy6bww7ghthm3frgwi5tenyiju5etluapxvcw3sewf6osvokbbaq"
+    KEY_ID = "ocid1.key.oc1.phx.bbqgg44iaafqw.abyhqljtiiics3bjqx4cnm7kozvozllqv3ir3lxd4eciercpgvenqpvcwdaq"
     print("Uploading Secrets to Vault...")
-    secret_name1 = "stripe_api_sk"
-    create_secret(COMPARTMENT_ID, stripe_api_sk, secret_name1, VAULT_ID, KEY_ID, configuration)
-    secret_name2 = "stripe_api_pk"
-    create_secret(COMPARTMENT_ID, stripe_api_pk, secret_name2, VAULT_ID, KEY_ID, configuration)
+    # secret_name1 = "stripe_api_sk"
+    # create_secret(COMPARTMENT_ID, stripe_api_sk, secret_name1, VAULT_ID, KEY_ID, configuration)
+    # secret_name2 = "stripe_api_pk"
+    # create_secret(COMPARTMENT_ID, stripe_api_pk, secret_name2, VAULT_ID, KEY_ID, configuration)
     secret_name3 = "ecom_db_pw"
     create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration)
     print("Successfully Uploaded the secrets")
