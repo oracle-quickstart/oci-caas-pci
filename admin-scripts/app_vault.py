@@ -17,11 +17,11 @@ def getKeys():
     temp = input("<ENTER> or Quit (q)")
     if temp == 'q':
         sys.exit()
-    sk = input("Please enter the Stripe secret key: ")
-    pk = input("Please enter the Stripe public key: ")
-    dbpw = input("Please enter the ECOM user password: ")
+    secret_key = input("Please enter the Stripe secret key: ")
+    public_key = input("Please enter the Stripe public key: ")
+    database_pwd = input("Please enter the ECOM user password: ")
 
-    return sk, pk, dbpw
+    return secret_key, public_key, database_pwd
 
 
 # This function creates a new vault in the given compartment using KMS Vault client and waits until the vault
@@ -116,7 +116,7 @@ def get_key(key_id, service_endpoint, config):
 
 
 # Reads the compartment ID and the identity from the configuration file
-def get_comaprtmentID_and_Ident():
+def get_compartmentID_and_Ident():
     filename = "~/.oci-caas/oci-caas-pci.conf"
     # Open the file in read mode
     with open(filename, 'r') as file_object:
@@ -147,7 +147,7 @@ def write_VaultID_and_KeyID(vault_id, key_id):
 
 
 def text_to_base64(secret_str):
-    secret_str_bytes =  base64.b64encode(secret_str.encode("utf-8"))
+    secret_str_bytes = base64.b64encode(secret_str.encode("utf-8"))
     secret_str = str(secret_str_bytes, "utf-8")
     return secret_str
 
@@ -159,10 +159,10 @@ if __name__ == "__main__":
     stripe_api_pk = text_to_base64(stripe_api_pk)
     ecom_db_pw = text_to_base64(ecom_db_pw)
 
-    compartment_id, ident = get_comaprtmentID_and_Ident()
+    compartment_ID, ident = get_compartmentID_and_Ident()
 
     configuration = from_file(file_location="~/.oci/config")
-    COMPARTMENT_ID = compartment_id
+    COMPARTMENT_ID = compartment_ID
     VAULT_NAME = ident
     KEY_NAME = "mgmt-key"
 
@@ -175,11 +175,11 @@ if __name__ == "__main__":
 
     print(" Created vault {} with id : {}".format(VAULT_NAME, VAULT_ID))
     try:
-        service_endpoint = vault.management_endpoint
+        service_mgmt_endpoint = vault.management_endpoint
     except:
         print("Unable to retrieve management endpoint. Exiting due to errors.")
 
-    key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_endpoint).data
+    key = createKey(KEY_NAME, COMPARTMENT_ID, configuration, service_mgmt_endpoint).data
 
     try:
         KEY_ID = key.id
