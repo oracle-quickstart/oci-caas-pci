@@ -1,4 +1,5 @@
 import sys
+import base64
 import oci
 from oci.config import from_file
 
@@ -85,7 +86,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         secret_description = "Secret"
         secret_content_details = oci.vault.models.Base64SecretContentDetails(
             content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64,
-            name=secret_content,
+            name="SecretContent",
             stage="CURRENT",
             content=secret_content)
         secrets_details = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id,
@@ -145,8 +146,18 @@ def write_VaultID_and_KeyID(vault_id, key_id):
         file_object.write("mgmtkey={}".format(key_id))
 
 
+def text_to_base64(secret_str):
+    secret_str_bytes =  base64.b64encode(secret_str.encode("utf-8"))
+    secret_str = str(secret_str_bytes, "utf-8")
+    return secret_str
+
+
 if __name__ == "__main__":
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys()
+
+    stripe_api_sk = text_to_base64(stripe_api_sk)
+    stripe_api_pk = text_to_base64(stripe_api_pk)
+    ecom_db_pw = text_to_base64(ecom_db_pw)
 
     compartment_id, ident = get_comaprtmentID_and_Ident()
 
