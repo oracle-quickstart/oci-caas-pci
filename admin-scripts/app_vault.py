@@ -21,13 +21,14 @@ def getKeys():
     temp = input("<ENTER> or Quit (q)")
     if temp == 'q':
         sys.exit()
-    sk = input("Please enter the Stripe secret key: ")
-    pk = input("Please enter the Stripe public key: ")
-    dbpw = input("Please enter the ECOM user password: ")
-    while validatePassword(dbpw) == 'not valid':
-        dbpw = input("Please re-enter the ECOM user password: ")
+    secret_key = input("Please enter the Stripe secret key: ")
+    public_key = input("Please enter the Stripe public key: ")
+    database_pwd = input("Please enter the ECOM user password: ")
 
-    return sk, pk, dbpw
+    while validatePassword(database_pwd) == 'not valid':
+        database_pwd = input("Please re-enter the ECOM user password: ")
+
+    return secret_key, public_key, database_pwd
 
 
 # This function validates the database password meets all the requirements for a password
