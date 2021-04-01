@@ -49,15 +49,15 @@ def validatePassword(password):
         length = True
 
     if not caps:
-        print("Required at least a uppercase letter!")
+        print("....Required at least a uppercase letter!")
     if not lower:
-        print("Required at least a lowercase letter!")
+        print("....Required at least a lowercase letter!")
     if not specialChar:
-        print("Required at least a special character!")
+        print("....Required at least a special character!")
     if not num:
-        print("Required at least a number!")
+        print("....Required at least a number!")
     if not length:
-        print("Required at least 12 characters!")
+        print("....Required at least 12 characters!")
 
     if caps and lower and num and specialChar and length:
         return 'valid'
