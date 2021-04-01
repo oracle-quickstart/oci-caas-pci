@@ -33,7 +33,7 @@ def getKeys():
 
 # This function validates the database password meets all the requirements for a password
 def validatePassword(password):
-    special = '@$#%&*!_'
+    special = '@$#%&*!_^'
 
     caps, lower, num, specialChar, length = False, False, False, False, False
     for i in password:
