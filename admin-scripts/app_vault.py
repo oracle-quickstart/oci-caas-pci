@@ -25,7 +25,7 @@ def getKeys():
     public_key = input("Please enter the Stripe public key: ")
     database_pwd = input("Please enter the ECOM user password: ")
 
-    while validatePassword(database_pwd) == 'not valid':
+    while validatePassword(database_pwd) is False:
         database_pwd = input("Please re-enter the ECOM user password: ")
 
     return secret_key, public_key, database_pwd
@@ -58,11 +58,11 @@ def validatePassword(password):
         print("....Required at least a number!")
     if not length:
         print("....Required at least 12 characters!")
-
+    isValid = False
     if caps and lower and num and specialChar and length:
-        return 'valid'
-    else:
-        return 'not valid'
+        isValid = True
+
+    return isValid
 
 
 # This function creates a new vault in the given compartment using KMS Vault client and waits until the vault
