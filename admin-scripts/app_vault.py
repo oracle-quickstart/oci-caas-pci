@@ -4,11 +4,15 @@ import oci
 from oci.config import from_file
 
 
+# This function gets the stripe keys and database password from the user
 def getKeys():
     print("We will capture three values for this application environment:")
     print("1) The Stripe secret key")
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
+    print("")
+    print(
+        "A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
     print("")
     print("If you are not ready to provide this information, you may cancel this script now, "
           "or hit <ENTER/RETURN> to continue.")
@@ -21,7 +25,44 @@ def getKeys():
     public_key = input("Please enter the Stripe public key: ")
     database_pwd = input("Please enter the ECOM user password: ")
 
+    while validatePassword(database_pwd) is False:
+        database_pwd = input("Please re-enter the ECOM user password: ")
+
     return secret_key, public_key, database_pwd
+
+
+# This function validates the database password meets all the requirements for a password
+def validatePassword(password):
+    special = '@$#%&*!_^'
+
+    caps, lower, num, specialChar, length = False, False, False, False, False
+    for i in password:
+        if i.isupper():
+            caps = True
+        elif i.islower():
+            lower = True
+        elif i.isdigit():
+            num = True
+        elif i in special:
+            specialChar = True
+    if len(password) > 12:
+        length = True
+
+    if not caps:
+        print("....Required at least a uppercase letter!")
+    if not lower:
+        print("....Required at least a lowercase letter!")
+    if not specialChar:
+        print("....Required at least a special character!")
+    if not num:
+        print("....Required at least a number!")
+    if not length:
+        print("....Required at least 12 characters!")
+    isValid = False
+    if caps and lower and num and specialChar and length:
+        isValid = True
+
+    return isValid
 
 
 # This function creates a new vault in the given compartment using KMS Vault client and waits until the vault
