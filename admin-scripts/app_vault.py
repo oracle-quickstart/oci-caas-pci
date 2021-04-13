@@ -191,6 +191,7 @@ def text_to_base64(secret_str):
 if __name__ == "__main__":
     requiredLength = 12
     config_filename = "~/.oci-caas/oci-caas-pci.conf"
+
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys(requiredLength)
 
     stripe_api_sk = text_to_base64(stripe_api_sk)
