@@ -48,7 +48,7 @@ def validatePassword(password, passwordLength):
         print("....Required at least a uppercase letter (A–Z)!")
     if not lower:
         print("....Required at least a lowercase letter (a–z)!")
-    if not special:
+    if not specialChar:
         print("....Required at least a special character. List of special characters include "
               "{}(space)".format(special))
     if not num:
