@@ -5,15 +5,13 @@ from oci.config import from_file
 
 
 # This function gets the stripe keys and database password from the user
-def getKeys():
+def getKeys(passwordLength):
     print("We will capture three values for this application environment:")
     print("1) The Stripe secret key")
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
-    print("")
-    print(
-        "A password must contain at least 12 characters, a number, a special character, a lowercase letter and a uppercase letter!!")
-    print("")
+    print("\nA password must contain at least {} characters, a number, a special character, a "
+          "lowercase letter and a uppercase letter!! \n".format(passwordLength))
     print("If you are not ready to provide this information, you may cancel this script now, "
           "or hit <ENTER/RETURN> to continue.")
     print("Note: These values are *not* logged.")
@@ -25,16 +23,15 @@ def getKeys():
     public_key = input("Please enter the Stripe public key: ")
     database_pwd = input("Please enter the ECOM user password: ")
 
-    while validatePassword(database_pwd) is False:
+    while validatePassword(database_pwd, passwordLength) is False:
         database_pwd = input("Please re-enter the ECOM user password: ")
 
     return secret_key, public_key, database_pwd
 
 
 # This function validates the database password meets all the requirements for a password
-def validatePassword(password):
-    special = '@$#%&*!_^'
-
+def validatePassword(password, passwordLength):
+    special = "@#$%^&*()_-+={}[]\/<>,.;?':| "
     caps, lower, num, specialChar, length = False, False, False, False, False
     for i in password:
         if i.isupper():
@@ -45,19 +42,19 @@ def validatePassword(password):
             num = True
         elif i in special:
             specialChar = True
-    if len(password) > 12:
+    if len(password) > passwordLength:
         length = True
-
     if not caps:
-        print("....Required at least a uppercase letter!")
+        print("....Required at least a uppercase letter (A–Z)!")
     if not lower:
-        print("....Required at least a lowercase letter!")
+        print("....Required at least a lowercase letter (a–z)!")
     if not specialChar:
-        print("....Required at least a special character!")
+        print("....Required at least a special character. List of special characters include "
+              "{}(space)".format(special))
     if not num:
-        print("....Required at least a number!")
+        print("....Required at least a number (0–9)!")
     if not length:
-        print("....Required at least 12 characters!")
+        print("....Required at least {} characters!".format(passwordLength))
     isValid = False
     if caps and lower and num and specialChar and length:
         isValid = True
@@ -157,8 +154,7 @@ def get_key(key_id, service_endpoint, config):
 
 
 # Reads the compartment ID and the identity from the configuration file
-def get_compartmentID_and_Ident():
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+def get_compartmentID_and_Ident(filename):
     # Open the file in read mode
     with open(filename, 'r') as file_object:
         i = 0
@@ -179,8 +175,7 @@ def get_compartmentID_and_Ident():
 
 
 # Writes the vault ID and the management key ID to the configuration file
-def write_VaultID_and_KeyID(vault_id, key_id):
-    filename = "~/.oci-caas/oci-caas-pci.conf"
+def write_VaultID_and_KeyID(vault_id, key_id, filename):
     # Open the file in read mode
     with open(filename, 'a') as file_object:
         file_object.write("vault_id={} \n".format(vault_id))
@@ -194,13 +189,16 @@ def text_to_base64(secret_str):
 
 
 if __name__ == "__main__":
-    stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys()
+    requiredLength = 12
+    config_filename = "~/.oci-caas/oci-caas-pci.conf"
+
+    stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys(requiredLength)
 
     stripe_api_sk = text_to_base64(stripe_api_sk)
     stripe_api_pk = text_to_base64(stripe_api_pk)
     ecom_db_pw = text_to_base64(ecom_db_pw)
 
-    compartment_ID, ident = get_compartmentID_and_Ident()
+    compartment_ID, ident = get_compartmentID_and_Ident(config_filename)
 
     configuration = from_file(file_location="~/.oci/config")
     COMPARTMENT_ID = compartment_ID
@@ -238,4 +236,4 @@ if __name__ == "__main__":
     create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration)
     print("Successfully Uploaded the secrets")
 
-    write_VaultID_and_KeyID(VAULT_ID, KEY_ID)
+    write_VaultID_and_KeyID(VAULT_ID, KEY_ID, config_filename)
