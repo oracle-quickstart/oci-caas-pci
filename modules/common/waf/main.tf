@@ -123,7 +123,7 @@ resource "oci_waas_waas_policy" "waas_policy" {
       #Optional
       allowed_rate_per_address      = 200
       block_response_code           = 403
-      max_delayed_count_per_address = 10
+      max_delayed_count_per_address = 60
     }
 
     caching_rules {
