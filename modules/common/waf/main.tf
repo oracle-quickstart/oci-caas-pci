@@ -121,9 +121,9 @@ resource "oci_waas_waas_policy" "waas_policy" {
       is_enabled = true
 
       #Optional
-      allowed_rate_per_address      = 10
+      allowed_rate_per_address      = 200
       block_response_code           = 403
-      max_delayed_count_per_address = 10
+      max_delayed_count_per_address = 60
     }
 
     caching_rules {
@@ -199,7 +199,7 @@ resource "oci_waas_waas_policy" "waas_policy" {
 
     human_interaction_challenge {
       #Required
-      is_enabled = true
+      is_enabled = false
 
       #Optional
       action                       = "DETECT"
