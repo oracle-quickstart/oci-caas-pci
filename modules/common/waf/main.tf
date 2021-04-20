@@ -199,7 +199,7 @@ resource "oci_waas_waas_policy" "waas_policy" {
 
     human_interaction_challenge {
       #Required
-      is_enabled = true
+      is_enabled = false
 
       #Optional
       action                       = "DETECT"
