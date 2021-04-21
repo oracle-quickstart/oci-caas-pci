@@ -1,4 +1,4 @@
 output "fqdn" {
-  value       = oci_dns_record.waf_alias.domain
+  value       = oci_dns_rrset.waf_alias.domain
   description = "Full DNS zone name."
 }

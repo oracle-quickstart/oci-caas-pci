@@ -359,11 +359,15 @@ resource "oci_waas_waas_policy" "waas_policy" {
 # ---------------------------------------------------------------------------------------------------------------------
 # Register front-end ALIAS record to point to the WAF
 # ---------------------------------------------------------------------------------------------------------------------
-resource "oci_dns_record" "waf_alias" {
-  compartment_id  = var.compartment_ocid
+resource "oci_dns_rrset" "waf_alias" {
   zone_name_or_id = var.domain_name
   domain = var.domain_name
   rtype = "ALIAS"
-  rdata = oci_waas_waas_policy.waas_policy.cname
-  ttl   = 30
+  compartment_id  = var.compartment_ocid
+  items{
+      rtype = "ALIAS"
+      domain = var.domain_name
+      rdata = oci_waas_waas_policy.waas_policy.cname
+      ttl   = 30
+  }
 }
