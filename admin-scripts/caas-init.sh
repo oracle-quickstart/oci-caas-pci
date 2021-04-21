@@ -109,10 +109,6 @@ then
   exit 255
 fi
 
-echo "Time to set up application vault. Run app_vault.sh next."
-
-# echo "Manually verify SSL certificate deployment."
-# echo "TF values to be used in client caller:"
-# bash get_tf_values.sh
+echo "Time to set up application vault. Run app_vault.py next."
 
 cleanup_logs
