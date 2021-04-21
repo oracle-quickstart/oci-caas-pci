@@ -7,6 +7,7 @@ resource "oci_core_instance" "wazuh_server" {
   shape               = var.wazuh_instance_shape
   display_name        = "wazuh_server"
   create_vnic_details {
+    assign_public_ip  = false
     subnet_id      = var.subnet_id
   }
   freeform_tags = {
