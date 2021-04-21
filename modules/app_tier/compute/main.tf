@@ -169,12 +169,12 @@ resource "oci_autoscaling_auto_scaling_configuration" "app_autoscaling_configura
 
 # Get a list of availability domains
 data "oci_identity_availability_domains" "ad" {
-  compartment_id = "${var.tenancy_ocid}"
+  compartment_id = var.tenancy_ocid
 }
 
 data "template_file" "ad_names" {
-  count = "${length(data.oci_identity_availability_domains.ad.availability_domains)}"
-  template = "${lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")}"
+  count = length(data.oci_identity_availability_domains.ad.availability_domains)
+  template = lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")
 }
 
 resource "random_string" "wallet_password" {
