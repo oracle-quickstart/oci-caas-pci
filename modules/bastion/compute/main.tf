@@ -45,7 +45,7 @@ resource "oci_core_instance" "bastion" {
 # Get a list of availability domains
 # ---------------------------------------------------------------------------------------------------------------------
 data "oci_identity_availability_domains" "ad" {
-  compartment_id = "${var.tenancy_ocid}"
+  compartment_id = var.tenancy_ocid
 }
 
 # Bootstrap data

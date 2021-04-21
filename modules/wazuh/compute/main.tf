@@ -6,7 +6,10 @@ resource "oci_core_instance" "wazuh_server" {
   availability_domain = lookup(data.oci_identity_availability_domains.ad.availability_domains[0],"name")
   shape               = var.wazuh_instance_shape
   display_name        = "wazuh_server"
-  subnet_id = var.subnet_id
+  create_vnic_details {
+    assign_public_ip  = false
+    subnet_id      = var.subnet_id
+  }
   freeform_tags = {
     "Description" = "Wazuh host"
     "Function"    = "Primary Wazuh instance"
@@ -58,12 +61,12 @@ resource "random_password" "wazuh_password" {
 # Get a list of availability domains
 # ---------------------------------------------------------------------------------------------------------------------
 data "oci_identity_availability_domains" "ad" {
-  compartment_id = "${var.tenancy_ocid}"
+  compartment_id = var.tenancy_ocid
 }
 
 data "template_file" "ad_names" {
-  count = "${length(data.oci_identity_availability_domains.ad.availability_domains)}"
-  template = "${lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")}"
+  count = length(data.oci_identity_availability_domains.ad.availability_domains)
+  template = lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")
 }
 
 data "template_file" bootstrap {
