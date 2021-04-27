@@ -277,10 +277,10 @@ resource "oci_waas_waas_policy" "waas_policy" {
       block_error_page_message           = "blockErrorPageMessage"
       block_response_code                = 403
       is_response_inspected              = false
-      max_argument_count                 = 10
-      max_name_length_per_argument       = 10
-      max_response_size_in_ki_b          = 10
-      max_total_name_length_of_arguments = 10
+      max_argument_count                 = 255
+      max_name_length_per_argument       = 400
+      max_response_size_in_ki_b          = 1024
+      max_total_name_length_of_arguments = 64000
       media_types                        = ["application/plain", "application/json"]
       recommendations_period_in_days     = 10
     }
