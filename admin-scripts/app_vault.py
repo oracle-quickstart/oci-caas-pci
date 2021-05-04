@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 import sys
 import base64
 import oci
+import os
 from oci.config import from_file
 
 
@@ -74,7 +76,8 @@ def createVault(compartment_id, ident, config):
         vault_details = oci.key_management.models.CreateVaultDetails(
             compartment_id=compartment_id,
             vault_type="DEFAULT",
-            display_name="oci-caas-" + ident)
+            display_name="oci-caas-" + ident,
+            freeform_tags={"oci-caas-" + ident + "-vault": ""})
 
         print("Vault details {}.".format(vault_details.vault_type))
         print("Waiting for vault to be created - This could take a few minutes.")
@@ -113,7 +116,7 @@ def createKey(key_name, compartment_id, config, service_endpoint):
         sys.exit()
 
 
-def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id, config):
+def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id, config, tag_name):
     try:
         vaults_client = oci.vault.VaultsClient(config)
         vaults_client_composite = oci.vault.VaultsClientCompositeOperations(vaults_client)
@@ -132,7 +135,8 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
                                                                secret_content=secret_content_details,
                                                                secret_name=secret_name,
                                                                vault_id=vault_id,
-                                                               key_id=key_id)
+                                                               key_id=key_id,
+                                                               freeform_tags={tag_name: ""})
 
         # Create secret and wait for the secret to become active
         response = vaults_client_composite.create_secret_and_wait_for_state(create_secret_details=secrets_details,
@@ -142,15 +146,6 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
     except:
         print("Error with vault creation. Exiting.")
         sys.exit()
-
-
-def get_vault(client, vault_id):
-    return client.get_vault(vault_id)
-
-
-def get_key(key_id, service_endpoint, config):
-    client = oci.key_management.KmsManagementClient(config, service_endpoint)
-    return client.get_key(key_id)
 
 
 # Reads the compartment ID and the identity from the configuration file
@@ -176,10 +171,22 @@ def get_compartmentID_and_Ident(filename):
 
 # Writes the vault ID and the management key ID to the configuration file
 def write_VaultID_and_KeyID(vault_id, key_id, filename):
-    # Open the file in read mode
-    with open(filename, 'a') as file_object:
-        file_object.write("vault_id={} \n".format(vault_id))
-        file_object.write("mgmtkey={}".format(key_id))
+    vaultID = ""
+    mgmtKey = ""
+    with open(filename, 'r') as file_object:
+        for line in file_object:
+            if line.startswith("vault_id"):
+                vaultID = line
+            if line.startswith("mgmtkey"):
+                mgmtKey = line
+    file = open(filename, "rt")
+    data = file.read()
+    data = data.replace(vaultID, 'vault_id=' + vault_id + '\n')
+    data = data.replace(mgmtKey, 'mgmtkey=' + key_id)
+    file.close()
+    file = open(filename, "wt")
+    file.write(data)
+    file.close()
 
 
 def text_to_base64(secret_str):
@@ -190,7 +197,9 @@ def text_to_base64(secret_str):
 
 if __name__ == "__main__":
     requiredLength = 12
-    config_filename = "~/.oci-caas/oci-caas-pci.conf"
+    config_filename = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
+    if not os.path.exists(config_filename):
+        raise Exception("Error with vault creation. Configuration file does not exist.")
 
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys(requiredLength)
 
@@ -200,7 +209,16 @@ if __name__ == "__main__":
 
     compartment_ID, ident = get_compartmentID_and_Ident(config_filename)
 
-    configuration = from_file(file_location="~/.oci/config")
+    path1 = os.environ.get("HOME") + "/.oci/config"
+    path2 = "/etc/oci/config"
+
+    if os.path.exists(path1):
+        configuration = from_file(file_location=path1)
+    elif os.path.exists(path2):
+        configuration = from_file(file_location=path2)
+    else:
+        raise Exception("Error with vault creation. Configuration file does not exist.")
+
     COMPARTMENT_ID = compartment_ID
     VAULT_NAME = ident
     KEY_NAME = "mgmt-key"
@@ -229,11 +247,11 @@ if __name__ == "__main__":
 
     print("Uploading Secrets to Vault...")
     secret_name1 = "stripe_api_sk"
-    create_secret(COMPARTMENT_ID, stripe_api_sk, secret_name1, VAULT_ID, KEY_ID, configuration)
+    create_secret(COMPARTMENT_ID, stripe_api_sk, secret_name1, VAULT_ID, KEY_ID, configuration, ident + "-stripe-sk")
     secret_name2 = "stripe_api_pk"
-    create_secret(COMPARTMENT_ID, stripe_api_pk, secret_name2, VAULT_ID, KEY_ID, configuration)
+    create_secret(COMPARTMENT_ID, stripe_api_pk, secret_name2, VAULT_ID, KEY_ID, configuration, ident + "-stripe-pk")
     secret_name3 = "ecom_db_pw"
-    create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration)
+    create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration, ident + "-db-pw")
     print("Successfully Uploaded the secrets")
 
     write_VaultID_and_KeyID(VAULT_ID, KEY_ID, config_filename)
