@@ -112,7 +112,8 @@ and stores new vault objects. For this to run successfully, you'll need three va
 1. Generate a password which will be used for the ECOM DB user
 
 ```
-admin-scripts/app_vault.py
+cd admin-scripts
+python3 app_vault.py
 ```
 
 ### Configuration file
