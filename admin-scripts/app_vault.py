@@ -111,7 +111,8 @@ def createKey(key_name, compartment_id, config, service_endpoint):
                                                                     wait_for_states=[
                                                                         oci.key_management.models.Key.LIFECYCLE_STATE_ENABLED])
         return response
-    except:
+    except Exception as e:
+        print(e)
         print("Error with vault creation. Exiting.")
         sys.exit()
 
@@ -170,19 +171,38 @@ def get_compartmentID_and_Ident(filename):
 
 
 # Writes the vault ID and the management key ID to the configuration file
-def write_VaultID_and_KeyID(vault_id, key_id, filename):
-    vaultID = ""
-    mgmtKey = ""
+def write_VaultID_and_KeyID(vault_id, key_id, filename, service_endpoint):
+
+    vaultClient = oci.key_management.KmsVaultClient(configuration)
+    mgmtKeyClient = oci.key_management.KmsManagementClient(configuration, service_endpoint)
     with open(filename, 'r') as file_object:
         for line in file_object:
-            if line.startswith("vault_id"):
-                vaultID = line
-            if line.startswith("mgmtkey"):
-                mgmtKey = line
+            if line.startswith("vault_id="):
+                existingVaultID = line.split("=")[1]
+                if existingVaultID != "\n":
+                    response = vaultClient.get_vault(vault_id)
+
+                    if response.status == 200:
+                        print("Vault already exists in the Compartment. Details for Key:{}".format(response.data))
+                        sys.exit()
+                    else:
+                        print("Error in Vault Creation. Vault ID does not exist")
+                        sys.exit()
+
+            if line.startswith("mgmtkey="):
+                existingMgmtKeyID = line.split("=")[1]
+                if existingMgmtKeyID != "\n":
+                    response = mgmtKeyClient.get_key(key_id)
+                    if response.status == 200:
+                        print("Management Key already exists in the Vault. Details for Key:{}".format(response.data))
+                        sys.exit()
+                    else:
+                        print("Error in Management Key creation. Management Key ID does not exist")
+                        sys.exit()
     file = open(filename, "rt")
     data = file.read()
-    data = data.replace(vaultID, 'vault_id=' + vault_id + '\n')
-    data = data.replace(mgmtKey, 'mgmtkey=' + key_id)
+    data = data.replace('vault_id=', 'vault_id=' + vault_id)
+    data = data.replace('mgmtkey=', 'mgmtkey=' + key_id)
     file.close()
     file = open(filename, "wt")
     file.write(data)
@@ -254,4 +274,4 @@ if __name__ == "__main__":
     create_secret(COMPARTMENT_ID, ecom_db_pw, secret_name3, VAULT_ID, KEY_ID, configuration, ident + "-db-pw")
     print("Successfully Uploaded the secrets")
 
-    write_VaultID_and_KeyID(VAULT_ID, KEY_ID, config_filename)
+    write_VaultID_and_KeyID(VAULT_ID, KEY_ID, config_filename, service_mgmt_endpoint)
