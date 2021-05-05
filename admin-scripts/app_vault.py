@@ -151,7 +151,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
 # Reads the compartment ID and the identity from the configuration file
 def get_compartmentID_and_Ident(filename):
     # Open the file in read mode
-    with open(filename, 'r') as file_object:
+    with open(filename, "r") as file_object:
         i = 0
         for line in file_object:
 
@@ -174,10 +174,10 @@ def write_VaultID_and_KeyID(vault_id, key_id, filename, service_endpoint):
 
     vaultClient = oci.key_management.KmsVaultClient(configuration)
     mgmtKeyClient = oci.key_management.KmsManagementClient(configuration, service_endpoint)
-    with open(filename, 'r') as file_object:
+    with open(filename, "r") as file_object:
         for line in file_object:
             if line.startswith("vault_id="):
-                existingVaultID = line.split("=")[1]
+                existingVaultID = line.split('=')[1]
                 if existingVaultID != "\n":
                     response = vaultClient.get_vault(vault_id)
 
@@ -189,7 +189,7 @@ def write_VaultID_and_KeyID(vault_id, key_id, filename, service_endpoint):
                         sys.exit()
 
             if line.startswith("mgmtkey="):
-                existingMgmtKeyID = line.split("=")[1]
+                existingMgmtKeyID = line.split('=')[1]
                 if existingMgmtKeyID != "\n":
                     response = mgmtKeyClient.get_key(key_id)
                     if response.status == 200:
@@ -200,8 +200,8 @@ def write_VaultID_and_KeyID(vault_id, key_id, filename, service_endpoint):
                         sys.exit()
     file = open(filename, "rt")
     data = file.read()
-    data = data.replace('vault_id=', 'vault_id=' + vault_id)
-    data = data.replace('mgmtkey=', 'mgmtkey=' + key_id)
+    data = data.replace("vault_id=", "vault_id=" + vault_id)
+    data = data.replace("mgmtkey=", "mgmtkey=" + key_id)
     file.close()
     file = open(filename, "wt")
     file.write(data)
