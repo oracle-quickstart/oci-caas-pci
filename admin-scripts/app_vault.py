@@ -111,8 +111,7 @@ def createKey(key_name, compartment_id, config, service_endpoint):
                                                                     wait_for_states=[
                                                                         oci.key_management.models.Key.LIFECYCLE_STATE_ENABLED])
         return response
-    except Exception as e:
-        print(e)
+    except:
         print("Error with vault creation. Exiting.")
         sys.exit()
 
