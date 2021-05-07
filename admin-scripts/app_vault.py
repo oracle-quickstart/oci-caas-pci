@@ -64,7 +64,8 @@ def validatePassword(password, passwordLength):
     return isValid
 
 
-# This function returns True if the vault exists in .oci-caas/oci-caas-pci.conf and in OCI Console else returns False
+# This function returns vault id and service endpoint if the vault exists in .oci-caas/oci-caas-pci.conf and in OCI Console
+# else returns None
 def get_vault(config, oci_config):
     try:
         vaultClient = oci.key_management.KmsVaultClient(config)
@@ -85,9 +86,8 @@ def get_vault(config, oci_config):
                             data = response.data
                             mgmt_endpoint = data.management_endpoint
                             return existingVaultID, mgmt_endpoint
-                        except Exception as e:
-                            print(
-                                "Error in Vault Creation. Vault ID {} in .oci-caas/oci-caas-pci.conf does not exist.".format(
+                        except:
+                            print("Error in Vault Creation. Vault ID {} in .oci-caas/oci-caas-pci.conf does not exist.".format(
                                     existingVaultID))
                             sys.exit()
                     else:
@@ -252,9 +252,9 @@ def upload_vault(compartment_id, ident, config):
 def upload_key(key_name, compartment_id, config, mgmt_endpoint, oci_config):
     print("Creating Management Key...")
     key_id = ""
-    key = createKey(key_name, compartment_id, config, mgmt_endpoint).data
+    mgmt_key = createKey(key_name, compartment_id, config, mgmt_endpoint).data
     try:
-        key_id = key.id
+        key_id = mgmt_key.id
     except:
         print("Unable to retrieve vault management key. Exiting due to errors.")
 
@@ -275,7 +275,7 @@ def upload_secrets(compartment_id, secret_name, secret_value, vault_id, key_id, 
         sys.exit()
 
 
-# Reads the compartment ID and the identity from the configuration file
+# Reads the compartment ID and the ident from the configuration file
 def get_compartmentID_and_Ident(filename):
     # Open the file in read mode
     with open(filename, "r") as file_object:
