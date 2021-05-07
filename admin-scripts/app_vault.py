@@ -340,10 +340,6 @@ if __name__ == "__main__":
     stripe_api_pk = text_to_base64(stripe_api_pk)
     ecom_db_pw = text_to_base64(ecom_db_pw)
 
-    secretName1 = "stripe_sk"
-    secretName2 = "stripe_pk"
-    secretName3 = "ecom_pw"
-
     # Getting the compartment ID and ident
     COMPARTMENT_ID, identity = get_compartmentID_and_Ident(oci_caas_pci_config)
 
@@ -361,10 +357,12 @@ if __name__ == "__main__":
     if KEY_ID == "":
         KEY_ID = upload_key("mgmt-key", COMPARTMENT_ID, local_config, service_mgmt_endpoint, oci_caas_pci_config)
 
+    # List of secrets
+    secret_list = {"stripe_api_sk": [stripe_api_sk, identity + "-stripe-sk"],
+                   "stripe_api_pk": [stripe_api_pk, identity + "-stripe-pk"],
+                   "ecom_db_pw": [ecom_db_pw, identity + "-db-pw"]}
+
     # Checking if the secrets exists in OCI console if not creating a new secrets
-    check_or_create_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, secretName1, stripe_api_sk,
-                           identity + "-stripe-sk")
-    check_or_create_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, secretName2, stripe_api_pk,
-                           identity + "-stripe-sk")
-    check_or_create_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, secretName3, ecom_db_pw,
-                           identity + "-stripe-sk")
+    for key in secret_list:
+        check_or_create_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, key, secret_list[key][0],
+                               secret_list[key][1])
