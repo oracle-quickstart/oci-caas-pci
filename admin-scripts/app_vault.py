@@ -275,7 +275,7 @@ def upload_secrets(compartment_id, secret_name, secret_value, vault_id, key_id, 
         sys.exit()
 
 
-# Reads the compartment ID and the ident from the configuration file
+# Reads the compartment ID and the identity from the configuration file
 def get_compartmentID_and_Ident(filename):
     # Open the file in read mode
     with open(filename, "r") as file_object:
@@ -348,7 +348,7 @@ if __name__ == "__main__":
     KEY_ID = ""
 
     # If no vault exists creating a new Vault
-    if VAULT_ID == None or service_mgmt_endpoint == None:
+    if VAULT_ID is None or service_mgmt_endpoint is None:
         VAULT_ID, service_mgmt_endpoint = upload_vault(COMPARTMENT_ID, identity, local_config)
 
     # Checking if the management key exists in configuration file or OCI console
