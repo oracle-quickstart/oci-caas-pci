@@ -98,7 +98,6 @@ then
   exit 255
 fi
 
-
 CW_URL='http://downloads.cinc.sh/files/unstable/cinc-workstation/21.1.233/el/7/cinc-workstation-21.1.233-1.el7.x86_64.rpm'
 export CINC_WORKSTATION="$HOME/opt/cinc-workstation"
 cd $HOME
