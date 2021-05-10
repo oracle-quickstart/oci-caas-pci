@@ -168,7 +168,7 @@ function upload_cache_packages() {
         oci os object put -ns $namespace -bn $bucket_name --file $file --name $file --force >> $cache_packages_log
         if [[ $? -ne 0 ]]
         then
-        echo "Error uploading packges to bucket. Please see $cache_packages_log for more information." 1>&2
+        echo "Error uploading packages to bucket. Please see $cache_packages_log for more information." 1>&2
         return 1
         fi
     done
