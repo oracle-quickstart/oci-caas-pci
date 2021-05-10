@@ -84,12 +84,20 @@ then
   update_configuration $CONF os_namespace $os_namespace
 fi
 
-cache_packages $os_namespace $caas_bucket
+download_cache_packages
+if [[ $? -ne 0 ]]
+then
+  echo "Error while downloading packages."
+  exit 255
+fi
+
+upload_cache_packages $os_namespace $caas_bucket
 if [[ $? -ne 0 ]]
 then
   echo "Error while uploading packages to object store bucket."
   exit 255
 fi
+
 
 CW_URL='http://downloads.cinc.sh/files/unstable/cinc-workstation/21.1.233/el/7/cinc-workstation-21.1.233-1.el7.x86_64.rpm'
 export CINC_WORKSTATION="$HOME/opt/cinc-workstation"
