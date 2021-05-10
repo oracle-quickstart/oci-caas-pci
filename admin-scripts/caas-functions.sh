@@ -128,10 +128,10 @@ function cache_cookbooks() {
 }
 
 function validate_url(){
-    is_valid_url="false";
-    if [[ `wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'` ]];
+    is_valid_url="false"
+    if [[ `wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'` ]]
     then
-        is_valid_url="true";
+        is_valid_url="true"
     fi
 }
 
@@ -146,11 +146,10 @@ function download_cache_packages() {
     cd $cache_dir
 
     for i in "${url_list[@]}"; do
-
         validate_url "$i"
-        if [[ $is_valid_url = "true" ]];
+        if [[ $is_valid_url = "true" ]]
         then
-            wget "$i" >> $cache_packages_log 2>&1 ;
+            wget "$i" >> $cache_packages_log 2>&1
         else
             wget "$i" >> $cache_packages_log 2>&1
             echo "Error : $i does not exist. Please see $cache_packages_log for more information."
