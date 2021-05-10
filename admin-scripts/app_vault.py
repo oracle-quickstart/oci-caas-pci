@@ -125,7 +125,7 @@ def get_mgmt_key(config, oci_config, mgmt_endpoint):
                     else:
                         return ""
     except:
-        print("Error while retrieving the management key. Exiting")
+        print("Unable to create vault management key. Exiting")
         sys.exit()
 
 
@@ -319,7 +319,7 @@ if __name__ == "__main__":
     # This is the configuration file on oci cloud shell where we write the vault_id and mgmt_id
     oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
     if not os.path.exists(oci_caas_pci_config):
-        raise Exception("Error with vault creation. Configuration file does not exist.")
+        raise Exception("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
 
     # This is the configuration file with the tenancy_id and fingerprint
     path1 = os.environ.get("HOME") + "/.oci/config"
@@ -330,7 +330,7 @@ if __name__ == "__main__":
     elif os.path.exists(path2):
         local_config = from_file(file_location=path2)
     else:
-        raise Exception("Error with vault creation. Configuration file does not exist.")
+        raise Exception("Error with vault creation. {} file or {} file does not exist.".format(path1, path2))
 
     # Getting all the secrets
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys(requiredLength)
@@ -345,7 +345,6 @@ if __name__ == "__main__":
 
     # Checking if the Vault exists in configuration file or OCI console
     VAULT_ID, service_mgmt_endpoint = get_vault(local_config, oci_caas_pci_config)
-    KEY_ID = ""
 
     # If no vault exists creating a new Vault
     if VAULT_ID is None or service_mgmt_endpoint is None:
