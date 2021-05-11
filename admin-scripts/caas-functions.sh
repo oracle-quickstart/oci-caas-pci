@@ -127,25 +127,53 @@ function cache_cookbooks() {
   rm -rf ${cache_dir}
 }
 
-function cache_packages() {
+function validate_url(){
+  is_valid_url="false"
+  if [[ `wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+  then
+    is_valid_url="true"
+  fi
+}
+
+function download_cache_packages() {
+  url_list=("http://downloads.cinc.sh/files/stable/cinc/16.9.29/el/7/cinc-16.9.29-1.el7.x86_64.rpm"
+            "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz"
+            "https://github.com/oracle-quickstart/oci-caas-pci-ecommerce/releases/download/0.4.0/pci-ecommerce-0.4.0.war")
+
   cache_packages_log="/tmp/oci-caas-$$-cache_packages.log"
-  namespace="$1"
-  bucket_name="$2"
-  
   cache_dir="/tmp/caas-cache.$$"
   mkdir $cache_dir
   cd $cache_dir
-  wget http://downloads.cinc.sh/files/stable/cinc/16.9.29/el/7/cinc-16.9.29-1.el7.x86_64.rpm >> $cache_packages_log 2>&1
-  wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz >> $cache_packages_log 2>&1
-  wget https://github.com/oracle-quickstart/oci-caas-pci-ecommerce/releases/download/0.4.0/pci-ecommerce-0.4.0.war >> $cache_packages_log 2>&1
 
+  for i in "${url_list[@]}"
+  do
+    validate_url "$i"
+    wget "$i" >> $cache_packages_log 2>&1
+    if [[ $is_valid_url != "true" ]]
+    then
+      echo "Error : $i does not exist. Please see $cache_packages_log for more information."
+    fi
+  done
+}
+
+function upload_cache_packages() {
   echo "Uploading required objects to $bucket_name bucket"
+  cache_dir="/tmp/caas-cache.$$"
+  cd $cache_dir
+  namespace="$1"
+  bucket_name="$2"
   for file in *
   do
-    oci os object put -ns $namespace -bn $bucket_name --file $file --name $file --force >> $cache_packages_log
-    if [[ $? -ne 0 ]]
+    if [ -s  $file ]
     then
-      echo "Error uploading packges to bucket. Please see $cache_packages_log for more information." 1>&2
+      oci os object put -ns $namespace -bn $bucket_name --file $file --name $file --force >> $cache_packages_log
+      if [[ $? -ne 0 ]]
+      then
+        echo "Error uploading packages to bucket. Please see $cache_packages_log for more information." 1>&2
+        return 1
+      fi
+    else
+      echo "Error uploading packages to bucket. Package does not exist or is empty"
       return 1
     fi
   done
