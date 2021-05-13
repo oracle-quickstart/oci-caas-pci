@@ -108,6 +108,9 @@ resource "oci_load_balancer_backend_set" "lb-dmz-bes" {
     timeout_in_millis   = "3000"
     retries             = "3"
   }
+  lb_cookie_session_persistence_configuration {
+    is_secure = true
+  }
 }
 
 resource "tls_private_key" "ca" {
