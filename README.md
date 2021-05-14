@@ -36,9 +36,15 @@ for SSL certificate creation. You should install this within your
 OCI Cloud Shell environment. Our installer checks for the default installation path in
 **$HOME/.acme.sh**
 
-Follow the [instructions here](https://github.com/acmesh-official/acme.sh).
+Follow the instructions below.
 You will need to pass the --force option to install, which will bypass the
 check for cron.
+
+```
+git clone https://github.com/acmesh-official/acme.sh.git
+cd ./acme.sh
+./acme.sh --install --force
+```
 
 ## DNS Setup
 In the tenancy you plan on using, you will need to
@@ -151,18 +157,19 @@ store entry, which can then be passed onto Terraform for a new update.
 
 Once the WAF has been updated via Terraform, the new certificate is active.
 
-## How to call this Terraform module
-See the **/examples** diretory for an example client, and descriptions for
-important variables.
-
 ## Terraform Variables
 The **admin-scripts/get_tf_values.sh** script will parse the configuration file
-created during initialization. Run this and you'll have a good starting point for 
-moving onto Terraform.
+created during initialization. Run this and you'll have a good starting point for moving onto Terraform.
 
 ```
 admin-scripts/get_tf_values.sh
 ```
+
+## How to call this Terraform module
+See the **/examples** directory for an example client, and descriptions for
+important variables. You will be using variables from the previous step here. 
+
+If you are using our example client, clone this repository into your local machine. Then you can run Terraform commands in examples/ directory to utilize the client.
 
 ## Things To Do After Terraform
 Once the Terraform initialization is complete, there are a couple more steps. At
