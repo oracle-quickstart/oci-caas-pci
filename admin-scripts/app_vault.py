@@ -107,7 +107,7 @@ def get_mgmt_key(config, oci_config, mgmt_endpoint):
             for line in file_object:
                 if line.startswith("mgmtkey="):
                     existingMgmtKeyID = line.split('=')[1]
-                    if existingMgmtKeyID != "":
+                    if existingMgmtKeyID != "\n":
                         print("Management Key exists in .oci-caas/oci-caas-pci.conf")
 
                         existingMgmtKeyID = existingMgmtKeyID[0:-1]
@@ -319,7 +319,7 @@ if __name__ == "__main__":
     # This is the configuration file on oci cloud shell where we write the vault_id and mgmt_id
     oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
     if not os.path.exists(oci_caas_pci_config):
-        raise Exception("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
+        raise FileNotFoundError("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
 
     # This is the configuration file with the tenancy_id and fingerprint
     path1 = os.environ.get("HOME") + "/.oci/config"
@@ -330,7 +330,7 @@ if __name__ == "__main__":
     elif os.path.exists(path2):
         local_config = from_file(file_location=path2)
     else:
-        raise Exception("Error with vault creation. {} file or {} file does not exist.".format(path1, path2))
+        raise FileNotFoundError("Error with vault creation. {} file or {} file does not exist.".format(path1, path2))
 
     # Getting all the secrets
     stripe_api_sk, stripe_api_pk, ecom_db_pw = getKeys(requiredLength)
