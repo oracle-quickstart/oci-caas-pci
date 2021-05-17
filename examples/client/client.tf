@@ -50,7 +50,7 @@ resource "random_password" "initial_database_password" {
   override_special = "_%@"
 }
 
-output "Initial_database_passsword" {
+output "Initial_database_password" {
   description = "Initial database password"
   value = random_password.initial_database_password.result
 }
