@@ -29,15 +29,26 @@ def create_waas_certificate(compartment_id, cert_data, key_data, config, domain_
 
 
 #  Update dns record in oci
-def update_dns_domain_record(domain_name, text_domain, rdata, rtype, ttl, config):
+def get_record_details(domain_name, rdata, rtype, ttl):
     try:
-
-        dns_client = oci.dns.DnsClient(config)
         record_details = oci.dns.models.RecordDetails(domain=domain_name,
                                                       rdata=rdata,
                                                       rtype=rtype,
                                                       ttl=ttl)
-        domain_records_details = oci.dns.models.UpdateDomainRecordsDetails(items=record_details)
+
+        return record_details
+    except:
+        print("Error with Certificate Creation. Failed to create WAAS Certificate. Exiting.")
+        sys.exit()
+
+
+#  Update dns record in oci
+def update_dns_domain_record(record_details_list, domain_name, text_domain, config):
+    try:
+
+        dns_client = oci.dns.DnsClient(config)
+
+        domain_records_details = oci.dns.models.UpdateDomainRecordsDetails(items=record_details_list)
 
         response = dns_client.update_domain_records(zone_name_or_id=domain_name,
                                                     domain=text_domain,
@@ -144,9 +155,13 @@ if __name__ == "__main__":
 
     acme_txt_value = get_acme_validation_records(ACME, domain)
 
-    # Updating dns_domain_record with zone_name_or_id, domain, rdata, rtype and ttl
-    update_dns_domain_record(domain, txt_domain, acme_txt_value[0], "TXT", 30, local_config)
-    update_dns_domain_record(domain, txt_domain, acme_txt_value[1], "TXT", 30, local_config)
+    record_list = []
+
+    record_list.add(get_record_details(domain, acme_txt_value[0], "TXT", 30))
+    record_list.add(get_record_details(domain, acme_txt_value[1], "TXT", 30))
+
+    # Updating dns_domain_record with zone_name_or_id, domain, rdata, rtype and ttl list
+    update_dns_domain_record(record_list, domain, txt_domain, local_config)
 
     # Register
     register_or_renew_acme(ACME, domain)
