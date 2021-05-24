@@ -12,6 +12,7 @@ def getKeys(passwordLength):
     print("1) The Stripe secret key")
     print("2) The Stripe publishable key")
     print("3) The database password to be set for the ECOM user")
+    print("\nThe Stripe keys can't be empty.")
     print("\nA password must contain at least {} characters, a number, a special character, a "
           "lowercase letter and a uppercase letter!! \n".format(passwordLength))
     print("If you are not ready to provide this information, you may cancel this script now, "
@@ -21,14 +22,28 @@ def getKeys(passwordLength):
     temp = input("<ENTER> or Quit (q)")
     if temp == 'q':
         sys.exit()
+
     secret_key = input("Please enter the Stripe secret key: ")
+
+    while validate_stripe_key(secret_key) is False:
+        secret_key = input("The Stripe secret key can't be empty, please re-enter the Stripe secret key: ")
+
     public_key = input("Please enter the Stripe public key: ")
+
+    while validate_stripe_key(public_key) is False:
+        public_key = input("The Stripe public key can't be empty, please re-enter the Stripe public key: ")
+
     database_pwd = input("Please enter the ECOM user password: ")
 
     while validatePassword(database_pwd, passwordLength) is False:
         database_pwd = input("Please re-enter the ECOM user password: ")
 
     return secret_key, public_key, database_pwd
+
+
+# This function validates the Stripe api key that can't be empty.
+def validate_stripe_key(key):
+    return key != ""
 
 
 # This function validates the database password meets all the requirements for a password
@@ -87,7 +102,8 @@ def get_vault(config, oci_config):
                             mgmt_endpoint = data.management_endpoint
                             return existingVaultID, mgmt_endpoint
                         except:
-                            print("Error in Vault Creation. Vault ID {} in .oci-caas/oci-caas-pci.conf does not exist.".format(
+                            print(
+                                "Error in Vault Creation. Vault ID {} in .oci-caas/oci-caas-pci.conf does not exist.".format(
                                     existingVaultID))
                             sys.exit()
                     else:
@@ -129,20 +145,28 @@ def get_mgmt_key(config, oci_config, mgmt_endpoint):
         sys.exit()
 
 
-def check_or_create_secret(config, compartment_id, vault_id, key_id, secret_name, secret_value, tag_name):
+def create_or_update_secret(config, compartment_id, vault_id, key_id, secret_name, secret_value, tag_name):
     try:
         secretClient = oci.vault.VaultsClient(config)
-        isSecret = False
+        isSecret, secret_id, defined_tags, description, freeform_tags = False, None, None, None, None
         response = secretClient.list_secrets(compartment_id=compartment_id, vault_id=vault_id)
         for i in range(len(response.data)):
             if response.data[i].secret_name == secret_name:
                 print("{} already exists. {} OCID : {} ".format(secret_name, secret_name, response.data[i].id))
                 isSecret = True
+                secret_id = response.data[i].id
+                defined_tags = response.data[i].defined_tags
+                description = response.data[i].description
+                freeform_tags = response.data[i].freeform_tags
 
         if not isSecret:
             print("Uploading {} to Vault...".format(secret_name))
             create_secret(compartment_id, secret_value, secret_name, vault_id, key_id, config, tag_name)
             print("Successfully Uploaded the {} ".format(secret_name))
+        else:
+            update_secret(config, secret_id, defined_tags, description, freeform_tags, secret_value, secret_name)
+
+
     except:
         print("Error while creating or retrieving the secret {} in the vault".format(secret_name))
         sys.exit()
@@ -209,7 +233,7 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         secret_description = "Secret"
         secret_content_details = oci.vault.models.Base64SecretContentDetails(
             content_type=oci.vault.models.SecretContentDetails.CONTENT_TYPE_BASE64,
-            name="SecretContent",
+            name=secret_name,
             stage="CURRENT",
             content=secret_content)
         secrets_details = oci.vault.models.CreateSecretDetails(compartment_id=compartment_id,
@@ -226,6 +250,35 @@ def create_secret(compartment_id, secret_content, secret_name, vault_id, key_id,
         return response
     except:
         print("Error with Secret Creation. Failed to create {}. Exiting.".format(secret_name))
+        sys.exit()
+
+
+# This function updates the secret if the secret already existed.
+def update_secret(config, secret_id, defined_tags, description, freeform_tags, secret_value, secret_name):
+    try:
+        secret_content = oci.vault.models.Base64SecretContentDetails(
+            content_type="BASE64",
+            stage="CURRENT",
+            content=secret_value
+        )
+
+        update_secret_details = oci.vault.models.UpdateSecretDetails(defined_tags=defined_tags,
+                                                                     description=description,
+                                                                     freeform_tags=freeform_tags,
+                                                                     secret_content=secret_content,
+                                                                     )
+        vaults_client = oci.vault.VaultsClient(config)
+        vaults_client_composite = oci.vault.VaultsClientCompositeOperations(vaults_client)
+        update_secret_response = vaults_client_composite.update_secret_and_wait_for_state(secret_id,
+                                                                                          update_secret_details,
+                                                                                          wait_for_states=[
+                                                                                              oci.vault.models.Secret.LIFECYCLE_STATE_ACTIVE]
+                                                                                          )
+        print("Successfully updated {} Secret!".format(secret_name))
+        return update_secret_response
+
+    except:
+        print("Error with Secret Update. Failed to update {}. Exiting.".format(secret_name))
         sys.exit()
 
 
@@ -318,6 +371,7 @@ if __name__ == "__main__":
 
     # This is the configuration file on oci cloud shell where we write the vault_id and mgmt_id
     oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
+
     if not os.path.exists(oci_caas_pci_config):
         raise FileNotFoundError("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
 
@@ -363,5 +417,5 @@ if __name__ == "__main__":
 
     # Checking if the secrets exists in OCI console if not creating a new secrets
     for key in secret_list:
-        check_or_create_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, key, secret_list[key][0],
-                               secret_list[key][1])
+        create_or_update_secret(local_config, COMPARTMENT_ID, VAULT_ID, KEY_ID, key, secret_list[key][0],
+                                secret_list[key][1])
