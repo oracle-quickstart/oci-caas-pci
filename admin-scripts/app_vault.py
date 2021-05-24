@@ -41,9 +41,10 @@ def getKeys(passwordLength):
     return secret_key, public_key, database_pwd
 
 
-# This function validates the Stripe api key that can't be empty.
+# This function validates the Stripe api key that can't be empty or none.
 def validate_stripe_key(key):
-    return key != ""
+    return bool(key and key.strip())
+
 
 
 # This function validates the database password meets all the requirements for a password
@@ -371,7 +372,8 @@ if __name__ == "__main__":
     requiredLength = 12
 
     # This is the configuration file on oci cloud shell where we write the vault_id and mgmt_id
-    oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
+    # oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
+    oci_caas_pci_config = "oci-caas-pci.conf"
 
     if not os.path.exists(oci_caas_pci_config):
         raise FileNotFoundError("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
