@@ -372,8 +372,7 @@ if __name__ == "__main__":
     requiredLength = 12
 
     # This is the configuration file on oci cloud shell where we write the vault_id and mgmt_id
-    # oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
-    oci_caas_pci_config = "oci-caas-pci.conf"
+    oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
 
     if not os.path.exists(oci_caas_pci_config):
         raise FileNotFoundError("Error with vault creation. {} file does not exist.".format(oci_caas_pci_config))
