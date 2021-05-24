@@ -74,12 +74,14 @@ def get_secret_data(path):
 # Get validation records from registration command
 def get_acme_validation_records(acme, domain_name):
     text_values = []
-    response = subprocess.run(
-        "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
-            acme, domain_name), shell=True)
-    for line in response:
+    response = subprocess.getoutput("acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
+            acme, domain_name))
+
+    print(response)
+
+    for line in response.splitlines():
         if "TXT value" in line:
-            line = line.split(':')[1][2:-2]
+            line = line.split('TXT value:')[1][2:-2]
             text_values.append(line)
     return text_values
 
@@ -89,6 +91,7 @@ def register_or_renew_acme(acme, domain_name):
     response = subprocess.run(
         "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
             acme, domain_name), shell=True)
+    print(response)
     return response
 
 
@@ -169,7 +172,7 @@ if __name__ == "__main__":
     register_or_renew_acme(ACME, domain)
 
     # Gets the certificate data
-    cert_data_path = ACME + "/" + domain + "/" + domain + ".key"
+    cert_data_path = ACME + "/" + domain + "/fullchain.cer"
     certificate_data = get_secret_data(cert_data_path)
 
     # Gets the key data
