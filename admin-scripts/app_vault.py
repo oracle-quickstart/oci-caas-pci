@@ -144,7 +144,8 @@ def get_mgmt_key(config, oci_config, mgmt_endpoint):
         print("Unable to create vault management key. Exiting")
         sys.exit()
 
-
+# This function check if the secret existed. If it's already existed, the secret would be updated, if not
+# the function would create a new secret.
 def create_or_update_secret(config, compartment_id, vault_id, key_id, secret_name, secret_value, tag_name):
     try:
         secretClient = oci.vault.VaultsClient(config)
