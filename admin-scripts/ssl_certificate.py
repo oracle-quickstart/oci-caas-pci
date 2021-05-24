@@ -75,7 +75,7 @@ def get_secret_data(path):
 def get_acme_validation_records(acme, domain_name):
     text_values = []
     response = subprocess.run(
-        "ACME={}; domain={}; ${ACME}/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
+        "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
             acme, domain_name), shell=True)
     for line in response:
         if "TXT value" in line:
@@ -87,7 +87,7 @@ def get_acme_validation_records(acme, domain_name):
 # register
 def register_or_renew_acme(acme, domain_name):
     response = subprocess.run(
-        "ACME={}; domain={}; ${ACME}/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
+        "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
             acme, domain_name), shell=True)
     return response
 
@@ -113,12 +113,14 @@ if __name__ == "__main__":
             "- [Required] OCID should be the OCID of the compartment from where the service will run"
 
     # Check if arguments are passed to the function or not
-    if len(sys.argv) > 2:
+    if len(sys.argv) == 3:
+        domain = str((sys.argv[1]))
+        compartment_ocid = str((sys.argv[2]))
+    else:
+        print(len(sys.argv))
         print(usage)
         sys.exit()
-    else:
-        domain = str((sys.argv[0]))
-        compartment_ocid = str((sys.argv[1]))
+
 
     ACME = os.environ.get("HOME") + "/.acme.sh"
 
