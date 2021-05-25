@@ -9,6 +9,7 @@ from oci.config import from_file
 
 # Create the certificate in the WAF
 def create_waas_certificate(compartment_id, cert_data, key_data, config, domain_name):
+
     try:
 
         waas_client = oci.waas.WaasClient(config)
@@ -28,25 +29,26 @@ def create_waas_certificate(compartment_id, cert_data, key_data, config, domain_
         sys.exit()
 
 
-#  Update dns record in oci
-def get_record_details(domain_name, rdata, rtype, ttl):
+#  Retrieves the DNS Domain Record details
+def get_record_details(text_domain, rdata_list, rtype, ttl):
     try:
-        record_details = oci.dns.models.RecordDetails(domain=domain_name,
-                                                      rdata=rdata,
+        record_details = oci.dns.models.RecordDetails(domain=text_domain,
+                                                      rdata=rdata_list,
                                                       rtype=rtype,
                                                       ttl=ttl)
 
         return record_details
     except:
-        print("Error with Certificate Creation. Failed to create WAAS Certificate. Exiting.")
+        print("Error with retrieving the DNS Domain Record details. Exiting.")
         sys.exit()
 
 
-#  Update dns record in oci
+#  Update DNS Domain Record in OCI
 def update_dns_domain_record(record_details_list, domain_name, text_domain, config):
     try:
 
         dns_client = oci.dns.DnsClient(config)
+        print(record_details_list)
 
         domain_records_details = oci.dns.models.UpdateDomainRecordsDetails(items=record_details_list)
 
@@ -56,7 +58,7 @@ def update_dns_domain_record(record_details_list, domain_name, text_domain, conf
 
         return response
     except:
-        print("Error with Certificate Creation. Failed to create WAAS Certificate. Exiting.")
+        print("Error with updating the DND Domain Record. Exiting.")
         sys.exit()
 
 
@@ -74,9 +76,9 @@ def get_secret_data(path):
 # Get validation records from registration command
 def get_acme_validation_records(acme, domain_name):
     text_values = []
-    response = subprocess.getoutput("acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
-            acme, domain_name))
-
+    # response = subprocess.getoutput("acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
+    #         acme, domain_name))
+    response = subprocess.getoutput("cat acme-log.txt")
     print(response)
 
     for line in response.splitlines():
@@ -89,15 +91,10 @@ def get_acme_validation_records(acme, domain_name):
 # register
 def register_or_renew_acme(acme, domain_name):
     response = subprocess.run(
-        "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
+        "acme_cmd={}; domain={}; echo $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
             acme, domain_name), shell=True)
     print(response)
     return response
-
-
-def check_if_path_exists(path):
-    if os.path.exists(path):
-        return True
 
 
 def write_to_conf(filename, certificate_ocid):
@@ -111,47 +108,44 @@ def write_to_conf(filename, certificate_ocid):
 
 if __name__ == "__main__":
     domain, compartment_ocid = "", ""
-    usage = "Usage: `python3 ssl_certificate.py <domain> <COMPARTMENT_OCID>" + \
-            "- [Required] Domain should be a valid domain already configured in OCI DNS" + \
-            "- [Required] OCID should be the OCID of the compartment from where the service will run"
+    usage = "Usage: `python3 ssl_certificate.py <DOMAIN> <COMPARTMENT_OCID> \n" + \
+            "- [Required] Domain should be a valid domain already configured in OCI DNS \n" + \
+            "- [Required] OCID should be the OCID of the compartment from where the service will run \n"
 
     # Check if arguments are passed to the function or not
     if len(sys.argv) == 3:
         domain = str((sys.argv[1]))
         compartment_ocid = str((sys.argv[2]))
     else:
-        print(len(sys.argv))
         print(usage)
         sys.exit()
 
-
     ACME = os.environ.get("HOME") + "/.acme.sh"
-
     oci_caas_pci_config = os.environ.get("HOME") + "/.oci-caas/oci-caas-pci.conf"
-
-    # Checks if oci-caas-pci.conf exists
-    if not check_if_path_exists(oci_caas_pci_config):
-        raise FileNotFoundError(
-            "{} file does not exist. Please ensure you have run the Getting Started process.".format(
-                oci_caas_pci_config))
-
-    # Checks if acme.sh exists
-    if not check_if_path_exists(ACME + "/acme.sh"):
-        raise FileNotFoundError("Unable to find default acme.sh installation. Please install acme.sh and try again.")
 
     # This is the configuration file with the tenancy_id and fingerprint
     path1 = os.environ.get("HOME") + "/.oci/config"
     path2 = "/etc/oci/config"
 
-    if check_if_path_exists(path1):
+    # Text domain for acme
+    txt_domain = "_acme-challenge." + domain
+
+    # Checks if oci-caas-pci.conf exists
+    if not os.path.exists(oci_caas_pci_config):
+        raise FileNotFoundError(
+            "{} file does not exist. Please ensure you have run the Getting Started process.".format(
+                oci_caas_pci_config))
+
+    # Checks if acme.sh exists
+    if not os.path.exists(ACME + "/acme.sh"):
+        raise FileNotFoundError("Unable to find default acme.sh installation. Please install acme.sh and try again.")
+
+    if os.path.exists(path1):
         local_config = from_file(file_location=path1)
-    elif check_if_path_exists(path2):
+    elif os.path.exists(path2):
         local_config = from_file(file_location=path2)
     else:
         raise FileNotFoundError("Error with vault creation. {} file or {} file does not exist.".format(path1, path2))
-
-    # Text domain for acme
-    txt_domain = "_acme-challenge." + domain
 
     # Check is compartment id and domain name exists
     if compartment_ocid == "" or domain == "":
@@ -160,12 +154,12 @@ if __name__ == "__main__":
 
     acme_txt_value = get_acme_validation_records(ACME, domain)
 
-    record_list = []
+    # Gets the acme TXT Values for RDATA
+    acme_txt_values = acme_txt_value[0] + " " + acme_txt_value[1]
 
-    record_list.add(get_record_details(domain, acme_txt_value[0], "TXT", 30))
-    record_list.add(get_record_details(domain, acme_txt_value[1], "TXT", 30))
+    record_list = [get_record_details(txt_domain, acme_txt_values, "TXT", 30)]
 
-    # Updating dns_domain_record with zone_name_or_id, domain, rdata, rtype and ttl list
+    # Updating dns_domain_record with zone_name_or_id, domain, rdata values, rtype and ttl
     update_dns_domain_record(record_list, domain, txt_domain, local_config)
 
     # Register
@@ -183,7 +177,8 @@ if __name__ == "__main__":
 
     # Gets the certificate OCID
     cert_ocid = certificate.data.key_id
-    print("Certificate OCID: {}".format(cert_ocid))
+    print("Successfully created WAAS Certificate with OCID: {}".format(cert_ocid))
+
     # Writes the certificate OCID to oci-caas-pci.conf file
     write_to_conf(oci_caas_pci_config, cert_ocid)
 
