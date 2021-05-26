@@ -84,7 +84,7 @@ def get_acme_validation_records(acme, domain_name):
         print(response)
         for line in response.splitlines():
             if "TXT value" in line:
-                line = line.split('TXT value:')[1][2:-1]
+                line = line.split("TXT value:")[1][2:-1]
                 text_values.append(line)
         if not text_values:
             print("Unable to register domain with acme.sh at this time. See message above for details.")
