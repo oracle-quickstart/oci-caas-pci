@@ -10,7 +10,6 @@ from oci.config import from_file
 # Create the certificate in the WAF
 def create_waas_certificate(compartment_id, cert_data, key_data, config, display_name):
     try:
-
         waas_client = oci.waas.WaasClient(config)
         cert_composite = oci.waas.WaasClientCompositeOperations(waas_client)
         certificate_details = oci.waas.models.CreateCertificateDetails(
@@ -22,10 +21,8 @@ def create_waas_certificate(compartment_id, cert_data, key_data, config, display
         response = cert_composite.create_certificate_and_wait_for_state(create_certificate_details=certificate_details,
                                                                         wait_for_states=[
                                                                             oci.waas.models.Certificate.LIFECYCLE_STATE_ACTIVE])
-
         return response
-    except Exception as e:
-        print(e)
+    except:
         print("Error with Certificate Creation. Failed to create WAAS Certificate. Exiting.")
         sys.exit()
 
@@ -47,7 +44,6 @@ def get_record_details(text_domain, rdata_list, rtype, ttl):
 #  Update DNS Domain Record in OCI
 def update_dns_domain_record(record_details_list, domain_name, text_domain, config):
     try:
-
         dns_client = oci.dns.DnsClient(config)
         print(record_details_list)
 
@@ -56,7 +52,6 @@ def update_dns_domain_record(record_details_list, domain_name, text_domain, conf
         response = dns_client.update_domain_records(zone_name_or_id=domain_name,
                                                     domain=text_domain,
                                                     update_domain_records_details=domain_records_details)
-
         return response
     except:
         print("Error with updating the DND Domain Record. Exiting.")
@@ -90,7 +85,6 @@ def get_acme_validation_records(acme, domain_name):
             print("Unable to register domain with acme.sh at this time. See message above for details.")
             sys.exit()
         return text_values
-
     except:
         print("Error while retrieving validation records for ACME. Exiting")
         sys.exit()
