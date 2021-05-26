@@ -8,23 +8,24 @@ from oci.config import from_file
 
 
 # Create the certificate in the WAF
-def create_waas_certificate(compartment_id, cert_data, key_data, config, domain_name):
-
+def create_waas_certificate(compartment_id, cert_data, key_data, config, display_name):
     try:
 
         waas_client = oci.waas.WaasClient(config)
+        cert_composite = oci.waas.WaasClientCompositeOperations(waas_client)
         certificate_details = oci.waas.models.CreateCertificateDetails(
             compartment_id=compartment_id,
             certificate_data=cert_data,
             private_key_data=key_data,
-            display_name=domain_name + "-cert-" + date.today)
+            display_name=display_name)
 
-        response = waas_client.create_certificate(create_certificate_details=certificate_details,
-                                                  wait_for_states=[
-                                                      oci.waas.models.Certificate.LIFECYCLE_STATE_ACTIVE])
+        response = cert_composite.create_certificate_and_wait_for_state(create_certificate_details=certificate_details,
+                                                                        wait_for_states=[
+                                                                            oci.waas.models.Certificate.LIFECYCLE_STATE_ACTIVE])
 
         return response
-    except:
+    except Exception as e:
+        print(e)
         print("Error with Certificate Creation. Failed to create WAAS Certificate. Exiting.")
         sys.exit()
 
@@ -70,37 +71,45 @@ def get_secret_data(path):
             if line != "\n":
                 secret_data = secret_data + line
 
-    return secret_data
+    return str(secret_data)
 
 
 # Get validation records from registration command
 def get_acme_validation_records(acme, domain_name):
-    text_values = []
-    # response = subprocess.getoutput("acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
-    #         acme, domain_name))
-    response = subprocess.getoutput("cat acme-log.txt")
-    print(response)
-
-    for line in response.splitlines():
-        if "TXT value" in line:
-            line = line.split('TXT value:')[1][2:-2]
-            text_values.append(line)
-    return text_values
+    try:
+        text_values = []
+        response = subprocess.getoutput(
+            "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
+                acme, domain_name))
+        print(response)
+        for line in response.splitlines():
+            if "TXT value" in line:
+                line = line.split('TXT value:')[1][2:-1]
+                text_values.append(line)
+        return text_values
+    except:
+        print("Error while retrieving validation records for ACME. Exiting")
+        sys.exit()
 
 
 # register
 def register_or_renew_acme(acme, domain_name):
-    response = subprocess.run(
-        "acme_cmd={}; domain={}; echo $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
-            acme, domain_name), shell=True)
-    print(response)
-    return response
+    try:
+        response = subprocess.run(
+            "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please --renew".format(
+                acme, domain_name), shell=True)
+
+        print(response)
+        return response
+    except:
+        print("Error while registering or renewing ACME. Exiting")
+        sys.exit()
 
 
 def write_to_conf(filename, certificate_ocid):
     try:
         file = open(filename, "a")
-        file.write("frontend_ssl_certificate_id=" + certificate_ocid)
+        file.write("frontend_ssl_certificate_id=" + certificate_ocid + "\n")
         file.close()
     except:
         print("Error while uploading the certificate ocid to oci-caas-pci.conf file")
@@ -155,9 +164,8 @@ if __name__ == "__main__":
     acme_txt_value = get_acme_validation_records(ACME, domain)
 
     # Gets the acme TXT Values for RDATA
-    acme_txt_values = acme_txt_value[0] + " " + acme_txt_value[1]
-
-    record_list = [get_record_details(txt_domain, acme_txt_values, "TXT", 30)]
+    record_list = [get_record_details(txt_domain, acme_txt_value[0], "TXT", 30),
+                   get_record_details(txt_domain, acme_txt_value[1], "TXT", 30)]
 
     # Updating dns_domain_record with zone_name_or_id, domain, rdata values, rtype and ttl
     update_dns_domain_record(record_list, domain, txt_domain, local_config)
@@ -168,17 +176,22 @@ if __name__ == "__main__":
     # Gets the certificate data
     cert_data_path = ACME + "/" + domain + "/fullchain.cer"
     certificate_data = get_secret_data(cert_data_path)
+    print(certificate_data)
 
     # Gets the key data
     key_data_path = ACME + "/" + domain + "/" + domain + ".key"
     secret_key_data = get_secret_data(key_data_path)
+    print(secret_key_data)
 
-    certificate = create_waas_certificate(compartment_ocid, certificate_data, secret_key_data, local_config, domain)
+    today = str(date.today())
+    cert_display_name = str(domain + "-cert-" + today)
+
+    certificate = create_waas_certificate(compartment_ocid, certificate_data, secret_key_data, local_config,
+                                          cert_display_name)
 
     # Gets the certificate OCID
-    cert_ocid = certificate.data.key_id
+    cert_ocid = certificate.data.id
     print("Successfully created WAAS Certificate with OCID: {}".format(cert_ocid))
 
     # Writes the certificate OCID to oci-caas-pci.conf file
     write_to_conf(oci_caas_pci_config, cert_ocid)
-
