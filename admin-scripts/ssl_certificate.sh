@@ -69,7 +69,7 @@ for value in $text_values
 do
   echo { \"domain\": \"$txt_domain\", \"rtype\": \"TXT\", \"ttl\": 30, \"rdata\": \"$value\" } >> ${tmp}/records.txt
 done
- 
+
 # turn the list of records into an array
 jq -s . ${tmp}/records.txt > ${tmp}/dns_items.json
  

@@ -128,24 +128,21 @@ scripts rely on is at **$HOME/.oci-caas/oci-caas-pci.conf**
 ## Generate Public SSL Certificate
 This step should be run after the Getting Started section, before the Terraform steps.
 
-From the root of this repo, use the `admin-scripts/ssl_certificate.sh` to generate
+From the root of this repo, use the `admin-scripts/ssl_certificate.py` to generate
 a new wildcard certificate for the zone that you will be managing. This script will
 utilize the DNS zone you created earlier to create a validation txt record and 
 then upload the new certificate and private key to the OCI WAF/WAAS certificate store.
 
 ```
-admin-scripts/ssl_certificate.sh -d <your domain>
+python3 admin-scripts/ssl_certificate.py <your domain> <compartment OCID>
 ```
 
-Optional: You can override the Compartment OCID,
-if you want to create multiple sites using the same
-certificate. Specify the admin compartment you created the DNS zone in earlier. This
+Required: The Domain and Compartment OCID. 
+
+Note: If you want to create multiple sites using the same
+certificate, specify the Compartment OCID as the Admin Compartment OCID you created the DNS zone in earlier. This
 is ideal if you want to create multiple compartments (like dev, test, staging)
 in the same tenancy.
-
-```
-admin-scripts/ssl_certificate.sh -d <your domain> -o <compartment ocid>
-```
 
 This will echo the certificate OCID back to the terminal, and store it for later use in the
 configuration file. You'll need this value for the Terraform stack.
