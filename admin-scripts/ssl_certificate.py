@@ -155,8 +155,8 @@ if __name__ == "__main__":
     else:
         raise FileNotFoundError("Error with vault creation. {} file or {} file does not exist.".format(path1, path2))
 
-    # Check is compartment id and domain name exists
-    if compartment_ocid == "" or domain == "":
+    # Check if compartment id and domain name exists
+    if not compartment_ocid or not domain:
         print(usage)
         sys.exit()
 
