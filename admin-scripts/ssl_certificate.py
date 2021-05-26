@@ -110,7 +110,7 @@ def write_to_conf(filename, certificate_ocid):
         file.write("frontend_ssl_certificate_id=" + certificate_ocid + "\n")
         file.close()
     except:
-        print("Error while uploading the certificate ocid to oci-caas-pci.conf file")
+        print("Error while uploading the certificate ocid to {} file".format(filename))
         sys.exit()
 
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     domain, compartment_ocid = "", ""
     usage = "Usage: `python3 ssl_certificate.py <DOMAIN> <COMPARTMENT_OCID> \n" + \
             "- [Required] Domain should be a valid domain already configured in OCI DNS \n" + \
-            "- [Required] OCID should be the OCID of the compartment from where the service will run \n"
+            "- [Required] Compartment OCID \n"
 
     # Check if arguments are passed to the function or not
     if len(sys.argv) == 3:
