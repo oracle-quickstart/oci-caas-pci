@@ -86,7 +86,11 @@ def get_acme_validation_records(acme, domain_name):
             if "TXT value" in line:
                 line = line.split('TXT value:')[1][2:-1]
                 text_values.append(line)
+        if not text_values:
+            print("Unable to register domain with acme.sh at this time. See message above for details.")
+            sys.exit()
         return text_values
+
     except:
         print("Error while retrieving validation records for ACME. Exiting")
         sys.exit()
@@ -113,6 +117,7 @@ def write_to_conf(filename, certificate_ocid):
         file.close()
     except:
         print("Error while uploading the certificate ocid to oci-caas-pci.conf file")
+        sys.exit()
 
 
 if __name__ == "__main__":
@@ -161,6 +166,7 @@ if __name__ == "__main__":
         print(usage)
         sys.exit()
 
+    # Gets the acme validation records
     acme_txt_value = get_acme_validation_records(ACME, domain)
 
     # Gets the acme TXT Values for RDATA

@@ -134,7 +134,7 @@ utilize the DNS zone you created earlier to create a validation txt record and
 then upload the new certificate and private key to the OCI WAF/WAAS certificate store.
 
 ```
-admin-scripts/python3 ssl_certificate.py <your domain> <compartment OCID>
+python3 admin-scripts/ssl_certificate.py <your domain> <compartment OCID>
 ```
 
 Required: The Domain and Compartment OCID. 
@@ -142,10 +142,6 @@ Required: The Domain and Compartment OCID.
 Note: Specify the admin compartment you created the DNS zone in earlier. This
 is ideal if you want to create multiple compartments (like dev, test, staging)
 in the same tenancy.
-
-```
-admin-scripts/ssl_certificate.sh -d <your domain> -o <compartment ocid>
-```
 
 This will echo the certificate OCID back to the terminal, and store it for later use in the
 configuration file. You'll need this value for the Terraform stack.
