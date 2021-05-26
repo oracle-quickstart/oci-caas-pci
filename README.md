@@ -139,7 +139,8 @@ python3 admin-scripts/ssl_certificate.py <your domain> <compartment OCID>
 
 Required: The Domain and Compartment OCID. 
 
-Note: Specify the admin compartment you created the DNS zone in earlier. This
+Note: If you want to create multiple sites using the same
+certificate, specify the Compartment OCID as the Admin Compartment OCID you created the DNS zone in earlier. This
 is ideal if you want to create multiple compartments (like dev, test, staging)
 in the same tenancy.
 
