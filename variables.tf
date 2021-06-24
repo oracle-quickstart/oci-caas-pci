@@ -92,7 +92,7 @@ variable "oci_caas_wazuh_bootstrap_bundle" {
 variable "cinc_version" {
   type        = string
   description = "Version of the Cinc Infra client from bootstrapping"
-  default     = "17.2.29-1"
+  default     = "16.13.16-1"
 }
 
 variable "tomcat_config" {
