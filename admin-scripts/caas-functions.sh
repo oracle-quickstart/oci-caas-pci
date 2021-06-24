@@ -136,7 +136,7 @@ function validate_url(){
 }
 
 function download_cache_packages() {
-  url_list=("http://downloads.cinc.sh/files/stable/cinc/16.9.29/el/7/cinc-16.9.29-1.el7.x86_64.rpm"
+  url_list=("http://downloads.cinc.sh/files/stable/cinc/17.2.29/el/7/cinc-17.2.29-1.el7.x86_64.rpm"
             "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.60/bin/apache-tomcat-8.5.60.tar.gz"
             "https://github.com/oracle-quickstart/oci-caas-pci-ecommerce/releases/download/1.2.0/pci-ecommerce-1.2.0.war")
 
