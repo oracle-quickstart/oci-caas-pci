@@ -1,8 +1,12 @@
-# OCI CAAS PCI
-Welcome
+# Welcome
+This repository contains Terraform code and initial setup scripts
+to deploy an ecommerce application that meets 
+common international standards for security, such as ISO 27001,
+AICPA SOC-2, or the PCI-DSS. For more information, please refer to
+the architecture documentation [here](https://docs.oracle.com/en/solutions/pci-compliant-webapp-terraform).
 
 ## Requirements
-To successfully build and manage this project, you will need to meet the requirements.
+To successfully build and manage this project, you will need to meet the requirements below.
 
 ### OCI Console & Cloud Shell
 The initialization process utilizes the OCI Cloud Shell, so you'll need
@@ -17,9 +21,9 @@ For more information see [DNS Setup](#dns-setup).
 
 ### External software requirements
 On your management workstation, you will need the following:
-* Terraform >= 0.12.x
+* Terraform >= 0.14.x
 * SSH client
-* SQL client (I have used SQL Developer)
+* SQL client (For example, SQL Developer)
 * Git
 
 For two-factor authentication:
