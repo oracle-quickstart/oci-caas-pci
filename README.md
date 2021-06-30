@@ -27,7 +27,7 @@ On your management workstation, you will need the following:
 * Git
 
 For two-factor authentication:
-* Authenticator app (I use FreeOTP, but any popular authenticator app should work)
+* Authenticator app (For example, FreeOTP, but any popular authenticator app should work)
 
 ### Stripe API keys
 To utilize Stripe, you will need to have access to a pair of
