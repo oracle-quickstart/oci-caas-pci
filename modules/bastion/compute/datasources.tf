@@ -16,7 +16,9 @@ data "oci_identity_availability_domains" "ad" {
   compartment_id = var.tenancy_ocid
 }
 
-# Bootstrap data
+# ---------------------------------------------------------------------------------------------------------------------
+# Bootstrap script and variables
+# ---------------------------------------------------------------------------------------------------------------------
 data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 

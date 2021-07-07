@@ -21,6 +21,9 @@ data "template_file" "ad_names" {
   template = lookup(data.oci_identity_availability_domains.ad.availability_domains[count.index], "name")
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Bootstrap script and variables
+# ---------------------------------------------------------------------------------------------------------------------
 data "template_file" bootstrap {
   template = file("${path.module}/userdata/bootstrap")
 
