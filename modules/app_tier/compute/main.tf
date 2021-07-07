@@ -42,7 +42,7 @@ resource "oci_core_instance_configuration" "app_instance_configuration" {
 
       source_details {
         source_type = "image"
-        image_id    = var.instance_image_ocid[var.region]
+        image_id    = data.oci_core_images.autonomous_images.images.0.id
       }
     }
   }

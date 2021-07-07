@@ -42,16 +42,14 @@ variable "bastion_instance_shape" {
   default = "VM.Standard2.2"
 }
 
-variable "instance_image_ocid" {
-  type = map
+variable "instance_image_id" {
+  description = "Provide a custom image id for the bastion host or leave as Autonomous."
+  type        = string
+  default     = "Autonomous"
+}
 
-  default = {
-    # See https://docs.us-phoenix-1.oraclecloud.com/images/
-    # Oracle-Autonomous-Linux-7.9
-    # Oracle-Autonomous-Linux-7.9-2021.01-0
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaadzbjqqwjzgl7yweoiqbltuh2y7kb4alzyuv4k3mambxpcpiicj3a"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaauitscop5dhasbqkegaju56brylkckgi2wfecct2cuvn4xk33d2wq"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaamv56sieig6vgu7jqg5pber3oe6xwrszjvfdbl2veka5dwrdgomea"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaay6ffduwdwuip5phglsoqrbztdxs5kq2qjt3rgqowksoltnxcjdea"
-  }
+variable "instance_operating_system_version" {
+  description = "In case Autonomous Linux is used, allow specification of Autonomous version"
+  type        = string
+  default     = "7.9"
 }

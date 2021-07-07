@@ -22,7 +22,7 @@ resource "oci_core_instance" "wazuh_server" {
 
   source_details {
     source_type = "image"
-    source_id   = var.instance_image_ocid[var.region]
+    source_id   = data.oci_core_images.autonomous_images.images.0.id
   }
 
   launch_options {
