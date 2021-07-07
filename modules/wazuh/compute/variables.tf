@@ -46,13 +46,13 @@ variable "vcn_cidr_block" {
 }
 
 variable "instance_image_id" {
-  description = "Provide a custom image id for the bastion host or leave as Autonomous."
+  description = "Provide an Oracle Autonomous Linux image id for wazuh host."
   type        = string
   default     = "Autonomous"
 }
 
 variable "instance_operating_system_version" {
-  description = "In case Autonomous Linux is used, allow specification of Autonomous version"
+  description = "the version of Oracle Autonomous Linux."
   type        = string
   default     = "7.9"
 }
