@@ -37,3 +37,7 @@ data "template_file" bootstrap {
     wazuh_password     = random_password.wazuh_password.result
   }
 }
+
+data "oci_core_instance" "wazuh_server" {
+  instance_id = oci_core_instance.wazuh_server.id
+}

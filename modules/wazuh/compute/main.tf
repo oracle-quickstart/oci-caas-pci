@@ -56,9 +56,3 @@ resource "random_password" "wazuh_password" {
   special = true
   override_special = "_%@"
 }
-
-
-
-data "oci_core_instance" "wazuh_server" {
-  instance_id = oci_core_instance.wazuh_server.id
-}
