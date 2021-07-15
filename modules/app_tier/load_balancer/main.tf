@@ -110,6 +110,7 @@ resource "oci_load_balancer_backend_set" "lb-dmz-bes" {
   }
   lb_cookie_session_persistence_configuration {
     is_secure = true
+    is_http_only = false
   }
 }
 
