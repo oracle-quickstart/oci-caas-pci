@@ -68,6 +68,7 @@ def get_secret_data(path):
 
     return str(secret_data)
 
+
 # Get validation records from registration command
 def get_acme_validation_records(acme, domain_name):
     try:
