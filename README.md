@@ -45,7 +45,7 @@ You will need to pass the --force option to install, which will bypass the
 check for cron.
 
 ```
-git clone https://github.com/acmesh-official/acme.sh.git
+git clone https://github.com/acmesh-official/acme.sh.git --branch 2.9.0
 cd ./acme.sh
 ./acme.sh --install --force
 ```

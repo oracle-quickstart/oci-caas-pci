@@ -74,7 +74,7 @@ def get_acme_validation_records(acme, domain_name):
     try:
         text_values = []
         response = subprocess.getoutput(
-            "acme_cmd={}; domain={}; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
+            "acme_cmd={}; domain={}; $acme_cmd/acme.sh --set-default-ca --server letsencrypt; $acme_cmd/acme.sh --issue  -d $domain --dns -d \*.$domain --yes-I-know-dns-manual-mode-enough-go-ahead-please".format(
                 acme, domain_name))
         print(response)
         for line in response.splitlines():
