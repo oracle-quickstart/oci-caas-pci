@@ -171,4 +171,6 @@ resource "random_string" "wallet_password" {
   length  = 16
   special = true
   number  = true
+  lower   = true
+  upper   = true
 }
