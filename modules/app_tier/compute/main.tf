@@ -170,4 +170,7 @@ resource "oci_autoscaling_auto_scaling_configuration" "app_autoscaling_configura
 resource "random_string" "wallet_password" {
   length  = 16
   special = true
+  number  = true
+  lower   = true
+  upper   = true
 }
