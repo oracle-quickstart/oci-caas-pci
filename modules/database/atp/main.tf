@@ -34,7 +34,6 @@ resource "oci_database_autonomous_database" "database" {
   subnet_id                = var.database_subnet_id  
   data_safe_status         = "REGISTERED"
   depends_on               = [ oci_data_safe_data_safe_private_endpoint.data_safe_private_endpoint ]
-  is_data_guard_enabled    = true
   freeform_tags = {
     "Description" = "Autonomous database"
     "Function"    = "Stores application catalogue and user info"
