@@ -69,10 +69,10 @@ function create_compartment() {
   parent="$2"
   description="$3"
 
-  oci iam compartment create --compartment-id $parent --name $name --description "$description" > $compartment_create_log 2>&1
+  oci iam compartment create --compartment-id $parent --name $name --description "$description" --wait-for-state "ACTIVE" > $compartment_create_log 2>&1
   if [[ $? -eq "0" ]]
   then
-    compartment_id=`jq '.data["id"]' $compartment_create_log | tr -d \"`
+    compartment_id=`grep -v '^Action' $compartment_create_log | jq '.data["id"]' | tr -d \"`
     echo $compartment_id
     return 0
   else
