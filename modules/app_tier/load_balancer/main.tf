@@ -114,9 +114,17 @@ resource "oci_load_balancer_backend_set" "lb-dmz-bes" {
   }
 }
 
+resource "time_sleep" "wait_for_backend_set" {
+  depends_on = [oci_load_balancer_backend_set.lb-dmz-bes]
+
+  create_duration = "60s"
+}
+
+
 resource "tls_private_key" "ca" {
   algorithm = "RSA"
   rsa_bits  = "4096"
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "tls_self_signed_cert" "ca" {
@@ -137,11 +145,13 @@ resource "tls_self_signed_cert" "ca" {
     "cert_signing",
     "crl_signing",
   ]
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "tls_private_key" "lb_private_key" {
   algorithm = "RSA"
   rsa_bits  = "4096"
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "tls_cert_request" "lb_cert_request" {
@@ -156,6 +166,7 @@ resource "tls_cert_request" "lb_cert_request" {
     country             = "country"
     organizational_unit = "ou"
   }
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "tls_locally_signed_cert" "lb_cert" {
@@ -172,6 +183,7 @@ resource "tls_locally_signed_cert" "lb_cert" {
     "server_auth",
     "client_auth",
   ]
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "oci_load_balancer_certificate" "lb_cert" {
@@ -185,6 +197,7 @@ resource "oci_load_balancer_certificate" "lb_cert" {
   # lifecycle {
   #     create_before_destroy = true
   # }
+  depends_on = [time_sleep.wait_for_backend_set]
 }
 
 resource "oci_load_balancer_listener" "lb_dmz_listener" {
@@ -198,4 +211,5 @@ resource "oci_load_balancer_listener" "lb_dmz_listener" {
     certificate_name        = oci_load_balancer_certificate.lb_cert.certificate_name
     verify_peer_certificate = false
   }
+  depends_on = [time_sleep.wait_for_backend_set]
 }
